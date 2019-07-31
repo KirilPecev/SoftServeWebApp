@@ -4,7 +4,7 @@ namespace WebApp.Data.Repo
 {
     public class UnitOfWork : IUnitOfWork
     {
-        readonly WebAppDbContext _dbContext;
+        private readonly WebAppDbContext _dbContext;
 
         public UnitOfWork(WebAppDbContext dbContext)
         {
