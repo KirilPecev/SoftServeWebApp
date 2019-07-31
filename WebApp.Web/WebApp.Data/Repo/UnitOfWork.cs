@@ -1,10 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Threading.Tasks;
 
 namespace WebApp.Data.Repo
 {
-    public class UnitOfWork
+    public class UnitOfWork : IUnitOfWork
     {
+        readonly WebAppDbContext _dbContext;
+
+        public UnitOfWork(WebAppDbContext dbContext)
+        {
+            this._dbContext = dbContext;
+        }
+
+        public async Task<int> SaveChanges()
+        {
+            return await _dbContext.SaveChangesAsync();
+        }
     }
 }
