@@ -1,6 +1,7 @@
 ﻿namespace WebApp.Web
 {
     using Data;
+    using Domain;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
@@ -33,7 +34,8 @@
             services.AddDbContext<WebAppDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<IdentityUser>()
+
+            services.AddDefaultIdentity<WebAppUser>()
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<WebAppDbContext>();
 
