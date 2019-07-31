@@ -28,7 +28,7 @@ namespace WebApp.Web.Controllers
 
         public IActionResult FirstTimeIntoApp()
         {
-            return View($"Views/Home/FirstTimeIntoApp.cshtml");
+            return View();
         }
     }
 }
