@@ -1,13 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
-using WebApp.Domain.Models.Abstract;
-
-namespace WebApp.Data.Repo
+﻿namespace WebApp.Data.Repo
 {
+    using Domain;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.ChangeTracking;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq.Expressions;
+    using System.Threading.Tasks;
+
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : class, IEntity
     {
         protected DbSet<TEntity> dbSet;
