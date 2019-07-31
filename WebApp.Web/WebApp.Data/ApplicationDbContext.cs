@@ -12,5 +12,7 @@ namespace WebApp.Data
             : base(options)
         {
         }
+
+
     }
 }
