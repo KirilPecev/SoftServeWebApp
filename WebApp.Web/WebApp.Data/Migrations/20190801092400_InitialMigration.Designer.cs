@@ -10,7 +10,7 @@ using WebApp.Data;
 namespace WebApp.Data.Migrations
 {
     [DbContext(typeof(WebAppDbContext))]
-    [Migration("20190731110750_InitialMigration")]
+    [Migration("20190801092400_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -154,15 +154,48 @@ namespace WebApp.Data.Migrations
 
             modelBuilder.Entity("WebApp.Domain.EventAttendees", b =>
                 {
-                    b.Property<string>("UserId");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("EventId");
 
-                    b.HasKey("UserId", "EventId");
+                    b.Property<int>("PositionId");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("EventId");
 
+                    b.HasIndex("PositionId");
+
+                    b.HasIndex("UserId");
+
                     b.ToTable("EventAttendees");
+                });
+
+            modelBuilder.Entity("WebApp.Domain.EventAttendeesToBeApproved", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("EventId");
+
+                    b.Property<int>("PositionId");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EventId");
+
+                    b.HasIndex("PositionId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("EventAttendeesToBeApproved");
                 });
 
             modelBuilder.Entity("WebApp.Domain.Position", b =>
@@ -175,28 +208,13 @@ namespace WebApp.Data.Migrations
 
                     b.Property<int>("SportId");
 
-                    b.Property<string>("UserId");
+                    b.Property<byte>("Team");
 
                     b.HasKey("Id");
 
                     b.HasIndex("SportId");
 
-                    b.HasIndex("UserId");
-
                     b.ToTable("Positions");
-                });
-
-            modelBuilder.Entity("WebApp.Domain.RankList", b =>
-                {
-                    b.Property<string>("UserId");
-
-                    b.Property<int>("SportId");
-
-                    b.HasKey("UserId", "SportId");
-
-                    b.HasIndex("SportId");
-
-                    b.ToTable("RankLists");
                 });
 
             modelBuilder.Entity("WebApp.Domain.Rating", b =>
@@ -205,15 +223,21 @@ namespace WebApp.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Scores");
+                    b.Property<int>("EventId");
 
-                    b.Property<string>("UserId");
+                    b.Property<string>("GiverId");
+
+                    b.Property<string>("ReceiverId");
+
+                    b.Property<int>("Score");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId")
-                        .IsUnique()
-                        .HasFilter("[UserId] IS NOT NULL");
+                    b.HasIndex("EventId");
+
+                    b.HasIndex("GiverId");
+
+                    b.HasIndex("ReceiverId");
 
                     b.ToTable("Ratings");
                 });
@@ -226,11 +250,7 @@ namespace WebApp.Data.Migrations
 
                     b.Property<string>("Name");
 
-                    b.Property<string>("WebAppUserId");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("WebAppUserId");
 
                     b.ToTable("Sports");
                 });
@@ -252,7 +272,7 @@ namespace WebApp.Data.Migrations
 
                     b.Property<bool>("EmailConfirmed");
 
-                    b.Property<string>("ImageUrl");
+                    b.Property<string>("Image");
 
                     b.Property<bool>("LockoutEnabled");
 
@@ -269,8 +289,6 @@ namespace WebApp.Data.Migrations
                     b.Property<string>("PhoneNumber");
 
                     b.Property<bool>("PhoneNumberConfirmed");
-
-                    b.Property<int>("RatingId");
 
                     b.Property<string>("SecurityStamp");
 
@@ -340,7 +358,7 @@ namespace WebApp.Data.Migrations
             modelBuilder.Entity("WebApp.Domain.Event", b =>
                 {
                     b.HasOne("WebApp.Domain.Sport", "Sport")
-                        .WithMany()
+                        .WithMany("Events")
                         .HasForeignKey("SportId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
@@ -352,10 +370,31 @@ namespace WebApp.Data.Migrations
                         .HasForeignKey("EventId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("WebApp.Domain.WebAppUser", "User")
-                        .WithMany("Events")
-                        .HasForeignKey("UserId")
+                    b.HasOne("WebApp.Domain.Position", "Position")
+                        .WithMany("EventAttendees")
+                        .HasForeignKey("PositionId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("WebApp.Domain.WebAppUser", "User")
+                        .WithMany("EventAttendees")
+                        .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("WebApp.Domain.EventAttendeesToBeApproved", b =>
+                {
+                    b.HasOne("WebApp.Domain.Event", "Event")
+                        .WithMany("Positions")
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("WebApp.Domain.Position", "Position")
+                        .WithMany("EventAttendeesToBeApproved")
+                        .HasForeignKey("PositionId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("WebApp.Domain.WebAppUser", "User")
+                        .WithMany("EventAttendeesToBeApproved")
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("WebApp.Domain.Position", b =>
@@ -364,37 +403,22 @@ namespace WebApp.Data.Migrations
                         .WithMany("Positions")
                         .HasForeignKey("SportId")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("WebApp.Domain.WebAppUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("WebApp.Domain.RankList", b =>
-                {
-                    b.HasOne("WebApp.Domain.Sport", "Sport")
-                        .WithMany("RankLists")
-                        .HasForeignKey("SportId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("WebApp.Domain.WebAppUser", "User")
-                        .WithMany("RankLists")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("WebApp.Domain.Rating", b =>
                 {
-                    b.HasOne("WebApp.Domain.WebAppUser", "User")
-                        .WithOne("Rating")
-                        .HasForeignKey("WebApp.Domain.Rating", "UserId");
-                });
+                    b.HasOne("WebApp.Domain.Event", "Event")
+                        .WithMany("Ratings")
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity("WebApp.Domain.Sport", b =>
-                {
-                    b.HasOne("WebApp.Domain.WebAppUser")
-                        .WithMany("Sports")
-                        .HasForeignKey("WebAppUserId");
+                    b.HasOne("WebApp.Domain.WebAppUser", "Giver")
+                        .WithMany()
+                        .HasForeignKey("GiverId");
+
+                    b.HasOne("WebApp.Domain.WebAppUser", "Receiver")
+                        .WithMany("Ratings")
+                        .HasForeignKey("ReceiverId");
                 });
 #pragma warning restore 612, 618
         }

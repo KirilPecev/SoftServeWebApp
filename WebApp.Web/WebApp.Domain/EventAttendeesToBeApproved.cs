@@ -1,6 +1,6 @@
 ﻿namespace WebApp.Domain
 {
-    public class EventAttendees : BaseModel<int>
+    public class EventAttendeesToBeApproved : BaseModel<int>
     {
         public string UserId { get; set; }
         public virtual WebAppUser User { get; set; }
