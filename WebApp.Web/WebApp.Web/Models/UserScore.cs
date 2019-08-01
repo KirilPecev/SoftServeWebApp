@@ -7,7 +7,7 @@ namespace WebApp.Web.Models
 {
     public class UserScore
     {
-        public DateTime CurrentDate { get; set; }
+        public string CurrentDate { get; set; }
         public double Score { get; set; }
     }
 }
