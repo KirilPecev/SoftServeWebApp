@@ -1,9 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
-
 namespace WebApp.Data
 {
     using Domain;
@@ -21,9 +15,9 @@ namespace WebApp.Data
 
         public DbSet<EventAttendees> EventAttendees { get; set; }
 
-        public DbSet<Position> Positions { get; set; }
+        public DbSet<EventAttendeesToBeApproved> EventAttendeesToBeApproved { get; set; }
 
-        public DbSet<RankList> RankLists { get; set; }
+        public DbSet<Position> Positions { get; set; }
 
         public DbSet<Rating> Ratings { get; set; }
 
@@ -31,10 +25,7 @@ namespace WebApp.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.ApplyConfiguration(new RankListConfiguration());
-            builder.ApplyConfiguration(new EventAttendeesConfiguration());
             builder.ApplyConfiguration(new RatingConfiguration());
-
             base.OnModelCreating(builder);
         }
     }

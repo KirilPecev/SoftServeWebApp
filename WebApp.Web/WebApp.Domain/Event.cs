@@ -7,6 +7,8 @@
         public Event()
         {
             this.Users = new HashSet<EventAttendees>();
+            this.Positions = new HashSet<EventAttendeesToBeApproved>();
+            this.Ratings = new HashSet<Rating>();
         }
 
         public string Name { get; set; }
@@ -15,5 +17,9 @@
         public virtual Sport Sport { get; set; }
 
         public virtual ICollection<EventAttendees> Users { get; set; }
+
+        public virtual ICollection<EventAttendeesToBeApproved> Positions { get; set; }
+
+        public virtual ICollection<Rating> Ratings { get; set; }
     }
 }

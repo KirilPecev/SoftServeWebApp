@@ -6,14 +6,14 @@
     {
         public Sport()
         {
+            this.Events = new List<Event>();
             this.Positions = new HashSet<Position>();
-            this.RankLists = new HashSet<RankList>();
         }
 
         public string Name { get; set; }
 
-        public virtual ICollection<Position> Positions { get; set; }
+        public virtual ICollection<Event> Events { get; set; }
 
-        public virtual ICollection<RankList> RankLists { get; set; }
+        public virtual ICollection<Position> Positions { get; set; }
     }
 }

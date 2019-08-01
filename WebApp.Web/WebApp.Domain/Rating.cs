@@ -2,9 +2,15 @@
 {
     public class Rating : BaseModel<int>
     {
-        public string UserId { get; set; }
-        public virtual WebAppUser User { get; set; }
+        public string ReceiverId { get; set; }
+        public virtual WebAppUser Receiver { get; set; }
 
-        public int Scores { get; set; }
+        public string GiverId { get; set; }
+        public virtual WebAppUser Giver { get; set; }
+
+        public int EventId { get; set; }
+        public virtual Event Event { get; set; }
+
+        public int Score { get; set; }
     }
 }

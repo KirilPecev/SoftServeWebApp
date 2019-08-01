@@ -7,22 +7,19 @@
     {
         public WebAppUser()
         {
-            this.Sports = new HashSet<Sport>();
-            this.Events = new HashSet<EventAttendees>();
-            this.RankLists = new HashSet<RankList>();
+            this.EventAttendees = new List<EventAttendees>();
+            this.EventAttendeesToBeApproved = new List<EventAttendeesToBeApproved>();
+            this.Ratings = new List<Rating>();
         }
 
-        public string ImageUrl { get; set; }
-
-        public int RatingId { get; set; }
-        public virtual Rating Rating { get; set; }
+        public string Image { get; set; }
 
         public string City { get; set; }
 
-        public virtual ICollection<Sport> Sports { get; set; }
+        public virtual ICollection<Rating> Ratings { get; set; }
 
-        public virtual ICollection<EventAttendees> Events { get; set; }
+        public virtual ICollection<EventAttendees> EventAttendees { get; set; }
 
-        public virtual ICollection<RankList> RankLists { get; set; }
+        public virtual ICollection<EventAttendeesToBeApproved> EventAttendeesToBeApproved { get; set; }
     }
 }
