@@ -41,13 +41,25 @@ namespace WebApp.Data.Migrations
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
-                    ImageUrl = table.Column<string>(nullable: true),
-                    RatingId = table.Column<int>(nullable: false),
+                    Image = table.Column<string>(nullable: true),
                     City = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Sports",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Sports", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -157,46 +169,6 @@ namespace WebApp.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Ratings",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    UserId = table.Column<string>(nullable: true),
-                    Scores = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Ratings", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Ratings_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Sports",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(nullable: true),
-                    WebAppUserId = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Sports", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Sports_AspNetUsers_WebAppUserId",
-                        column: x => x.WebAppUserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Events",
                 columns: table => new
                 {
@@ -223,7 +195,7 @@ namespace WebApp.Data.Migrations
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(nullable: true),
-                    UserId = table.Column<string>(nullable: true),
+                    Team = table.Column<byte>(nullable: false),
                     SportId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -235,48 +207,55 @@ namespace WebApp.Data.Migrations
                         principalTable: "Sports",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Ratings",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    ReceiverId = table.Column<string>(nullable: true),
+                    GiverId = table.Column<string>(nullable: true),
+                    EventId = table.Column<int>(nullable: false),
+                    Score = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Ratings", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Positions_AspNetUsers_UserId",
-                        column: x => x.UserId,
+                        name: "FK_Ratings_Events_EventId",
+                        column: x => x.EventId,
+                        principalTable: "Events",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Ratings_AspNetUsers_GiverId",
+                        column: x => x.GiverId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Ratings_AspNetUsers_ReceiverId",
+                        column: x => x.ReceiverId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "RankLists",
-                columns: table => new
-                {
-                    UserId = table.Column<string>(nullable: false),
-                    SportId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RankLists", x => new { x.UserId, x.SportId });
-                    table.ForeignKey(
-                        name: "FK_RankLists_Sports_SportId",
-                        column: x => x.SportId,
-                        principalTable: "Sports",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_RankLists_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "EventAttendees",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(nullable: false),
-                    EventId = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    UserId = table.Column<string>(nullable: true),
+                    EventId = table.Column<int>(nullable: false),
+                    PositionId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_EventAttendees", x => new { x.UserId, x.EventId });
+                    table.PrimaryKey("PK_EventAttendees", x => x.Id);
                     table.ForeignKey(
                         name: "FK_EventAttendees_Events_EventId",
                         column: x => x.EventId,
@@ -284,11 +263,50 @@ namespace WebApp.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
+                        name: "FK_EventAttendees_Positions_PositionId",
+                        column: x => x.PositionId,
+                        principalTable: "Positions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
                         name: "FK_EventAttendees_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "EventAttendeesToBeApproved",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    UserId = table.Column<string>(nullable: true),
+                    EventId = table.Column<int>(nullable: false),
+                    PositionId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EventAttendeesToBeApproved", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_EventAttendeesToBeApproved_Events_EventId",
+                        column: x => x.EventId,
+                        principalTable: "Events",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_EventAttendeesToBeApproved_Positions_PositionId",
+                        column: x => x.PositionId,
+                        principalTable: "Positions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_EventAttendeesToBeApproved_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -336,6 +354,31 @@ namespace WebApp.Data.Migrations
                 column: "EventId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_EventAttendees_PositionId",
+                table: "EventAttendees",
+                column: "PositionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EventAttendees_UserId",
+                table: "EventAttendees",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EventAttendeesToBeApproved_EventId",
+                table: "EventAttendeesToBeApproved",
+                column: "EventId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EventAttendeesToBeApproved_PositionId",
+                table: "EventAttendeesToBeApproved",
+                column: "PositionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EventAttendeesToBeApproved_UserId",
+                table: "EventAttendeesToBeApproved",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Events_SportId",
                 table: "Events",
                 column: "SportId");
@@ -346,26 +389,19 @@ namespace WebApp.Data.Migrations
                 column: "SportId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Positions_UserId",
-                table: "Positions",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_RankLists_SportId",
-                table: "RankLists",
-                column: "SportId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Ratings_UserId",
+                name: "IX_Ratings_EventId",
                 table: "Ratings",
-                column: "UserId",
-                unique: true,
-                filter: "[UserId] IS NOT NULL");
+                column: "EventId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Sports_WebAppUserId",
-                table: "Sports",
-                column: "WebAppUserId");
+                name: "IX_Ratings_GiverId",
+                table: "Ratings",
+                column: "GiverId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Ratings_ReceiverId",
+                table: "Ratings",
+                column: "ReceiverId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -389,10 +425,7 @@ namespace WebApp.Data.Migrations
                 name: "EventAttendees");
 
             migrationBuilder.DropTable(
-                name: "Positions");
-
-            migrationBuilder.DropTable(
-                name: "RankLists");
+                name: "EventAttendeesToBeApproved");
 
             migrationBuilder.DropTable(
                 name: "Ratings");
@@ -401,13 +434,16 @@ namespace WebApp.Data.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
+                name: "Positions");
+
+            migrationBuilder.DropTable(
                 name: "Events");
 
             migrationBuilder.DropTable(
-                name: "Sports");
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "Sports");
         }
     }
 }

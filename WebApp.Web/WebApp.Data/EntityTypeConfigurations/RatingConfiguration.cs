@@ -8,9 +8,10 @@
     {
         public void Configure(EntityTypeBuilder<Rating> builder)
         {
-            builder.HasOne(rating => rating.User)
-                .WithOne(user => user.Rating)
-                .HasForeignKey<Rating>(key => key.UserId);
+            builder
+                .HasOne(rating => rating.Receiver)
+                .WithMany(user => user.Ratings)
+                .HasForeignKey(fk => fk.ReceiverId);
         }
     }
 }
