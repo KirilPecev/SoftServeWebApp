@@ -11,8 +11,8 @@ namespace WebApp.Web.Controllers
     {
         public IActionResult HomePageView()
         {
-            var model = new EventBindingModel();
-            return this.View(model);
+            // request to the db
+            return ReturnMainView();
         }
 
         [HttpPost]
@@ -28,7 +28,16 @@ namespace WebApp.Web.Controllers
                 }
                 return BadRequest(errorMessages);
             }
-            return this.Json(model);
+            // save intothe db
+            // 
+            /*return this.Json(model);*/
+            return ReturnMainView();
+        }
+
+        private ViewResult ReturnMainView()
+        {
+            HomePageBinding model = new HomePageBinding();
+            return View(model);
         }
     }
 }
