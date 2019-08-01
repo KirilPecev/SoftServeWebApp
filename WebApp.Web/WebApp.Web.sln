@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApp.Domain", "WebApp.Dom
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApp.Services", "WebApp.Services\WebApp.Services.csproj", "{06DBDC04-66B7-42E9-AD93-E1F3549EBF44}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApp.Notifications", "WebApp.Notifications\WebApp.Notifications.csproj", "{B8B22915-84CD-40D8-B808-1482004E6CEF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApp.Notifications", "WebApp.Notifications\WebApp.Notifications.csproj", "{B8B22915-84CD-40D8-B808-1482004E6CEF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApp.ImageStorage", "WebApp.ImageStorage\WebApp.ImageStorage.csproj", "{1962DE2C-750E-4EE5-B7D7-E33DC1FD4600}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{B8B22915-84CD-40D8-B808-1482004E6CEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B8B22915-84CD-40D8-B808-1482004E6CEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B8B22915-84CD-40D8-B808-1482004E6CEF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1962DE2C-750E-4EE5-B7D7-E33DC1FD4600}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1962DE2C-750E-4EE5-B7D7-E33DC1FD4600}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1962DE2C-750E-4EE5-B7D7-E33DC1FD4600}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1962DE2C-750E-4EE5-B7D7-E33DC1FD4600}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,0 +1,9 @@
+C:\Users\Georgi Georgiew\Downloads\SoftServeWebApp-master\SoftServeWebApp-master\WebApp.Web\WebApp.ImageStorage\bin\Debug\netstandard2.0\WebApp.ImageStorage.deps.json
+C:\Users\Georgi Georgiew\Downloads\SoftServeWebApp-master\SoftServeWebApp-master\WebApp.Web\WebApp.ImageStorage\bin\Debug\netstandard2.0\WebApp.ImageStorage.dll
+C:\Users\Georgi Georgiew\Downloads\SoftServeWebApp-master\SoftServeWebApp-master\WebApp.Web\WebApp.ImageStorage\obj\Debug\netstandard2.0\WebApp.ImageStorage.csproj.CoreCompileInputs.cache
+C:\Users\Georgi Georgiew\Downloads\SoftServeWebApp-master\SoftServeWebApp-master\WebApp.Web\WebApp.ImageStorage\obj\Debug\netstandard2.0\WebApp.ImageStorage.AssemblyInfoInputs.cache
+C:\Users\Georgi Georgiew\Downloads\SoftServeWebApp-master\SoftServeWebApp-master\WebApp.Web\WebApp.ImageStorage\obj\Debug\netstandard2.0\WebApp.ImageStorage.AssemblyInfo.cs
+C:\Users\Georgi Georgiew\Downloads\SoftServeWebApp-master\SoftServeWebApp-master\WebApp.Web\WebApp.ImageStorage\bin\Debug\netstandard2.0\WebApp.ImageStorage.pdb
+C:\Users\Georgi Georgiew\Downloads\SoftServeWebApp-master\SoftServeWebApp-master\WebApp.Web\WebApp.ImageStorage\obj\Debug\netstandard2.0\WebApp.ImageStorage.csprojAssemblyReference.cache
+C:\Users\Georgi Georgiew\Downloads\SoftServeWebApp-master\SoftServeWebApp-master\WebApp.Web\WebApp.ImageStorage\obj\Debug\netstandard2.0\WebApp.ImageStorage.dll
+C:\Users\Georgi Georgiew\Downloads\SoftServeWebApp-master\SoftServeWebApp-master\WebApp.Web\WebApp.ImageStorage\obj\Debug\netstandard2.0\WebApp.ImageStorage.pdb
