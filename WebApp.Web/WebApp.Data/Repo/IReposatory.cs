@@ -1,12 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore.ChangeTracking;
-using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
-
-namespace WebApp.Data.Repo
+﻿namespace WebApp.Data.Repo
 {
-    public interface IRepository<TEntity> where TEntity : class
+    using Domain;
+    using Microsoft.EntityFrameworkCore.ChangeTracking;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq.Expressions;
+    using System.Threading.Tasks;
+
+    public interface IRepository<TEntity> where TEntity : class, IEntity
     {
         Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate);
 
