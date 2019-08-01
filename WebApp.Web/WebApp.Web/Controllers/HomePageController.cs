@@ -11,7 +11,8 @@ namespace WebApp.Web.Controllers
     {
         public IActionResult HomePageView()
         {
-            return this.View();
+            var model = new EventBindingModel();
+            return this.View(model);
         }
 
         [HttpPost]
