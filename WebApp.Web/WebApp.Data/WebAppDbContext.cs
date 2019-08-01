@@ -1,4 +1,10 @@
-﻿namespace WebApp.Data
+using System;
+using System.Collections.Generic;
+using System.Text;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+
+namespace WebApp.Data
 {
     using Domain;
     using EntityTypeConfigurations;
