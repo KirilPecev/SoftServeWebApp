@@ -1,0 +1,187 @@
+﻿@model WebApp.Web.Models.Event.HomePageBinding
+@{
+    //ViewData["Title"] = "HomePageView";
+    Layout = "";
+}
+
+<head>
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/dist/css/bootstrap-grid.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/dist/css/bootstrap-reboot.css" rel="stylesheet" />
+</head>
+
+
+<div class="container-fluid">
+    <div class="row">
+        @await Html.PartialAsync($"_SideUserMenuPartial")
+
+        <div class="col p-0 m-0" style="background-color: whitesmoke">
+
+            <nav class="navbar p-0 m-0 justify-content-center d-flex bd-highlight sticky-top" id="centerNav">
+                <form class="form-inline mt-2 bd-highlight">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search events" id="searchForm">
+                        <div class="input-group-append">
+                            <button class="btn" id="searching">
+                                <img src="~/images/homepage/icons8-search-48.png" style="width: 2vw" />
+                            </button>
+                        </div>
+                    </div>
+                </form>
+
+                <button type="button" class="btn btn-outline-info mb-2 bd-highlight" data-toggle="modal" data-target="#exampleModalCenter" style="margin-left: 4rem">
+                    Create Event
+                </button>
+
+                <button type="button" class="btn btn-outline-info mb-2 bd-highlight ml-3">Create Event</button>
+            </nav>
+            
+           
+            <div class="container d-flex justify-content-center" style="background-color: whitesmoke; z-index: -1">
+                <div class="col">
+                    @for (int i = 0; i < @Model.Events.Count(); i++)
+                    {
+                        @await Html.PartialAsync($"_EventDescriptionPartial", @Model.Events.ElementAt(i))
+                    }
+                </div>
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <form asp-action="HomePageView" method="post">
+                            <div class="modal-header d-flex justify-content-center">
+                                <div class="form-group" style="width: 20rem">
+                                    <input asp-for="@Model.Modal.Name" type="text" class="form-control" id="Name" aria-describedby="NameInput" placeholder="Enter the event's name" />
+                                </div>
+                                @*<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>*@
+                            </div>
+
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label for="eventLocation">Location</label>
+                                    <input asp-for="@Model.Modal.Location" type="text" class="form-control" id="eventLocation" aria-describedby="eventLocationInput" placeholder="Enter the event's location" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleFormControlSelect1">Example select</label>
+                                    <select asp-for="@Model.Modal.Type" @*asp-items="@(Html.GetEnumSelectList<Type>())" *@ class="form-control" id="exampleFormControlSelect1">
+                                        <option>Football</option>
+                                        <option>Tennis</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleFormControlTextarea">Example textarea</label>
+                                    <textarea asp-for="@Model.Modal.Options" class="form-control" id="exampleFormControlTextarea" rows="3"></textarea>
+                                </div>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <input type="submit" value="Create Event" @*class="btn btn-primary" *@></>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <style>
+        .container-fluid, .row, .ul, body {
+            margin: 0;
+            padding: 0
+        }
+
+
+        #userSideNav {
+            background-color: #3a80f2;
+            width: 20%;
+            height: 100vh;
+            position: sticky;
+            top: 0
+        }
+
+        #centerNav {
+            height: 8vh;
+            z-index: 999;
+            background-color: whitesmoke;
+        }
+
+        li {
+            padding-top: 2rem;
+            text-decoration: none
+        }
+
+        .nav-link {
+            width: 100%;
+            height: 100%;
+            text-decoration: none;
+            color: black;
+            background-color: transparent;
+            border: 0;
+            border-radius: 10px;
+        }
+
+            .nav-link:hover, .nav-link:active {
+                background-color: #245097;
+                color: white;
+            }
+
+        a {
+            padding: 0;
+            margin: 0;
+        }
+
+        img {
+            border-radius: 50%;
+            width: 100px
+        }
+
+
+        form {
+            width: 30vw;
+        }
+
+        #searchForm {
+            border-radius: 0;
+            background-color: rgba(58,128,242,0.7);
+            border: none;
+            border-bottom: 1px solid lightgrey;
+            height: 6vh;
+            width: 26vw;
+            border-radius: 10px;
+        }
+
+            #searchForm::-webkit-input-placeholder {
+                color: white;
+            }
+
+            #searchForm:focus, #searchForm:active {
+                outline: none !important;
+                background-color: #3a80f2;
+                box-shadow: none;
+                border: none;
+                border-bottom: solid 1px lightgrey;
+                color: white;
+            }
+
+        button:focus {
+            outline: 0 !important;
+            box-shadow: none;
+        }
+
+        .jumbotron {
+            width: 50vw;
+            /*height: 40vh;*/
+            border-radius: 20px;
+        }
+    </style>
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
