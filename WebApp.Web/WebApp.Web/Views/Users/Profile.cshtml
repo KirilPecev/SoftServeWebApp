@@ -1,0 +1,118 @@
+﻿@{
+    ViewData["Title"] = "Profile";
+
+    string[] sports = new string[]
+    {
+"Basketball",
+"Table Tennis",
+"Football",
+"Tennis",
+"Badminton",
+"Chess"
+    };
+}
+
+<!-- Profile -->
+<table align="center" class="user">
+    <tr>
+        <td>
+            <img width="200" height="200" src="http://icons.iconarchive.com/icons/graphicloads/flat-finance/128/person-icon.png" />
+        </td>
+    </tr>
+    <tr>
+        <td>
+            USER
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Location
+        </td>
+    </tr>
+</table>
+
+<!-- Score Chart -->
+<table class="score_chart" align="left">
+    <tr>
+        <td>
+            <select name="sportss" size="1" style="width:400px">
+                <option value="blank">-</option>
+                <option value="basketball">Basketball</option>
+                <option value="tabletennis">Table Tennis</option>
+                <option value="football">Football</option>
+                <option value="tennis">Tennis</option>
+                <option value="badminton">Badminton</option>
+                <option value="chess">Chess</option>
+            </select>
+        </td>
+        <td>
+            Average Score <img width="20" height="20" src="http://icons.iconarchive.com/icons/paomedia/small-n-flat/128/star-icon.png" />
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            @await Html.PartialAsync("_UserScoreChart")
+        </td>
+    </tr>
+</table>
+
+<!-- Pick Sport -->
+<table align="right" class="pick_sport">
+    @for (int i = 0; i < sports.Length; i++)
+    {
+        <tr>
+            @if (i == 0)
+            {
+                <td class="sport_column" style="color:darkblue">@sports[i]</td>
+                <td class="sport_column">
+                    <button class="sport_btn" type="button"><img width="20" height="20" src="http://icons.iconarchive.com/icons/awicons/vista-artistic/128/add-icon.png" /></button>
+                </td>
+                <td class="sport_column">
+                    <button class="sport_btn" type="button"><img width="20" height="20" src="http://icons.iconarchive.com/icons/awicons/vista-artistic/128/delete-icon.png" /></button>
+                </td>
+            }
+            else
+            {
+                <td class="sport_column">@sports[i]</td>
+                <td class="sport_column">
+                    <button class="sport_btn" type="button"><img width="20" height="20" src="http://icons.iconarchive.com/icons/awicons/vista-artistic/128/add-icon.png" /></button>
+                </td>
+                <td class="sport_column">
+                    <button class="sport_btn" type="button"><img width="20" height="20" src="http://icons.iconarchive.com/icons/awicons/vista-artistic/128/delete-icon.png" /></button>
+                </td>
+            }
+        </tr>
+    }
+</table>
+
+<style>
+    .user {
+        text-align: center;
+    }
+
+    .score_chart {
+        text-align: center;
+        width: 550px;
+        height: 100px;
+        margin-top: 100px;
+        margin-bottom: 70px;
+    }
+
+    .pick_sport {
+        text-align: center;
+        margin-top: 100px;
+        margin-bottom: 70px;
+    }
+
+    .sport_column {
+        background-color: lightblue;
+        color: white;
+        font-size: 20px;
+    }
+
+    .sport_btn {
+        border: none;
+        background-color: lightblue;
+    }
+</style>
+

@@ -1,0 +1,73 @@
+﻿@{
+    string[] positions = new string[]
+    {
+"Goalkeeper",
+"Right Fullback",
+"Left Fullback",
+"Center Back",
+"Center Back (or Sweeper)",
+"Defending Midfielder",
+"Right Midfielder",
+"Left Midfielder",
+"Central Midfielder",
+"Attacking Midfielder/Playmaker",
+"Striker"
+    };
+}
+    <div class="row">
+        <div class="column">
+            <img src="https://images.pexels.com/photos/414612/pexels-photo-414612.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" align="middle" />
+            <center>Location</center>
+        </div>
+        <div class="column">
+            <center><h1>Title<h3>Time</h3></h1></center>
+            <br />
+            <br />
+            <center>Description</center>
+        </div>
+    </div>
+<div class="row">
+    @for (int i = 0; i < 2; i++)
+    {
+    <div class="column">
+        <h3><center>TEAM @(i+1)</center></h3>
+        @await Html.PartialAsync($"_TeamPartial", positions)
+    </div>
+    }
+</div>
+<style>
+    #grad1 {
+        height: 200px;
+    }
+
+    body {
+        background-image: radial-gradient(#00ffff, #1e2a90)
+    }
+
+    img {
+        position: relative;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        z-index: 1;
+        margin-right: auto;
+        height: 100%;
+        max-height: 300px;
+        width: 100%;
+        max-width: 600px;
+    }
+
+    .column {
+        float: left;
+        width: 50%;
+        padding: 10px;
+    }
+
+    .row {
+        padding: 5px;
+    }
+
+    #main {
+    }
+</style>
+
