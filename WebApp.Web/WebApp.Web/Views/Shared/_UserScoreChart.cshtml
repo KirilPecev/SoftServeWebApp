@@ -4,36 +4,38 @@
     scoreList.Add(new UserScore
     {
         CurrentDate = DateTime.Now.ToShortDateString(),
-        Score = 2
+        Score = 5
     });
     scoreList.Add(new UserScore
     {
         CurrentDate = new DateTime(2019, 8, 7).ToShortDateString(),
-        Score = 5
+        Score = 3.5
     });
     scoreList.Add(new UserScore
     {
         CurrentDate = new DateTime(2019, 8, 8).ToShortDateString(),
-        Score = 5
+        Score = 3
     });
     scoreList.Add(new UserScore
     {
         CurrentDate = new DateTime(2019, 8, 9).ToShortDateString(),
-        Score = 2
+        Score = 2.5
     });
-
-    double avgScore = 0.0;
-    byte count = 0;
-    string avg = "";
-
-    foreach (var item in scoreList)
+    scoreList.Add(new UserScore
     {
-        avgScore += item.Score;
-        count++;
-    }
-
-    avgScore /= count;
-    avg = String.Format("{0:0.00}", avgScore);
+        CurrentDate = new DateTime(2019, 8, 10).ToShortDateString(),
+        Score = 4
+    });
+    scoreList.Add(new UserScore
+    {
+        CurrentDate = new DateTime(2019, 8, 11).ToShortDateString(),
+        Score = 0.5
+    });
+    scoreList.Add(new UserScore
+    {
+        CurrentDate = new DateTime(2019, 8, 12).ToShortDateString(),
+        Score = 1.5
+    });
 
     var XValues = Newtonsoft.Json.JsonConvert.SerializeObject(scoreList.Select(x => x.CurrentDate).ToList());
     var YValues = Newtonsoft.Json.JsonConvert.SerializeObject(scoreList.Select(x => x.Score).ToList());
@@ -55,7 +57,7 @@
         var data = {
                 labels: @Html.Raw(XValues),
                 datasets: [{
-                    label: "Average Score: @avg",
+                    label: "Score",
                     backgroundColor: [
                         'rgba(0, 0, 255, 0.2)',
                         'rgba(1, 1, 255, 0.2)',
