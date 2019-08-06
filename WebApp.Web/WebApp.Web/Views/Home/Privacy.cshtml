@@ -11,28 +11,13 @@
 </head>
 
 
-<div class="container-fluid">
+<div class="container">    
     <div class="row">
-        <nav class="col-md-2 d-none d-md-block p-0" id="userSideNav">
-            <ul class="nav flex-column align-items-center">
-                <li class="nav-item align-content-center">
-                    <a class="nav-link" href="#">
-                        <img src="~/images/homepage/icons8-user-50.png" />
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Home</a>
-                </li>
-            </ul>
-        </nav>
+        <div class="col p-0 m-0" style="width:300px">
+            @await Html.PartialAsync("_NavBarPartial")
+        </div>
 
-        <div class="col p-0 m-0" style="background-color: whitesmoke">
+        <div class="col p-0 m-0" style="background-color: white">
 
             <nav class="navbar p-0 m-0 justify-content-center d-flex bd-highlight sticky-top" id="centerNav">
                 <form class="form-inline mt-2 bd-highlight">
@@ -40,12 +25,12 @@
                         <input type="text" class="form-control" placeholder="Search events" id="searchForm">
                         <div class="input-group-append">
                             <button class="btn" id="searching">
-                                <img src="~/images/homepage/icons8-search-48.png" style="width: 2vw"/>
+                                <img src="~/images/homepage/icons8-search-48.png" style="width: 2vw" />
                             </button>
                         </div>
                     </div>
                 </form>
-                
+
                 <button type="button" class="btn btn-outline-info mb-2 bd-highlight" data-toggle="modal" data-target="#exampleModalCenter" style="margin-left: 4rem">
                     Create Event
                 </button>
@@ -53,7 +38,7 @@
                 <button type="button" class="btn btn-outline-info mb-2 bd-highlight ml-3">Create Event</button>
             </nav>
 
-            <div class="container d-flex justify-content-center" style="background-color: whitesmoke; z-index: -1">
+            <div class="container d-flex justify-content-center" style="background-color: white; z-index: -1">
                 <div class="col">
                     @for (int i = 0; i < 8; i++)
                     {
@@ -69,19 +54,18 @@
 
                         <div class="modal-header d-flex justify-content-center">
                             <div class="form-group" style="width: 20rem">
-                                <input type="text" class="form-control" id="eventName" aria-describedby="eventNameInput" placeholder="Enter the event's name"
-                                       />
+                                <input type="text" class="form-control" id="eventName" aria-describedby="eventNameInput" placeholder="Enter the event's name" />
                             </div>
                             @*<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>*@
+                                    <span aria-hidden="true">&times;</span>
+                                </button>*@
                         </div>
 
                         <div class="modal-body">
                             <form>
                                 <div class="form-group">
                                     <label for="eventLocation">Location</label>
-                                    <input type="text" class="form-control" id="eventLocation" aria-describedby="eventLocationInput" placeholder="Enter the event's location"/>
+                                    <input type="text" class="form-control" id="eventLocation" aria-describedby="eventLocationInput" placeholder="Enter the event's location" />
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleFormControlSelect1">Example select</label>
@@ -115,21 +99,21 @@
         padding: 0
     }
 
-
-    #userSideNav {
+    /*#userSideNav {
         background-color: #3a80f2;
         width: 20%;
         height: 100vh;
         position: sticky;
         top: 0
-    }
+    }*/
 
     #centerNav {
+        left: 200px;
         height: 8vh;
         z-index: 999;
-        background-color: whitesmoke;
+        background-color: white;
     }
-
+/*
     li {
         padding-top: 2rem;
         text-decoration: none
@@ -150,15 +134,10 @@
         color: white;
     }
 
-    a {
-        padding: 0;
-        margin: 0;
-    }
-
     img {
         border-radius: 50%;
         width: 100px
-    }
+    }*/
 
 
     form {
