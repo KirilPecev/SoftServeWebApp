@@ -1,13 +1,16 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using WebApp.ImageStorage.AzureBlobStorage;
+using Microsoft.EntityFrameworkCore;
+using WebApp.Data;
 
 namespace WebApp.Web.Controllers
 {
     public class AdminEventController : Controller
     {
         [HttpGet]
-        public IActionResult ViewEvent()
+        public IActionResult AdminViewEvent()
         {
             return View();
         }
@@ -19,7 +22,7 @@ namespace WebApp.Web.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(string eventSport, string title, string description, IFormFile eventImage)
+        public IActionResult Create(string eventSport, string title, string description,DateTime time, IFormFile eventImage)
         {
             return View();
         }
