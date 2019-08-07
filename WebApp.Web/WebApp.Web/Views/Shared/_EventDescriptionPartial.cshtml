@@ -1,7 +1,5 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
-*@
-
+﻿@model WebApp.Web.Models.PlayerPosition.EventDescriptionBindingModel
+   
 <div class="d-flex flex-row bd-highlight justify-content-center">
     <div class="jumbotron p-0 mt-5 bg-primary shadow">
         <div class="d-flex justify-content-between">
@@ -14,10 +12,15 @@
         @for (int i = 0; i < 6; i++)
         {
             <div class="row">
-                {Player Position} ->
+                <h6 asp-for="@Model.Position.Name"></h6>
                 <button type="button" class="btn btn-danger mx-3 mb-2" data-toggle="modal" data-target="#exampleModal">{Player Name}</button>
-                @await Html.PartialAsync($"_StarRatingPartial")
-                <button class="btn btn-info btn-sm mx-3 mb-2" role="button">Join Event</button>
+                @*@await Html.PartialAsync($"_StarRatingPartial")*@
+                
+                <form>
+                    <button class="btn btn-info btn-sm mx-3 mb-2"
+                            role="button">Join Event</button>
+                </form>
+                
             </div>
         }
 
