@@ -43,7 +43,7 @@ namespace WebApp.Web.Controllers
         [HttpPost]
         public IActionResult JoinEvent(int id)
         {
-
+            return this.Ok();
         }
     }
 }
