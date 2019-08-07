@@ -43,6 +43,12 @@
                 .AddDefaultUI(UIFramework.Bootstrap4)
                 .AddEntityFrameworkStores<WebAppDbContext>();
 
+            services.AddAuthentication().AddFacebook(facebookOptions =>
+            {
+                facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
+                facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
+            });
+
             services.AddSingleton<IHostedService, ScheduleTask>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
