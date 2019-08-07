@@ -1,33 +1,73 @@
+using MailKit.Net.Smtp;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
+using MimeKit;
 using System;
-using System.Net.Mail;
+using System.Threading.Tasks;
+using WebApp.Notifications.Entities;
 
 namespace WebApp.Notifications
 {
-	public class EmailSender
+	public class EmailSender : IEmailSender
 	{
-		public static void Main(string[] args)
+		private readonly EmailSettings _emailSettings;
+		private readonly IHostingEnvironment _env;
+
+		public EmailSender(
+			IOptions<EmailSettings> emailSettings,
+			IHostingEnvironment env)
 		{
-			SmtpClient client = new SmtpClient(args[0]);
+			_emailSettings = emailSettings.Value;
+			_env = env;
+		}
 
-			MailAddress from = new MailAddress("fori.bori@abv.bg",
-			   "Hristo " + (char)0xD8 + "Varbanov",
-			System.Text.Encoding.UTF8);
+		public async Task SendEmailAsync(string email, string subject, string message)
+		{
+			try
+			{
+				var mimeMessage = new MimeMessage();
 
-			MailAddress to = new MailAddress("keltata@abv.bg");
+				mimeMessage.From.Add(new MailboxAddress(_emailSettings.SenderName, _emailSettings.Sender));
 
-			MailMessage message = new MailMessage(from, to);
-			message.Body = "This is a test email message sent by an application. ";
+				mimeMessage.To.Add(new MailboxAddress(email));
 
-			string someArrows = new string(new char[] { '\u2190', '\u2191', '\u2192', '\u2193' });
-			message.Body += Environment.NewLine + someArrows;
-			message.BodyEncoding = System.Text.Encoding.UTF8;
-			message.Subject = "TEST MESSAGE ASGJQWJNGWJQ" + someArrows;
-			message.SubjectEncoding = System.Text.Encoding.UTF8;
+				mimeMessage.Subject = subject;
 
-			string userState = "test message1";
-			client.SendAsync(message, userState);
+				mimeMessage.Body = new TextPart("html")
+				{
+					Text = message
+				};
 
-			message.Dispose();
+				using (var client = new SmtpClient())
+				{
+					// For demo-purposes, accept all SSL certificates (in case the server supports STARTTLS)
+					client.ServerCertificateValidationCallback = (s, c, h, e) => true;
+
+					if (_env.IsDevelopment())
+					{
+						// The third parameter is useSSL (true if the client should make an SSL-wrapped
+						// connection to the server; otherwise, false).
+						await client.ConnectAsync(_emailSettings.MailServer, _emailSettings.MailPort, true);
+					}
+					else
+					{
+						await client.ConnectAsync(_emailSettings.MailServer);
+					}
+
+					// Note: only needed if the SMTP server requires authentication
+					await client.AuthenticateAsync(_emailSettings.Sender, _emailSettings.Password);
+
+					await client.SendAsync(mimeMessage);
+
+					await client.DisconnectAsync(true);
+				}
+
+			}
+			catch (Exception ex)
+			{
+				// TODO: handle exception
+				throw new InvalidOperationException(ex.Message);
+			}
 		}
 	}
 }
