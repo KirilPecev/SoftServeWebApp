@@ -8,8 +8,10 @@
 
 
   <ItemGroup>
+    <PackageReference Include="MailKit" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="2.2.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.2.3" />
   </ItemGroup>
 
@@ -17,6 +19,7 @@
   <ItemGroup>
     <ProjectReference Include="..\WebApp.Data\WebApp.Data.csproj" />
     <ProjectReference Include="..\WebApp.ImageStorage\WebApp.ImageStorage.csproj" />
+    <ProjectReference Include="..\WebApp.Notifications\WebApp.Notifications.csproj" />
     <ProjectReference Include="..\WebApp.Scheduler\WebApp.Scheduler.csproj" />
   </ItemGroup>
 
