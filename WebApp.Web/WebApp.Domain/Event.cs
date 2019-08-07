@@ -1,5 +1,6 @@
 ﻿namespace WebApp.Domain
 {
+    using System;
     using System.Collections.Generic;
 
     public class Event : BaseModel<int>
@@ -15,6 +16,8 @@
 
         public int SportId { get; set; }
         public virtual Sport Sport { get; set; }
+
+        public DateTime Time { get; set; }
 
         public virtual ICollection<EventAttendees> Users { get; set; }
 
