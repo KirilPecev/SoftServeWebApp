@@ -39,5 +39,11 @@ namespace WebApp.Web.Controllers
             HomePageBinding model = new HomePageBinding();
             return View(model);
         }
+
+        [HttpPost]
+        public IActionResult JoinEvent(int id)
+        {
+
+        }
     }
 }
