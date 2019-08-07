@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\WebApp.Data\WebApp.Data.csproj" />
+    <ProjectReference Include="..\WebApp.ImageStorage\WebApp.ImageStorage.csproj" />
     <ProjectReference Include="..\WebApp.Scheduler\WebApp.Scheduler.csproj" />
   </ItemGroup>
 
