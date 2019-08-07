@@ -1,4 +1,8 @@
-﻿@{
+﻿
+@{
+
+}
+@{
     string[] positions = new string[]
     {
 "Goalkeeper",
@@ -12,29 +16,31 @@
 "Central Midfielder",
 "Attacking Midfielder/Playmaker",
 "Striker"
-    };
+            };
 }
-    <div class="row">
-        <div class="column">
-            <img src="https://images.pexels.com/photos/414612/pexels-photo-414612.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" align="middle" />
-            <center>Location</center>
+<body>
+        <div class="row">
+            <div class="column">
+                <img src="https://images.pexels.com/photos/414612/pexels-photo-414612.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" align="middle" />
+                <center>Location</center>
+            </div>
+            <div class="column">
+                <center><h1>Title<h3>Time</h3></h1></center>
+                <br />
+                <br />
+                <center>Description</center>
+            </div>
         </div>
-        <div class="column">
-            <center><h1>Title<h3>Time</h3></h1></center>
-            <br />
-            <br />
-            <center>Description</center>
+        <div class="row">
+            @for (int i = 0; i < 2; i++)
+            {
+                <div class="column">
+                    <h3><center>TEAM @(i + 1)</center></h3>
+                    @await Html.PartialAsync($"_TeamPartial", positions)
+                </div>
+            }
         </div>
-    </div>
-<div class="row">
-    @for (int i = 0; i < 2; i++)
-    {
-    <div class="column">
-        <h3><center>TEAM @(i+1)</center></h3>
-        @await Html.PartialAsync($"_TeamPartial", positions)
-    </div>
-    }
-</div>
+</body>
 <style>
     #grad1 {
         height: 200px;
@@ -60,7 +66,7 @@
     .column {
         float: left;
         width: 50%;
-        padding: 10px;
+        padding: 15px;
     }
 
     .row {
@@ -70,4 +76,3 @@
     #main {
     }
 </style>
-
