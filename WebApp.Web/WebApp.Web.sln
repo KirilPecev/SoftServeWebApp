@@ -1,6 +1,7 @@
+﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.421
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29102.190
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApp.Web", "WebApp.Web\WebApp.Web.csproj", "{3871A225-85E7-4AFB-8BF0-460F4CA5BFFB}"
 EndProject
@@ -9,6 +10,12 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApp.Domain", "WebApp.Domain\WebApp.Domain.csproj", "{37A12785-4EF9-474A-99AC-90C625038600}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApp.Services", "WebApp.Services\WebApp.Services.csproj", "{06DBDC04-66B7-42E9-AD93-E1F3549EBF44}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApp.Notifications", "WebApp.Notifications\WebApp.Notifications.csproj", "{B8B22915-84CD-40D8-B808-1482004E6CEF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApp.ImageStorage", "WebApp.ImageStorage\WebApp.ImageStorage.csproj", "{1962DE2C-750E-4EE5-B7D7-E33DC1FD4600}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApp.Scheduler", "WebApp.Scheduler\WebApp.Scheduler.csproj", "{12EA6AC7-762A-456B-8849-E74EBC264A0D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -32,6 +39,18 @@ Global
 		{06DBDC04-66B7-42E9-AD93-E1F3549EBF44}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{06DBDC04-66B7-42E9-AD93-E1F3549EBF44}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{06DBDC04-66B7-42E9-AD93-E1F3549EBF44}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8B22915-84CD-40D8-B808-1482004E6CEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8B22915-84CD-40D8-B808-1482004E6CEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8B22915-84CD-40D8-B808-1482004E6CEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8B22915-84CD-40D8-B808-1482004E6CEF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1962DE2C-750E-4EE5-B7D7-E33DC1FD4600}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1962DE2C-750E-4EE5-B7D7-E33DC1FD4600}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1962DE2C-750E-4EE5-B7D7-E33DC1FD4600}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1962DE2C-750E-4EE5-B7D7-E33DC1FD4600}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12EA6AC7-762A-456B-8849-E74EBC264A0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12EA6AC7-762A-456B-8849-E74EBC264A0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12EA6AC7-762A-456B-8849-E74EBC264A0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12EA6AC7-762A-456B-8849-E74EBC264A0D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
