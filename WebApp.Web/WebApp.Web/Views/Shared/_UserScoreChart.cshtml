@@ -4,38 +4,36 @@
     scoreList.Add(new UserScore
     {
         CurrentDate = DateTime.Now.ToShortDateString(),
-        Score = 5
-    });
-    scoreList.Add(new UserScore
-    {
-        CurrentDate = new DateTime(2019, 8, 2).ToShortDateString(),
-        Score = 3.5
-    });
-    scoreList.Add(new UserScore
-    {
-        CurrentDate = new DateTime(2019, 8, 3).ToShortDateString(),
-        Score = 3
-    });
-    scoreList.Add(new UserScore
-    {
-        CurrentDate = new DateTime(2019, 8, 4).ToShortDateString(),
-        Score = 2.5
-    });
-    scoreList.Add(new UserScore
-    {
-        CurrentDate = new DateTime(2019, 8, 5).ToShortDateString(),
-        Score = 4
-    });
-    scoreList.Add(new UserScore
-    {
-        CurrentDate = new DateTime(2019, 8, 6).ToShortDateString(),
-        Score = 0.5
+        Score = 2
     });
     scoreList.Add(new UserScore
     {
         CurrentDate = new DateTime(2019, 8, 7).ToShortDateString(),
-        Score = 1.5
+        Score = 5
     });
+    scoreList.Add(new UserScore
+    {
+        CurrentDate = new DateTime(2019, 8, 8).ToShortDateString(),
+        Score = 5
+    });
+    scoreList.Add(new UserScore
+    {
+        CurrentDate = new DateTime(2019, 8, 9).ToShortDateString(),
+        Score = 2
+    });
+
+    double avgScore = 0.0;
+    byte count = 0;
+    string avg = "";
+
+    foreach (var item in scoreList)
+    {
+        avgScore += item.Score;
+        count++;
+    }
+
+    avgScore /= count;
+    avg = String.Format("{0:0.00}", avgScore);
 
     var XValues = Newtonsoft.Json.JsonConvert.SerializeObject(scoreList.Select(x => x.CurrentDate).ToList());
     var YValues = Newtonsoft.Json.JsonConvert.SerializeObject(scoreList.Select(x => x.Score).ToList());
@@ -57,11 +55,11 @@
         var data = {
                 labels: @Html.Raw(XValues),
                 datasets: [{
-                    label: "Score",
+                    label: "Average Score: @avg",
                     backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(0, 0, 255, 0.2)',
+                        'rgba(1, 1, 255, 0.2)',
+                        'rgba(2, 2, 255, 0.2)',
                         'rgba(75, 192, 192, 0.2)',
                         'rgba(153, 102, 255, 0.2)',
                         'rgba(255, 159, 64, 0.2)',
@@ -73,18 +71,18 @@
                         'rgba(255, 0, 255)'
                     ],
                     borderColor: [
-                        'rgba(255,99,132,1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)',
-                        'rgba(255, 0, 0)',
-                        'rgba(0, 255, 0)',
-                        'rgba(0, 0, 255)',
-                        'rgba(192, 192, 192)',
-                        'rgba(255, 255, 0)',
-                        'rgba(255, 0, 255)'
+                        'rgba(0,0,0,1)',
+                        'rgba(0, 0, 0, 1)',
+                        'rgba(0, 0, 0, 1)',
+                        'rgba(0, 0, 0, 1)',
+                        'rgba(0, 0, 0, 1)',
+                        'rgba(0, 0, 0, 1)',
+                        'rgba(0, 0, 0)',
+                        'rgba(0, 0, 0)',
+                        'rgba(0, 0, 0)',
+                        'rgba(0, 0, 0)',
+                        'rgba(0, 0, 0)',
+                        'rgba(0, 0, 0)'
                     ],
                     borderWidth: 1,
                     data: @Html.Raw(YValues)
@@ -101,7 +99,7 @@ var options = {
                         },
                         gridLines: {
                             display: true,
-                            color: "rgba(255,99,164,0.2)"
+                            color: "rgba(0,0,255,0.2)"
                         }
 }],
                     xAxes: [{

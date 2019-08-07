@@ -1,0 +1,61 @@
+﻿
+@{
+    ViewData["Title"] = "CurrentRankList";
+    Layout = null;
+}
+
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+
+<body>
+    <!-- NavBar -->
+    @await Html.PartialAsync("_NavBarPartial")
+
+    <table align="center" style="border-collapse:collapse">
+        @for (int i = 1; i <= 50; i++)
+        {
+            if (i == 1)
+            {
+                <tr style="background-color:gold">
+                    <td align="center"> User[@i] / Location / Score </td>
+                </tr>
+            }
+            else if (i == 2)
+            {
+                <tr style="background-color:silver">
+                    <td align="center"> User[@i] / Location / Score </td>
+                </tr>
+            }
+            else if (i == 3)
+            {
+                <tr style="background-color:darkgoldenrod">
+                    <td align="center"> User[@i] / Location /Score </td>
+                </tr>
+            }
+            else
+            {
+                <tr>
+                    <td align="center"> User[@i] / Location / Score </td>
+                </tr>
+            }
+        }
+    </table>
+</body>
+
+<style>
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    }
+
+    .con {
+        margin-left: 50%;
+        margin-right: 50%;
+        width: 500px;
+    }
+
+    table, td {
+        font-size: 25px;
+        border: 2px solid black;
+    }
+</style>
