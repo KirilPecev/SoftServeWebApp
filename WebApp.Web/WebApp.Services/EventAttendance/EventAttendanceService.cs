@@ -8,13 +8,13 @@ namespace WebApp.Services.EventAttendance
 {
     public class EventAttendanceService : BaseService, IEventAttendanceService
     {
-        private readonly IEventAttendanceService _eventAttendanceService;
+        private readonly IEventAttendeesRepo _eventAttendeesRepo;
         private readonly IEventAttendeesToBeApprovedRepo _eventAttendeesToBeApprovedRepo;
 
-        public EventAttendanceService(IEventAttendeesToBeApprovedRepo eventAttendeesToBeApprovedRepo, IEventAttendanceService eventAttendanceService, IUnitOfWork unitOfWork)
+        public EventAttendanceService(IEventAttendeesToBeApprovedRepo eventAttendeesToBeApprovedRepo, IEventAttendeesRepo eventAttendeesRepo, IUnitOfWork unitOfWork)
             : base(unitOfWork)
         {
-            this._eventAttendanceService = eventAttendanceService;
+            this._eventAttendeesRepo = eventAttendeesRepo;
             this._eventAttendeesToBeApprovedRepo = eventAttendeesToBeApprovedRepo;
         }
     }
