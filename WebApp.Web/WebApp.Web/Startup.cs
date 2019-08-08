@@ -51,6 +51,12 @@
 
             services.AddSingleton<IHostedService, ScheduleTask>();
 
+            services.AddDistributedRedisCache(option =>
+            {
+                option.Configuration = Configuration["Redis"];
+                option.InstanceName = "SampleInstance";
+            });
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
