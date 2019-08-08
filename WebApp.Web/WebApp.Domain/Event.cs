@@ -12,6 +12,9 @@
             this.Ratings = new HashSet<Rating>();
         }
 
+        public string AdminId { get; set; }
+        public virtual WebAppUser Admin { get; set; }
+
         public string Name { get; set; }
 
         public int SportId { get; set; }
