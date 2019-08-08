@@ -6,7 +6,7 @@ using WebApp.Domain;
 
 namespace WebApp.Services.EventAttendance
 {
-    public interface IEventAttendanceService : IRepository<EventAttendeesToBeApproved>
+    public interface IEventAttendanceService 
     {
     }
 }
