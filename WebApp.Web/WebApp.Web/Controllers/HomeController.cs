@@ -1,24 +1,24 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
-using WebApp.Notifications;
-using WebApp.Web.Models;
-
-namespace WebApp.Web.Controllers
+﻿namespace WebApp.Web.Controllers
 {
+    using Microsoft.AspNetCore.Mvc;
+    using Models;
+    using Notifications;
+    using System.Diagnostics;
+
     public class HomeController : Controller
     {
-		private IEmailSender emailSender;
+        private IEmailSender emailSender;
 
-		public HomeController(IEmailSender emailSender)
-		{
-			this.emailSender = emailSender;
-		}
-
-		public IActionResult Index()
+        public HomeController(IEmailSender emailSender)
         {
-			this.emailSender.SendEmailAsync("softserveapp@abv.bg", "Sport app init", "On Init").Wait();
+            this.emailSender = emailSender;
+        }
 
-			if (!this.User.Identity.IsAuthenticated)
+        public IActionResult Index()
+        {
+            this.emailSender.SendEmailAsync("softserveapp@abv.bg", "Sport app init", "On Init").Wait();
+
+            if (!this.User.Identity.IsAuthenticated)
             {
                 return Redirect("/Identity/Account/Login");
             }
