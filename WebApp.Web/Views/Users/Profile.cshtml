@@ -1,0 +1,231 @@
+﻿@{
+    ViewData["Title"] = "Profile";
+    Layout = null;
+
+    string[] sports = new string[]
+    {
+    "Basketball",
+    "Table Tennis",
+    "Football",
+    "Tennis",
+    "Badminton",
+    "Chess"
+    };
+}
+
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+
+<body style="background-color: white;">
+    <!-- NavBar -->
+    @await Html.PartialAsync("_NavBarPartial")
+
+    <!-- Profile -->
+    <table align="center" class="user">
+        <tr>
+            <td>
+                <img width="200" height="200" src="http://icons.iconarchive.com/icons/graphicloads/flat-finance/128/person-icon.png" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                USER
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Location
+            </td>
+        </tr>
+    </table>
+
+    <!-- Score Chart -->
+    <table class="score_chart" align="left">
+        @*<tr>
+            <td>
+                <select id="sp" name="sports1" size="1" style="width:600px">
+                    @for (int i = 0; i < sports.Length; i++)
+                    {
+                        if (i == 0)
+                        {
+                            <option value="blank">-</option>
+                            <option>@sports[i]</option>
+                        }
+                        else
+                        {
+                            <option>@sports[i]</option>
+                        }
+                    }
+                </select>
+            </td>
+            <td>
+                Average Score <img width="20" height="20" src="http://icons.iconarchive.com/icons/paomedia/small-n-flat/128/star-icon.png" />
+            </td>
+        </tr>*@
+        <tr>
+            <td colspan="2">
+                @await Html.PartialAsync("_UserScoreChart")
+            </td>
+        </tr>
+    </table>
+
+    <!-- Pick Sport -->
+    <div class="container-fluid" style="margin-top: 130px">
+        <div class="row">
+            <select id="mySelect" name="sports2" size="1" class="mb-3 ml-1 mr-1" style="width:100%" onchange="Show()">
+                @for (int i = 0; i < sports.Length; i++)
+                {
+                    if (i == 0)
+                    {
+                        <option value="blank">-</option>
+                        <option>@sports[i]</option>
+                    }
+                    else
+                    {
+                        <option>@sports[i]</option>
+                    }
+                }
+            </select>
+        </div>
+        <div class="row">
+            <div class="col sport pr-0 pl-1 hidE" id="bsk">
+                <span class="float-left">@sports[0]</span>
+                <span class="float-right mt-1 mr-0">
+                    <button id="btn1" class="sport_btn" type="button" onclick="Hide(this)"><img width="25" height="25" src="http://icons.iconarchive.com/icons/awicons/vista-artistic/128/delete-icon.png" /></button>
+                </span>
+            </div>
+            <div class="col sport pr-0 pl-1 hidE" id="tbt">
+                <span class="float-left">@sports[1]</span>
+                <span class="float-right mt-1 mr-0">
+                    <button id="btn2" class="sport_btn" type="button" onclick="Hide(this)"><img width="25" height="25" src="http://icons.iconarchive.com/icons/awicons/vista-artistic/128/delete-icon.png" /></button>
+                </span>
+            </div>
+            <div class="col sport pr-0 pl-1 hidE" id="ftb">
+                <span class="float-left">@sports[2]</span>
+                <span class="float-right mt-1 mr-0">
+                    <button id="btn3" class="sport_btn" type="button" onclick="Hide(this)"><img width="25" height="25" src="http://icons.iconarchive.com/icons/awicons/vista-artistic/128/delete-icon.png" /></button>
+                </span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col sport pr-0 pl-1 hidE" id="tn">
+                <span class="float-left">@sports[3]</span>
+                <span class="float-right mt-1 mr-0">
+                    <button id="btn4" class="sport_btn" type="button" onclick="Hide(this)"><img width="25" height="25" src="http://icons.iconarchive.com/icons/awicons/vista-artistic/128/delete-icon.png" /></button>
+                </span>
+            </div>
+            <div class="col sport pr-0 pl-1 hidE" id="bmt">
+                <span class="float-left">@sports[4]</span>
+                <span class="float-right mt-1 mr-0">
+                    <button id="btn5" class="sport_btn" type="button" onclick="Hide(this)"><img width="25" height="25" src="http://icons.iconarchive.com/icons/awicons/vista-artistic/128/delete-icon.png" /></button>
+                </span>
+            </div>
+            <div class="col sport pr-0 pl-1 hidE" id="ch">
+                <span class="float-left">@sports[5]</span>
+                <span class="float-right mt-1 mr-0">
+                    <button id="btn6" class="sport_btn" type="button" onclick="Hide(this)"><img width="25" height="25" src="http://icons.iconarchive.com/icons/awicons/vista-artistic/128/delete-icon.png" /></button>
+                </span>
+            </div>
+        </div>
+    </div>
+</body>
+
+<style>
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    }
+
+    .sport {
+        font-size: 25px;
+        background-color: darkblue;
+        color: white;
+        margin-right: 5px;
+        margin-left: 5px;
+        margin-bottom: 5px;
+        border-radius: 5px;
+    }
+
+    .user {
+        text-align: center;
+    }
+
+    .score_chart {
+        text-align: center;
+        width: 800px;
+        margin-top: 100px;
+        margin-bottom: 5px;
+        margin-left: 210px;
+    }
+
+    .pick_sport {
+        text-align: center;
+        margin-top: 100px;
+        margin-bottom: 70px;
+    }
+
+    .sport_btn {
+        border: none;
+        background-color: darkblue;
+    }
+
+    .hidE {
+        display: none;
+    }
+</style>
+
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+
+<script type="text/javascript">
+    function Show() {
+        var x = document.getElementById('mySelect');
+        var i = x.selectedIndex;
+        var pick = x.options[i].text;
+
+        switch (pick) {
+            case "Basketball":
+                document.getElementById('bsk').style.display = "block";                
+                break;
+            case "Table Tennis":
+                document.getElementById('tbt').style.display = "block";
+                break;
+            case "Football":
+                document.getElementById('ftb').style.display = "block";
+                break;
+            case "Tennis":
+                document.getElementById('tn').style.display = "block";
+                break;
+            case "Badminton":
+                document.getElementById('bmt').style.display = "block";
+                break;
+            case "Chess":
+                document.getElementById('ch').style.display = "block";
+                break;
+        }        
+    }
+
+    function Hide(btn) {
+        var b = btn.id;
+
+        switch (b) {
+            case "btn1":
+                document.getElementById('bsk').style.display = "none";
+                break;
+            case "btn2":
+                document.getElementById('tbt').style.display = "none";
+                break;
+            case "btn3":
+                document.getElementById('ftb').style.display = "none";
+                break;
+            case "btn4":
+                document.getElementById('tn').style.display = "none";
+                break;
+            case "btn5":
+                document.getElementById('bmt').style.display = "none";
+                break;
+            case "btn6":
+                document.getElementById('ch').style.display = "none";
+                break;
+        }
+    }
+</script>

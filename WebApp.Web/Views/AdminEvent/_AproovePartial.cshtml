@@ -1,0 +1,59 @@
+﻿@{
+    string[] atendees = new string[]
+    {
+        "Ivan",
+        "Pesho",
+        "Gosho"
+    };
+}
+@for (int i = 0; i < atendees.Length; i++)
+ {
+    <div class="row">
+        <div class="column">
+            <button type="button" class="btn btn-danger mx-3 mb-2" data-toggle="modal" data-target="#exampleModal" id="name">@atendees[i] Wants to join!</button>
+        </div>
+        <div class="column">
+            <button class="button" id="aproove">Aproove</button>
+            <button class="button" id="ignore">Ignore</button>
+        </div>
+    </div>
+ }
+<br>
+<style>
+    #ignore{
+        background-color: darkred;
+        border: none;
+        color: white;
+        padding: 5px 15px;
+        text-align: center;
+        text-decoration: solid;
+        display: inline-block;
+        font-size: 14px;
+        margin: 4px 2px;
+        cursor: pointer;
+    }
+    #aproove{
+        background-color: green;
+        border: none;
+        color: white;
+        padding: 5px 15px;
+        text-align: center;
+        text-decoration: solid;
+        display: inline-block;
+        font-size: 14px;
+        margin: 4px 2px;
+        cursor: pointer;
+    }
+    #name{
+        background-color: darkslategrey;
+        border: none;
+        color: white;
+        padding: 5px 15px;
+        text-align: center;
+        text-decoration: solid;
+        display: inline-block;
+        font-size: 14px;
+        margin: 4px 2px;
+        cursor: pointer;
+    }
+</style>

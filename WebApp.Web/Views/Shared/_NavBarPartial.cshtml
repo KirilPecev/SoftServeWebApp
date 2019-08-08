@@ -1,0 +1,48 @@
+
+﻿<nav id="mySideNav" class="sidenav">
+     <a href="~/Users/Profile">
+         <img width="100" height="100" src="http://icons.iconarchive.com/icons/graphicloads/flat-finance/128/person-icon.png" />
+     </a>
+     @if (this.User.Identity.IsAuthenticated)
+     {
+         <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+             <button type="submit" class="nav-link text-white">Logout</button>
+         </form> 
+     }
+    <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Privacy">Home</a>
+    <a class="nav-link text-white" asp-area="" asp-controller="Users" asp-action="Profile">Profile</a>
+    <a class="nav-link text-white" asp-area="" asp-controller="" asp-action="">Rank List</a>
+    <a class="nav-link text-white" asp-area="" asp-controller="AdminEvent" asp-action="Create">Test Create Event</a>
+    <a class="nav-link text-white" asp-area="" asp-controller="AdminEvent" asp-action="AdminViewEvent">Test Admin View Event</a>
+    <a class="nav-link text-white" asp-area="" asp-controller="Event" asp-action="ViewEvent">Test View Event</a>
+   
+</nav>
+
+<style>
+    .sidenav {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+        font-size: 25px;
+        height: 100%;
+        width: 200px;
+        position: fixed;
+        z-index: 999;
+        top: 0;
+        left: 0;
+        background-color: darkblue;
+        overflow-x: hidden;
+        padding-top: 20px;
+    }
+
+    .sidenav a {
+        padding: 6px 6px 6px 32px;
+        text-decoration: none;
+        font-size: 25px;
+        color: white;
+        display: block;
+    }
+
+    .sidenav a:hover {
+        color: darkblue;
+        background-color: white;
+    }
+</style>

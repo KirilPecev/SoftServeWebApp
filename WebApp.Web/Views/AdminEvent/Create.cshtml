@@ -1,0 +1,45 @@
+﻿
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+<body>
+    <div id="eventForm" class="col-md-4 ">
+        <form method="post" enctype="multipart/form-data">
+            <div id="asd" class="form-group">
+                <label for="eventSport"><b>Select Sport</b></label>
+                <select class="form-control" id="eventSport" name="eventSport">
+                    <option>Football</option>
+                    <option>Table Tennis</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="eventTitle"><b>Event Title:</b></label>
+                <input type="text" class="form-control" id="eventTitle" name="title" placeholder="Event Title">
+            </div>
+            <div class="form-group">
+                <label for="eventDescription"><b>Event Description</b></label>
+                <textarea class="form-control" id="eventDescription" name="description" rows="4"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="eventTime"><b>Event Time:</b></label>
+                <input type="datetime-local" name="time">
+            </div>
+            <div style="height:80px; margin:0 auto;">
+                <label for="eventImage"><b>Choose Event Image(jpg, jpeg):</b></label>
+                <input type="file" name="eventImage" accept="image/jpg, image/jpeg" id="eventImage">
+            </div>
+            <button type="submit" class="btn btn-dark bg-dark">Submit</button>
+        </form>
+    </div>
+</body>
+<style>
+    #grad1 {
+        height: 200px;
+    }
+
+    body {
+        background-image: radial-gradient(#00ffff, #1e2a90)
+    }
+</style>
