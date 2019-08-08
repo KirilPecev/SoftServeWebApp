@@ -5,9 +5,9 @@ using WebApp.Data.Repo;
 
 namespace WebApp.Services.AdminEvent
 {
-    public class AdminEventService : BaseService, IAdminEventService
+    public class EventAttendanceService : BaseService, IAdminEventService
     {
-        public AdminEventService(IUnitOfWork unitOfWork)
+        public EventAttendanceService(IUnitOfWork unitOfWork)
             : base(unitOfWork)
         {
 
