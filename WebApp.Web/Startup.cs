@@ -14,8 +14,9 @@
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using Scheduler.Scheduler;
-    using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
+    using WebApp.Data.Repo;
     using WebApp.Services.EventService;
+    using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
     public class Startup
     {
@@ -51,7 +52,10 @@
             });
 
             services.AddSingleton<IHostedService, ScheduleTask>();
+
+            // TODO register services and repositories here
             services.AddSingleton<IEventService, EventService>();
+            services.AddSingleton<IEventRepo, EventRepo>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }

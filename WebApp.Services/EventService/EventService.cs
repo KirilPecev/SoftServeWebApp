@@ -1,18 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using WebApp.Data.Repo;
 using WebApp.Domain;
-using WebApp.Data.Repo;
 
 namespace WebApp.Services.EventService
 {
-    class EventService : IEventService
+    public class EventService : IEventService
     {
         private IEventRepo _eventRepo;
 
-        public EventService()
+        public EventService(IEventRepo eventRepo)
         {
-            this._eventRepo = new EventRepo();
+            this._eventRepo = eventRepo;
         }
 
         public void CreateEvent(Event createEvent)

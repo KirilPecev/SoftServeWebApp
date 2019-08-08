@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using WebApp.Domain;
 
 namespace WebApp.Data.Repo
 {
-    class EventRepo : IEventRepo
+    public class EventRepo : IEventRepo
     {
         private readonly WebAppDbContext _context;
         private bool disposed = false;

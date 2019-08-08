@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using WebApp.Domain;
+﻿using WebApp.Domain;
 
 namespace WebApp.Services.EventService
 {
-    interface IEventService
+    public interface IEventService
     {
         void CreateEvent(Event createEvent);
+
         void SaveEvent();
     }
 }

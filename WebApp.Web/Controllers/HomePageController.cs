@@ -1,19 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using WebApp.Data;
 using WebApp.Domain;
+using WebApp.Services.EventService;
 using WebApp.Web.Models.Event;
-using WebApp.Web.Repositories;
 
 namespace WebApp.Web.Controllers
 {
     public class HomePageController : Controller
     {
-        //private readonly WebAppDbContext _context;
-        private IEventRepository _eventRepository;
+        private IEventService _eventService;
+
+        public HomePageController(IEventService eventService)
+        {
+            _eventService = eventService;
+        }
 
         public IActionResult CreateEvent()
         {
@@ -24,7 +25,7 @@ namespace WebApp.Web.Controllers
 
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        public async Task<IActionResult> CreateEvent(EventBindingModel model)
+        public IActionResult CreateEvent(EventBindingModel model)
         {
             try
             {
@@ -37,20 +38,18 @@ namespace WebApp.Web.Controllers
                     }
                     return BadRequest(errorMessages);
                 }
-                // save intothe db
-                // 
-            
+
                 Event addedEvent = new Event
                 {
                     Name = model.Name = HttpContext.Request.Form["Name"].ToString()
                 };
-                    
-                
+
+
                 //model.Location = HttpContext.Request.Form["eventLocation"].ToString();
                 //model.Options = HttpContext.Request.Form["exampleFormControlTextarea"].ToString();
 
-                _eventRepository.CreateEvent(addedEvent);
-                //await _eventRepository.SaveChangesAsync();
+                _eventService.CreateEvent(addedEvent);
+                _eventService.SaveEvent();
 
                 return ReturnMainView();
 
@@ -76,11 +75,5 @@ namespace WebApp.Web.Controllers
         {
             return Json(model);
         }
-
-        //[HttpPost]
-        //public IActionResult JoinEvent(int id)
-        //{
-
-        //}
     }
 }
