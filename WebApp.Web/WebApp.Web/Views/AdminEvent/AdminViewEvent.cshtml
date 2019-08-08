@@ -1,4 +1,5 @@
 ﻿@{
+    Layout = null;
     string[] positions = new string[]
     {
 "Goalkeeper",
@@ -14,57 +15,72 @@
 "Striker"
                     };
 }
-<div class="row">
-    <div class="column">
-        <img src="https://images.pexels.com/photos/414612/pexels-photo-414612.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" align="middle" />
-        <center>Location</center>
-    </div>
-    <div class="column">
-        <center><h1>Title<h3>Time</h3></h1></center>
-        <br />
-        <br />
-        <center>Description</center>
-    </div>
-</div>
-<div class="row">
-    @for (int i = 0; i < 2; i++)
-    {
-        <div class="column">
-            <h3><center>TEAM @(i + 1)</center></h3>
-            @await Html.PartialAsync($"_TeamPartial", positions)
+    <head>
+        <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+        <link href="~/lib/bootstrap/dist/css/bootstrap-grid.css" rel="stylesheet" />
+        <link href="~/lib/bootstrap/dist/css/bootstrap-reboot.css" rel="stylesheet" />
+    </head>
+    <div class="container">
+        <div id="sidebar">
+            @await Html.PartialAsync("_NavBarPartial")
         </div>
-    }
-</div>
-<center>
-    <button type="button" class="btn btn-danger mx-3 mb-2" id="editButton">Edit</button>
-    <button type="button" class="btn btn-danger mx-3 mb-2" data-toggle="modal" data-target="#DeleteModal" id="deleteButton">Delete</button>
-</center>
-
-<div id="DeleteModal" class="modal fade text-danger" role="dialog">
-    <div class="modal-dialog ">
-        <form action="" id="deleteForm" method="post">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <p class="text-center">Are You Sure Want To Delete ?</p>
+        <div id="content">
+            <div class="row">
+                <div class="column">
+                    <img src="https://images.pexels.com/photos/414612/pexels-photo-414612.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" id="EventImage" />
+                    <center>Location</center>
                 </div>
-                <div class="modal-footer">
-                    <center>
-                        <button type="button" class="btn btn-success" data-dismiss="modal">Cancel</button>
-                        <button type="submit" name="" class="btn btn-danger" data-dismiss="modal" onclick="formSubmit()">Yes, Delete</button>
-                    </center>
+                <div class="column">
+                    <center><h1>Title<h3>Time</h3></h1></center>
+                    <br />
+                    <br />
+                    <center>Description</center>
                 </div>
             </div>
-        </form>
+            <div class="row">
+                @for (int i = 0; i < 2; i++)
+                {
+                    <div class="column">
+                        <h3><center>TEAM @(i + 1)</center></h3>
+                        @await Html.PartialAsync($"_TeamPartial", positions)
+                    </div>
+                }
+            </div>
+            <center>
+                <button type="button" class="btn btn-danger mx-3 mb-2" id="editButton">Edit</button>
+                <button type="button" class="btn btn-danger mx-3 mb-2" id="deleteButton">Delete</button>
+            </center>
+        </div>
     </div>
-</div>
 <style>
-    #grad1 {
-        height: 200px;
+    body{
+        margin: 0;
+        padding:0;
     }
-    body {
-        background-image: radial-gradient(#00ffff, #1e2a90)
+    .container { 
+        position:relative; 
+        padding:10px; 
+        top:0px; 
+        right: 0; 
+        left: 0; 
+        height: 1200px;
+        width:100%;
+        min-width:1000px;
     }
-    img {
+    #sidebar {
+        position:absolute;
+        top:0; 
+        bottom:0; 
+        left:0;
+        width:200px;
+        height: 1000px;
+    }
+    #content { 
+        height:700px; 
+        margin-left: 200px;
+        padding:10px; 
+    }
+    #EventImage {
         position: relative;
         display: block;
         margin-left: auto;
@@ -79,12 +95,6 @@
     .column {
         float: left;
         width: 50%;
-        padding: 10px;
-    }
-    .row {
-        padding: 5px;
-    }
-    #main {
     }
     .button{
         background-color: black;
