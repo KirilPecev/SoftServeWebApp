@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApp.Data;
 
 namespace WebApp.Data.Migrations
 {
     [DbContext(typeof(WebAppDbContext))]
-    partial class WebAppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190808160721_AdminIdAdded")]
+    partial class AdminIdAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -139,7 +141,9 @@ namespace WebApp.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("AdminId");
+                    b.Property<int>("AdminId");
+
+                    b.Property<string>("AdminId1");
 
                     b.Property<string>("Name");
 
@@ -149,7 +153,7 @@ namespace WebApp.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AdminId");
+                    b.HasIndex("AdminId1");
 
                     b.HasIndex("SportId");
 
@@ -363,7 +367,7 @@ namespace WebApp.Data.Migrations
                 {
                     b.HasOne("WebApp.Domain.WebAppUser", "Admin")
                         .WithMany()
-                        .HasForeignKey("AdminId");
+                        .HasForeignKey("AdminId1");
 
                     b.HasOne("WebApp.Domain.Sport", "Sport")
                         .WithMany("Events")
