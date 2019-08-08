@@ -13,10 +13,10 @@
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+    using Notifications;
+    using Notifications.Entities;
     using Scheduler.Scheduler;
-	using WebApp.Notifications;
-	using WebApp.Notifications.Entities;
-	using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
+    using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
     public class Startup
     {
@@ -30,9 +30,9 @@
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-			services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
+            services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
 
-			services.Configure<CookiePolicyOptions>(options =>
+            services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                 options.CheckConsentNeeded = context => true;
@@ -53,9 +53,15 @@
                 facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
             });
 
-			services.AddSingleton<IEmailSender, EmailSender>();
+            services.AddSingleton<IEmailSender, EmailSender>();
 
-			services.AddSingleton<IHostedService, ScheduleTask>();
+            services.AddSingleton<IHostedService, ScheduleTask>();
+
+            services.AddDistributedRedisCache(option =>
+            {
+                option.Configuration = Configuration["Redis"];
+                option.InstanceName = "SampleInstance";
+            });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
