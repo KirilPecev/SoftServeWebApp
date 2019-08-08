@@ -13,6 +13,7 @@ namespace WebApp.Web.Controllers
     public class HomePageController : Controller
     {
         private readonly IEventService _eventService;
+        private readonly WebAppDbContext _context;
 
         public HomePageController(IEventService eventService)
         {
@@ -27,7 +28,7 @@ namespace WebApp.Web.Controllers
 
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        public async Task<IActionResult> HomePageView(EventBindingModel model)
+        public IActionResult HomePageView(EventBindingModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -38,7 +39,7 @@ namespace WebApp.Web.Controllers
                 }
                 return BadRequest(errorMessages);
             }
-            
+
             Event addedEvent = new Event
             {
                 Name = model.Name = HttpContext.Request.Form["Name"].ToString()
@@ -56,6 +57,12 @@ namespace WebApp.Web.Controllers
         private ViewResult ReturnMainView()
         {
             HomePageBinding model = new HomePageBinding();
+            var allEvents = this._context.Events.Select(e => new EventBindingModel()
+            {
+                Name = e.Name
+            });
+            model.Events = allEvents;
+
             return View(model);
         }
 

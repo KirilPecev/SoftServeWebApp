@@ -10,5 +10,7 @@ namespace WebApp.Services.EventService
         void CreateEvent(Event createEvent);
 
         void SaveEvent();
+
+        IEnumerable<Event> GetAllEvents();
     }
 }
