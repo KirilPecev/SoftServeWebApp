@@ -16,6 +16,8 @@
     using Notifications;
     using Notifications.Entities;
     using Scheduler.Scheduler;
+    using WebApp.Data.Repo;
+    using WebApp.Services.EventService;
     using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
     public class Startup
@@ -56,6 +58,10 @@
             services.AddSingleton<IEmailSender, EmailSender>();
 
             services.AddSingleton<IHostedService, ScheduleTask>();
+
+            //TODO register services and repos
+            services.AddSingleton<IEventService, EventService>();
+            services.AddSingleton<IEventRepository, EventRepository>();
 
             services.AddDistributedRedisCache(option =>
             {
