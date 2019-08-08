@@ -16,6 +16,8 @@
     using Notifications;
     using Notifications.Entities;
     using Scheduler.Scheduler;
+    using WebApp.Data.CustomRepos;
+    using WebApp.Services.EventAttendance;
     using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
     public class Startup
@@ -64,6 +66,15 @@
             });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            //register repos
+            services.AddScoped<IEventAttendeesToBeApprovedRepo, EventAttendeesToBeApprovedRepo>();
+            services.AddScoped<IEventAttendeesRepo, EventAttendeesRepo>();
+
+            //register services
+            services.AddScoped<IEventAttendanceService, EventAttendanceService>();
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
