@@ -15,6 +15,7 @@
     using Microsoft.Extensions.Hosting;
     using Scheduler.Scheduler;
     using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
+    using WebApp.Services.EventService;
 
     public class Startup
     {
@@ -50,6 +51,7 @@
             });
 
             services.AddSingleton<IHostedService, ScheduleTask>();
+            services.AddSingleton<IEventService, EventService>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }

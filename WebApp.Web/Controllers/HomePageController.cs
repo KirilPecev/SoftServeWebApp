@@ -6,22 +6,25 @@ using Microsoft.AspNetCore.Mvc;
 using WebApp.Data;
 using WebApp.Domain;
 using WebApp.Web.Models.Event;
+using WebApp.Web.Repositories;
 
 namespace WebApp.Web.Controllers
 {
     public class HomePageController : Controller
     {
-        private readonly WebAppDbContext _context;
+        //private readonly WebAppDbContext _context;
+        private IEventRepository _eventRepository;
 
-        public IActionResult HomePageView()
+        public IActionResult CreateEvent()
         {
             // request to the db
-            return ReturnMainView();
+            //return ReturnMainView();
+            return View(new Event());
         }
 
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        public async Task<IActionResult> HomePageView(EventBindingModel model)
+        public async Task<IActionResult> CreateEvent(EventBindingModel model)
         {
             try
             {
@@ -46,8 +49,8 @@ namespace WebApp.Web.Controllers
                 //model.Location = HttpContext.Request.Form["eventLocation"].ToString();
                 //model.Options = HttpContext.Request.Form["exampleFormControlTextarea"].ToString();
 
-                _context.Add(addedEvent);
-                await _context.SaveChangesAsync();
+                _eventRepository.CreateEvent(addedEvent);
+                //await _eventRepository.SaveChangesAsync();
 
                 return ReturnMainView();
 
