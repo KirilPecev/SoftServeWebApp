@@ -2,6 +2,8 @@
 {
     using Domain;
     using System;
+    using System.Collections.Generic;
+    using System.Linq;
 
     public class EventRepository : IEventRepository
     {
@@ -20,6 +22,11 @@
         public IEnumerable<Event> GetAllEvents()
         {
             return _context.Events;
+        }
+
+        public Event GetEvent(int id)
+        {
+            return (Event)_context.Events.Where(e => e.Id == id);
         }
     }
 }

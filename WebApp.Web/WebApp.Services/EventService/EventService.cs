@@ -2,6 +2,8 @@
 {
     using Data.Repo;
     using Domain;
+    using System;
+    using System.Collections.Generic;
 
     public class EventService : IEventService
     {
@@ -19,7 +21,20 @@
 
         public IEnumerable<Event> GetAllEvents()
         {
-            throw new NotImplementedException();
+            return this._eventRepository.GetAllEvents();
+        }
+
+        public Event GetEvent(int id)
+        {
+            Event foundEvent = this._eventRepository.GetEvent(id);
+            if(foundEvent == null)
+            {
+                throw new ArgumentException($"No Event with ID: {id} exists!");
+            }
+            else
+            {
+                return foundEvent;
+            }
         }
 
         public void SaveEvent()
