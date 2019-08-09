@@ -19,8 +19,6 @@
 
         public IActionResult Index()
         {
-            this.emailSender.SendEmailAsync("softserveapp@abv.bg", "Sport app init", "On Init").Wait();
-
             if (!this.User.Identity.IsAuthenticated)
             {
                 return Redirect("/Identity/Account/Login");
