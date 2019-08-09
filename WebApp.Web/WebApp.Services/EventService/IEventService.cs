@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using Domain;
+    using System.Collections.Generic;
 
     public interface IEventService
     {
@@ -10,5 +11,7 @@
         void SaveEvent();
 
         IEnumerable<Event> GetAllEvents();
+
+        Event GetEvent(int id);
     }
 }

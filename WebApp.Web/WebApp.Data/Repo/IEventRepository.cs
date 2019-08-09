@@ -11,5 +11,7 @@
         void SaveEvent();
 
         IEnumerable<Event> GetAllEvents();
+
+        Event GetEvent(int id);
     }
 }
