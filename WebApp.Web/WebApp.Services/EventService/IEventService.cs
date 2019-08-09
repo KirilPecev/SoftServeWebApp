@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using WebApp.Domain;
-
-namespace WebApp.Services.EventService
+﻿namespace WebApp.Services.EventService
 {
+    using Domain;
+
     public interface IEventService
     {
         void CreateEvent(Event createEvent);

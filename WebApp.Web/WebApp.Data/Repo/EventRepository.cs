@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using WebApp.Domain;
-
-namespace WebApp.Data.Repo
+﻿namespace WebApp.Data.Repo
 {
+    using Domain;
+    using System;
+
     public class EventRepository : IEventRepository
     {
         private readonly WebAppDbContext _context;
