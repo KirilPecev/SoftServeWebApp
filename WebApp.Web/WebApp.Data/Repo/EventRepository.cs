@@ -5,28 +5,28 @@
     using System.Collections.Generic;
     using System.Linq;
 
-    public class EventRepository : IEventRepository
+    public class EventRepository : Repository<Event> ,IEventRepository
     {
-        private readonly WebAppDbContext _context;
+        private readonly WebAppDbContext dbContext;
+        public EventRepository(WebAppDbContext dbContext) :base(dbContext)
+        {
+            this.dbContext = dbContext;
+        }
 
         public void CreateEvent(Event createEvent)
         {
-            _context.Events.Add(createEvent);
-        }
-
-        public void SaveEvent()
-        {
-            _context.SaveChanges();
+            dbSet.Add(createEvent);
+            dbContext.SaveChanges();
         }
 
         public IEnumerable<Event> GetAllEvents()
         {
-            return _context.Events;
+            return dbSet;
         }
 
         public Event GetEvent(int id)
         {
-            return (Event)_context.Events.Where(e => e.Id == id);
+            return dbSet.Find(id);
         }
     }
 }
