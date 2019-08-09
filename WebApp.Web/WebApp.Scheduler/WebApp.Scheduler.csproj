@@ -8,12 +8,6 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="2.2.0" />
     <PackageReference Include="NCrontab" Version="3.3.1" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\WebApp.Notifications\WebApp.Notifications.csproj" />
-    <ProjectReference Include="..\WebApp.Services\WebApp.Services.csproj" />
   </ItemGroup>
 
 </Project>

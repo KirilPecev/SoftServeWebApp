@@ -1,7 +1,6 @@
 ﻿namespace WebApp.Web
 {
     using Data;
-    using Data.Repo;
     using Data.Seeding;
     using Domain;
     using Microsoft.AspNetCore.Builder;
@@ -17,8 +16,6 @@
     using Notifications;
     using Notifications.Entities;
     using Scheduler.Scheduler;
-    using Services.EventService;
-    using System;
     using WebApp.Data.CustomRepos;
     using WebApp.Services.EventAttendance;
     using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
@@ -60,14 +57,7 @@
 
             services.AddSingleton<IEmailSender, EmailSender>();
 
-            services.AddSingleton<IHostedService, EventsTask>();
-            services.AddSingleton<IHostedService, SendEmailsTask>();
-
-            services.AddSingleton<IRatingRepo, RatingRepo>();
-
-            //TODO register services and repos
-            services.AddSingleton<IEventService, EventService>();
-            services.AddSingleton<IEventRepository, EventRepository>();
+            services.AddSingleton<IHostedService, ScheduleTask>();
 
             services.AddDistributedRedisCache(option =>
             {
@@ -88,7 +78,7 @@
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider provider)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             using (var serviceScope = app.ApplicationServices.CreateScope())
             {

@@ -141,8 +141,6 @@ namespace WebApp.Data.Migrations
 
                     b.Property<string>("AdminId");
 
-                    b.Property<string>("Image");
-
                     b.Property<string>("Name");
 
                     b.Property<int>("SportId");

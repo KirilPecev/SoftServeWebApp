@@ -62,8 +62,12 @@
 
                             <div class="modal-body">
                                 <div class="form-group">
+                                    <label for="eventLocation">Location</label>
+                                    <input asp-for="@Model.Modal.Location" type="text" class="form-control" id="eventLocation" aria-describedby="eventLocationInput" placeholder="Enter the event's location" />
+                                </div>
+                                <div class="form-group">
                                     <label for="exampleFormControlSelect1">Example select</label>
-                                    @*<select asp-for="@Model.Modal.Type" class="form-control" id="exampleFormControlSelect1">
+                                    @* <select asp-for="@Model.Modal.Type" @asp-items="@(Html.GetEnumSelectList<Type>())"  class="form-control" id="exampleFormControlSelect1">
                                     <option>Football</option>
                                     <option>Tennis</option>
                                     </select>*@

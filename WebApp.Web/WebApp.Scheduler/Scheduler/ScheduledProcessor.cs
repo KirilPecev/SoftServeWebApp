@@ -25,11 +25,11 @@
             do
             {
                 var now = DateTime.Now;
-                var nextRun = schedule.GetNextOccurrence(now);
-                if (now > this.nextRun)
+                var nextrun = schedule.GetNextOccurrence(now);
+                if (now > nextRun)
                 {
                     await Process();
-                    this.nextRun = schedule.GetNextOccurrence(DateTime.Now);
+                    nextRun = schedule.GetNextOccurrence(DateTime.Now);
                 }
                 await Task.Delay(5000, stoppingToken); //5 seconds delay
             }
