@@ -7,13 +7,16 @@
 
     public class EventRepository : Repository<Event> ,IEventRepository
     {
+        private readonly WebAppDbContext dbContext;
         public EventRepository(WebAppDbContext dbContext) :base(dbContext)
         {
+            this.dbContext = dbContext;
         }
 
         public void CreateEvent(Event createEvent)
         {
             dbSet.Add(createEvent);
+            dbContext.SaveChanges();
         }
 
         public IEnumerable<Event> GetAllEvents()
