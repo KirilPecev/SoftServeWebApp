@@ -13,7 +13,6 @@ namespace WebApp.Web.Controllers
     public class HomePageController : Controller
     {
         private readonly IEventService _eventService;
-        private readonly WebAppDbContext _context;
       
         public HomePageController(IEventService eventService)
         {
@@ -44,11 +43,12 @@ namespace WebApp.Web.Controllers
             {
                 Name = model.Name = HttpContext.Request.Form["Name"].ToString(),
                 Time = model.CurrentTime = DateTime.Now.Date
-
+                //BlobManager = model.BlobManager
                 //TODO Get current userID and bind to addedEvent
             };
             //model.Options = HttpContext.Request.Form["exampleFormControlTextarea"].ToString();
-
+            //TODO Hard coded sportId, implement in HomePageView Dropdown selector
+            addedEvent.SportId = 1;
             _eventService.CreateEvent(addedEvent);
 
             //GetEvent(eventModel);
@@ -58,16 +58,16 @@ namespace WebApp.Web.Controllers
         private ViewResult ReturnMainView()
         {
             HomePageBinding model = new HomePageBinding();
-            var allEvents = this._context.Events.Select(e => new EventBindingModel()
+            var allEvents = _eventService.GetAllEvents().Select(e => new EventBindingModel()
             {
                 Name = e.Name,
-                Type = e.Sport.Name
             });
             model.Events = allEvents;
 
             return View(model);
         }
 
+        //TODO Get the created event end return it to _EventDescriptionPartial
         [HttpGet]
         public JsonResult GetEvent(object model)
         {

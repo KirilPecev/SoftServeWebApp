@@ -13,6 +13,7 @@ namespace WebApp.Web.Models.Event
 
         public HomePageBinding()
         {
+            this.Modal = new EventBindingModel();
             this.Events = new List<EventBindingModel>();
         }
     }

@@ -64,6 +64,8 @@
             //TODO register services and repos
             services.AddSingleton<IEventService, EventService>();
             services.AddSingleton<IEventRepository, EventRepository>();
+            services.AddScoped<IEventService, EventService>();
+            services.AddScoped<IEventRepository, EventRepository>();
 
             services.AddDistributedRedisCache(option =>
             {
