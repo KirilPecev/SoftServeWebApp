@@ -24,7 +24,7 @@ namespace WebApp.Web.Controllers
                      new UserScore ()
                      {
                          CurrentDate = DateTime.Now.ToShortDateString(),
-                         Score = 5
+                         Score = 1
                      },
                      new UserScore ()
                      {
