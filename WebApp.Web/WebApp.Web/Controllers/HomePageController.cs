@@ -50,7 +50,6 @@ namespace WebApp.Web.Controllers
             //model.Options = HttpContext.Request.Form["exampleFormControlTextarea"].ToString();
 
             _eventService.CreateEvent(addedEvent);
-            _eventService.SaveEvent();
 
             //GetEvent(eventModel);
             return ReturnMainView();

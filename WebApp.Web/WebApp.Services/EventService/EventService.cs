@@ -38,10 +38,5 @@
                 return foundEvent;
             }
         }
-
-        public void SaveEvent()
-        {
-            this._eventRepository.SaveEvent();
-        }
     }
 }
