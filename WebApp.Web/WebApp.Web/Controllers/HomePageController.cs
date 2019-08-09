@@ -14,7 +14,7 @@ namespace WebApp.Web.Controllers
     {
         private readonly IEventService _eventService;
         private readonly WebAppDbContext _context;
-
+      
         public HomePageController(IEventService eventService)
         {
             this._eventService = eventService;
@@ -42,9 +42,11 @@ namespace WebApp.Web.Controllers
 
             Event addedEvent = new Event
             {
-                Name = model.Name = HttpContext.Request.Form["Name"].ToString()
+                Name = model.Name = HttpContext.Request.Form["Name"].ToString(),
+                Time = model.CurrentTime = DateTime.Now.Date
+
+                //TODO Get current userID and bind to addedEvent
             };
-            //model.Location = HttpContext.Request.Form["eventLocation"].ToString();
             //model.Options = HttpContext.Request.Form["exampleFormControlTextarea"].ToString();
 
             _eventService.CreateEvent(addedEvent);
@@ -59,7 +61,8 @@ namespace WebApp.Web.Controllers
             HomePageBinding model = new HomePageBinding();
             var allEvents = this._context.Events.Select(e => new EventBindingModel()
             {
-                Name = e.Name
+                Name = e.Name,
+                Type = e.Sport.Name
             });
             model.Events = allEvents;
 
