@@ -1,5 +1,7 @@
 ﻿namespace WebApp.Services.EventService
 {
+    using System;
+    using System.Collections.Generic;
     using Data.Repo;
     using Domain;
     using System;
