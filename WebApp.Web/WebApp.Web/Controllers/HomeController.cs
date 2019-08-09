@@ -1,6 +1,7 @@
 ﻿namespace WebApp.Web.Controllers
 {
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Caching.Distributed;
     using Models;
     using Notifications;
     using System.Diagnostics;
@@ -8,10 +9,12 @@
     public class HomeController : Controller
     {
         private IEmailSender emailSender;
+        private readonly IDistributedCache distributedCache;
 
-        public HomeController(IEmailSender emailSender)
+        public HomeController(IEmailSender emailSender, IDistributedCache distributedCache)
         {
             this.emailSender = emailSender;
+            this.distributedCache = distributedCache;
         }
 
         public IActionResult Index()
@@ -40,6 +43,13 @@
         public IActionResult FirstTimeIntoApp()
         {
             return View();
+        }
+
+        public IActionResult Test()
+        {
+            var events = this.distributedCache.GetString("events");
+
+            return this.Content(events);
         }
     }
 }

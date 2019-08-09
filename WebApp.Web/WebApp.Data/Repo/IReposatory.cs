@@ -17,9 +17,7 @@
 
         Task<TEntity> FindByIdAsync(int id);
 
-
         Task<TEntity> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate);
-
 
         void Remove(TEntity entity);
 

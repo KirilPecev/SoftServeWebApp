@@ -1,6 +1,7 @@
 ﻿namespace WebApp.Web
 {
     using Data;
+    using Data.Repo;
     using Data.Seeding;
     using Domain;
     using Microsoft.AspNetCore.Builder;
@@ -16,8 +17,8 @@
     using Notifications;
     using Notifications.Entities;
     using Scheduler.Scheduler;
-    using WebApp.Data.Repo;
-    using WebApp.Services.EventService;
+    using Services.EventService;
+    using System;
     using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
     public class Startup
@@ -57,7 +58,8 @@
 
             services.AddSingleton<IEmailSender, EmailSender>();
 
-            services.AddSingleton<IHostedService, ScheduleTask>();
+            services.AddSingleton<IHostedService, EventsTask>();
+            services.AddSingleton<IHostedService, SendEmailsTask>();
 
             //TODO register services and repos
             services.AddSingleton<IEventService, EventService>();
@@ -73,7 +75,7 @@
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider provider)
         {
             using (var serviceScope = app.ApplicationServices.CreateScope())
             {

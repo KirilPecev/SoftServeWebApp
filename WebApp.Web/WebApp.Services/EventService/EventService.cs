@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using WebApp.Data.Repo;
-using WebApp.Domain;
-
-namespace WebApp.Services.EventService
+﻿namespace WebApp.Services.EventService
 {
-    public class EventService: IEventService
+    using Data.Repo;
+    using Domain;
+
+    public class EventService : IEventService
     {
         private IEventRepository _eventRepository;
 
