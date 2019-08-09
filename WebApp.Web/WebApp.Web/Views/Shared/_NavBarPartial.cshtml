@@ -5,7 +5,7 @@
      </a>
      @if (this.User.Identity.IsAuthenticated)
      {
-     <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+     <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" style="margin-bottom:0em">
          <button type="submit">Logout</button>
      </form> 
      }
