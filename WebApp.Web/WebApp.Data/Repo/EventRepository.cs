@@ -6,23 +6,10 @@
     public class EventRepository : IEventRepository
     {
         private readonly WebAppDbContext _context;
-        private bool disposed = false;
 
         public void CreateEvent(Event createEvent)
         {
             _context.Events.Add(createEvent);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!this.disposed)
-            {
-                if (disposing)
-                {
-                    _context.Dispose();
-                }
-            }
-            this.disposed = true;
         }
 
         public void SaveEvent()
@@ -30,10 +17,9 @@
             _context.SaveChanges();
         }
 
-        public void Dispose()
+        public IEnumerable<Event> GetAllEvents()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            return _context.Events;
         }
     }
 }

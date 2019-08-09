@@ -17,6 +17,11 @@
             this._eventRepository.CreateEvent(createEvent);
         }
 
+        public IEnumerable<Event> GetAllEvents()
+        {
+            throw new NotImplementedException();
+        }
+
         public void SaveEvent()
         {
             this._eventRepository.SaveEvent();

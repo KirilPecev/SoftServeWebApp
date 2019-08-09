@@ -7,5 +7,7 @@
         void CreateEvent(Event createEvent);
 
         void SaveEvent();
+
+        IEnumerable<Event> GetAllEvents();
     }
 }

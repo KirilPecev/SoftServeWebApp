@@ -6,8 +6,10 @@
 
     public interface IEventRepository
     {
-        void CreateEvent(Event createEvent);
+        void CreateEvent(Event createEvent); 
 
         void SaveEvent();
+
+        IEnumerable<Event> GetAllEvents();
     }
 }
