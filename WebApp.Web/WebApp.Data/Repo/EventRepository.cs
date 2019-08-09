@@ -5,9 +5,12 @@
     using System.Collections.Generic;
     using System.Linq;
 
-    public class EventRepository : IEventRepository
+    public class EventRepository : Repository<Event> ,IEventRepository
     {
         private readonly WebAppDbContext _context;
+        public EventRepository(WebAppDbContext dbContext) :base(dbContext)
+        {
+        }
 
         public void CreateEvent(Event createEvent)
         {
