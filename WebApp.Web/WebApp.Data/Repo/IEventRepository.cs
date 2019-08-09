@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using WebApp.Domain;
-
-namespace WebApp.Data.Repo
+﻿namespace WebApp.Data.Repo
 {
+    using Domain;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+
     public interface IEventRepository
     {
         void CreateEvent(Event createEvent);
+
         void SaveEvent();
     }
 }
