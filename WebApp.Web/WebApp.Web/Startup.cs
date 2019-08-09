@@ -61,6 +61,8 @@
             services.AddSingleton<IHostedService, EventsTask>();
             services.AddSingleton<IHostedService, SendEmailsTask>();
 
+            services.AddSingleton<IRatingRepo, RatingRepo>();
+
             //TODO register services and repos
             services.AddSingleton<IEventService, EventService>();
             services.AddSingleton<IEventRepository, EventRepository>();

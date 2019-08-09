@@ -1,15 +1,16 @@
-﻿@{
+﻿@model WebApp.Web.Models.UserBindingModel
+@{
     ViewData["Title"] = "Profile";
     Layout = null;
 
     string[] sports = new string[]
     {
-    "Basketball",
-    "Table Tennis",
-    "Football",
-    "Tennis",
-    "Badminton",
-    "Chess"
+"Basketball",
+"Table Tennis",
+"Football",
+"Tennis",
+"Badminton",
+"Chess"
     };
 }
 
@@ -30,48 +31,48 @@
         </tr>
         <tr>
             <td>
-                USER
+                @Model.Name
             </td>
         </tr>
-        <tr>
+        @*<tr>
             <td>
                 Location
             </td>
-        </tr>
+        </tr>*@
     </table>
 
     <!-- Score Chart -->
-    <table class="score_chart" align="left">
+    <table class="score_chart" align="center">
         @*<tr>
-            <td>
-                <select id="sp" name="sports1" size="1" style="width:600px">
-                    @for (int i = 0; i < sports.Length; i++)
-                    {
-                        if (i == 0)
+                <td>
+                    <select id="sp" name="sports1" size="1" style="width:600px">
+                        @for (int i = 0; i < sports.Length; i++)
                         {
-                            <option value="blank">-</option>
-                            <option>@sports[i]</option>
+                            if (i == 0)
+                            {
+                                <option value="blank">-</option>
+                                <option>@sports[i]</option>
+                            }
+                            else
+                            {
+                                <option>@sports[i]</option>
+                            }
                         }
-                        else
-                        {
-                            <option>@sports[i]</option>
-                        }
-                    }
-                </select>
-            </td>
-            <td>
-                Average Score <img width="20" height="20" src="http://icons.iconarchive.com/icons/paomedia/small-n-flat/128/star-icon.png" />
-            </td>
-        </tr>*@
+                    </select>
+                </td>
+                <td>
+                    Average Score <img width="20" height="20" src="http://icons.iconarchive.com/icons/paomedia/small-n-flat/128/star-icon.png" />
+                </td>
+            </tr>*@
         <tr>
             <td colspan="2">
-                @await Html.PartialAsync("_UserScoreChart")
+                @await Html.PartialAsync("_UserScoreChart", Model.Score)
             </td>
         </tr>
     </table>
 
     <!-- Pick Sport -->
-    <div class="container-fluid" style="margin-top: 130px">
+    @*<div class="container-fluid" style="margin-top: 130px">
         <div class="row">
             <select id="mySelect" name="sports2" size="1" class="mb-3 ml-1 mr-1" style="width:100%" onchange="Show()">
                 @for (int i = 0; i < sports.Length; i++)
@@ -128,7 +129,7 @@
                 </span>
             </div>
         </div>
-    </div>
+    </div>*@
 </body>
 
 <style>
@@ -154,8 +155,8 @@
         text-align: center;
         width: 800px;
         margin-top: 100px;
-        margin-bottom: 5px;
-        margin-left: 210px;
+        /*margin-bottom: 5px;
+        margin-left: 210px;*/
     }
 
     .pick_sport {
@@ -184,7 +185,7 @@
 
         switch (pick) {
             case "Basketball":
-                document.getElementById('bsk').style.display = "block";                
+                document.getElementById('bsk').style.display = "block";
                 break;
             case "Table Tennis":
                 document.getElementById('tbt').style.display = "block";
@@ -201,7 +202,7 @@
             case "Chess":
                 document.getElementById('ch').style.display = "block";
                 break;
-        }        
+        }
     }
 
     function Hide(btn) {
