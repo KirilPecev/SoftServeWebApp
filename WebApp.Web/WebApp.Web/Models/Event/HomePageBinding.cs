@@ -7,8 +7,13 @@ namespace WebApp.Web.Models.Event
 {
     public class HomePageBinding
     {
-        public IEnumerable<EventBindingModel> Events { get; set; } /*= new List<EventBindingModel>();*/
+        public IEnumerable<EventBindingModel> Events { get; set; }
 
         public EventBindingModel Modal { get; set; }
+
+        public HomePageBinding()
+        {
+            this.Events = new List<EventBindingModel>();
+        }
     }
 }

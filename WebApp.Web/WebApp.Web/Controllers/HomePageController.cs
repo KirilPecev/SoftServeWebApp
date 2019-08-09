@@ -5,13 +5,20 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using WebApp.Data;
 using WebApp.Domain;
+using WebApp.Services.EventService;
 using WebApp.Web.Models.Event;
 
 namespace WebApp.Web.Controllers
 {
     public class HomePageController : Controller
     {
+        private readonly IEventService _eventService;
         private readonly WebAppDbContext _context;
+      
+        public HomePageController(IEventService eventService)
+        {
+            this._eventService = eventService;
+        }
 
         public IActionResult HomePageView()
         {
@@ -21,50 +28,44 @@ namespace WebApp.Web.Controllers
 
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        public async Task<IActionResult> HomePageView(EventBindingModel model)
+        public IActionResult HomePageView(EventBindingModel model)
         {
-            try
+            if (!ModelState.IsValid)
             {
-                if (!ModelState.IsValid)
+                var errorMessages = string.Empty;
+                foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
                 {
-                    var errorMessages = string.Empty;
-                    foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
-                    {
-                        errorMessages += error;
-                    }
-                    return BadRequest(errorMessages);
+                    errorMessages += error;
                 }
-                // save intothe db
-                // 
-
-                Event addedEvent = new Event
-                {
-                    Name = model.Name = HttpContext.Request.Form["Name"].ToString()
-                };
-
-
-                //model.Location = HttpContext.Request.Form["eventLocation"].ToString();
-                //model.Options = HttpContext.Request.Form["exampleFormControlTextarea"].ToString();
-
-                _context.Add(addedEvent);
-                await _context.SaveChangesAsync();
-
-                return ReturnMainView();
-
-                //GetEvent(eventModel);
+                return BadRequest(errorMessages);
             }
 
-            catch (Exception e)
+            Event addedEvent = new Event
             {
+                Name = model.Name = HttpContext.Request.Form["Name"].ToString(),
+                Time = model.CurrentTime = DateTime.Now.Date
 
-            }
-            /*return this.Json(model);*/
+                //TODO Get current userID and bind to addedEvent
+            };
+            //model.Options = HttpContext.Request.Form["exampleFormControlTextarea"].ToString();
+
+            _eventService.CreateEvent(addedEvent);
+            _eventService.SaveEvent();
+
+            //GetEvent(eventModel);
             return ReturnMainView();
         }
 
         private ViewResult ReturnMainView()
         {
             HomePageBinding model = new HomePageBinding();
+            var allEvents = this._context.Events.Select(e => new EventBindingModel()
+            {
+                Name = e.Name,
+                Type = e.Sport.Name
+            });
+            model.Events = allEvents;
+
             return View(model);
         }
 
@@ -73,11 +74,5 @@ namespace WebApp.Web.Controllers
         {
             return Json(model);
         }
-
-        //[HttpPost]
-        //public IActionResult JoinEvent(int id)
-        //{
-
-        //}
     }
 }
