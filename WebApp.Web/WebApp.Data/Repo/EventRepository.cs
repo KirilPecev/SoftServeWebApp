@@ -1,7 +1,7 @@
 ﻿namespace WebApp.Data.Repo
 {
     using Domain;
-    using System;
+    using System.Collections.Generic;
 
     public class EventRepository : IEventRepository
     {
