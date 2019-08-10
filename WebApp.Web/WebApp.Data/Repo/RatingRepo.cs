@@ -8,7 +8,7 @@ namespace WebApp.Data.Repo
     {
         public RatingRepo(WebAppDbContext dbContext) : base(dbContext) { }
 
-        public IEnumerable<Rating> GetAllRatings()
+        public List<Rating> GetAllRatings()
         {
             return dbSet.ToList();
         }

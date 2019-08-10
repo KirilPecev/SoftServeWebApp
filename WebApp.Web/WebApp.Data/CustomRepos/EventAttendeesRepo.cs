@@ -12,6 +12,7 @@ namespace WebApp.Data.CustomRepos
         {
         }
 
+
         public IEnumerable<EventAttendees> GetAllByUserId(string id)
         {
             var eventAttendee = dbSet

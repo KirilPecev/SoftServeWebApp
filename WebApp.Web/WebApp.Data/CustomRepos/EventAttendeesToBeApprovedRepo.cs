@@ -11,7 +11,6 @@ namespace WebApp.Data.CustomRepos
         : base(context)
         {
         }
-
         public IEnumerable<EventAttendeesToBeApproved> GetAllByUserId(string id)
         {
             var eventAttendeesToBeApproved = dbSet

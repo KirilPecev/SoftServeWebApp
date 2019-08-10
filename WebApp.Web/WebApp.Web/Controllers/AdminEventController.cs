@@ -9,7 +9,5 @@ namespace WebApp.Web.Controllers
         {
             return View();
         }
-
-
     }
 }
