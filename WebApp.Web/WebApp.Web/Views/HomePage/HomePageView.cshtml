@@ -55,17 +55,23 @@
                             </div>
 
                             <div class="modal-body">
-                                
+                                <div class="form-group">
+                                    <label for="exampleFormControlTextarea">Description</label>
+                                    <textarea asp-for="@Model.Modal.Description" class="form-control" id="Description" name="Description" required rows="3"></textarea>
+                                </div>
+                                <div class="form-group" style="width: 20rem">
+                                    <input asp-for="@Model.Modal.Location" type="text" class="form-control" id="Location " name="Location" required aria-describedby="TitleInput" placeholder="Event Location" />
+                                </div>
                                 <div class="form-group">
                                     <label for="exampleFormControlSelect1">Example select</label>
                                     <select asp-for="@Model.Modal.SportId" class="form-control" id="exampleFormControlSelect1" name="SportId" required>
                                         <option value="1">Football</option>
                                     </select>
                                 </div>
-                                
+
                                 <label for="time"><br>Select Time and Date</label>
-                                <input asp-for="@Model.Modal.Time" type="datetime-local" id="time" name="Time" required ="2019-01-01T12:00">
-                                
+                                <input asp-for="@Model.Modal.Time" type="datetime-local" id="time" name="Time" required="2019-01-01T12:00">
+
                                 <div class="form-group" accept="image/jpg,image/jpeg">
                                     <br> Your image: <input type="file" name="eventImage" id="eventImage"><br>
                                 </div>

@@ -21,15 +21,30 @@ namespace WebApp.Web.Controllers
         }
         public IActionResult ViewEvent()
         {
-            Event viewEvent = this._eventService.GetEvent(21);
+            Event viewEvent = this._eventService.GetEvent(31);
             EventBindingModel model = new EventBindingModel();
+            MapDbToModel(viewEvent, model);
 
+            return View(model);
+        }
+
+        private void MapDbToModel(Event viewEvent, EventBindingModel model)
+        {
             model.AdminId = viewEvent.AdminId;
             model.ImageURL = _imageService.GetImageURL(viewEvent.Image);
             model.Title = viewEvent.Name;
             model.Time = viewEvent.Time;
-            
-            return View();
+            model.Location = viewEvent.Location;
+            model.Description = viewEvent.Description;
+            foreach (var user in viewEvent.Users)
+            {
+                PlayerModel newPlayer = new PlayerModel();
+                newPlayer.PositionId = user.PositionId;
+                newPlayer.Name = user.User.UserName;
+                newPlayer.Position = user.Position.Name;
+                newPlayer.Team = user.Position.Team;
+                model.Players.Add(newPlayer);
+            }
         }
     }
 }

@@ -58,6 +58,8 @@ namespace WebApp.Web.Controllers
             newEvent.Name = model.Title;
             newEvent.Time = model.Time;
             newEvent.SportId = model.SportId;
+            newEvent.Description = model.Description;
+            newEvent.Location = model.Location;
             if(eventImage == null)
             {
                 //Set some default image

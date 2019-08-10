@@ -1,11 +1,12 @@
-﻿@model string[] 
-    @for (int i = 0; i < Model.Length; i++)
+﻿@model List<WebApp.Web.Models.Event.PlayerModel>
+ 
+    @for (int i = 0; i < Model.Count; i++)
     {
         <div class="row">
-            <h5>@Model[i]: </h5>
+            <h5>@Model[i].Position: </h5>
         </div>
         <div class="row">
-            <button type="button" class="btn btn-danger mx-3 mb-2" data-toggle="modal" data-target="#exampleModal">{Player Name}</button>
+            <button type="button" class="btn btn-danger mx-3 mb-2" data-toggle="modal" data-target="#exampleModal">@Model[i].Name</button>
             @await Html.PartialAsync($"_StarRatingPartial")
             <button class="btn btn-info btn-sm mx-3 mb-2" role="button">Join Event</button>
         </div>
