@@ -7,9 +7,12 @@ namespace WebApp.Web.Models.Event
 {
     public class EventBindingModel
     {
-        public string Name { get; set; }
-        public string Options { get; set; }
-        public string Type { get; set; }
-        public DateTime CurrentTime { get; set; } 
+        public string Title { get; set; }
+        public string ImageName { get; set; }
+        public string AdminId { get; set; }
+        public DateTime Time { get; set; }
+        public int SportId { get; set; }
+        public Dictionary<string,string> Positions { get; set; }
+        public Dictionary<string, string> ToBeAprooved { get; set; }
     }
 }
