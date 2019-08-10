@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using WebApp.Data.CustomRepos;
 using WebApp.Data.Repo;
@@ -59,9 +57,9 @@ namespace WebApp.Services.EventAttendance
 
         public IEnumerable<EventAttendeesToBeApproved> GetAllEventAttendeesToBeApprovedForUser(string userId)
         {
-            var allAttendeesForUser = _eventAttendeesRepo.GetAllByUserId(userId);
+            var allAttendeesToBeApproved = _eventAttendeesToBeApprovedRepo.GetAllByUserId(userId);
 
-            return allAttendeesForUser;
+            return allAttendeesToBeApproved;
         }
     }
 }
