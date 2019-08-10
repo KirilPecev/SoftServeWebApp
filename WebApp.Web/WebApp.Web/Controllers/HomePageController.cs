@@ -75,7 +75,7 @@ namespace WebApp.Web.Controllers
             newEvent.Location = model.Location;
             if(eventImage == null)
             {
-                //Set some default image
+                newEvent.Image = "defaultImage.jpg";
             }
             else
             {
