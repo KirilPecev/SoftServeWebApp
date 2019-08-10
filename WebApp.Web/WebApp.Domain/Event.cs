@@ -27,10 +27,6 @@
 
         public string Description { get; set; }
 
-        public string Location { get; set; }
-
-        public string Description { get; set; }
-
         public virtual ICollection<EventAttendees> Users { get; set; }
 
         public virtual ICollection<EventAttendeesToBeApproved> Positions { get; set; }
