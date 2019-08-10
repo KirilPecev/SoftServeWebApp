@@ -5,6 +5,7 @@ using WebApp.Services.EventService;
 using WebApp.Web.Models.Event;
 using WebApp.ImageStorage.AzureBlobStorage;
 using Microsoft.AspNetCore.Identity;
+using WebApp.Services;
 
 namespace WebApp.Web.Controllers
 {
@@ -12,11 +13,13 @@ namespace WebApp.Web.Controllers
     {
         private readonly IEventService _eventService;
         private readonly UserManager<WebAppUser> _userManager;
+        private readonly ImageService _imageService;
 
         public HomePageController(IEventService eventService, UserManager<WebAppUser> userManager)
         {
             this._eventService = eventService;
             this._userManager = userManager;
+            this._imageService = new ImageService();
         }
 
         public IActionResult HomePageView()
@@ -49,17 +52,7 @@ namespace WebApp.Web.Controllers
         {
             return Json(model);
         }
-        private static string UploadImage(IFormFile eventImage)
-        {
-            string imageName;
-            string connectionString = "DefaultEndpointsProtocol=https;AccountName=sportapp;AccountKey=iObMXhyrN6dbB6tIcWWqJr0Z48rUubSPnYnxefhbF4Ek5UnKCvEgG0/12X/cNjdcZ2/iephB4jUcAch3ve3azA==;EndpointSuffix=core.windows.net";
-            BlobManager manager = new BlobManager(connectionString, "images");
-            using (var filestream = eventImage.OpenReadStream())
-            {
-                imageName = manager.UploadImage(eventImage.FileName, filestream);
-            }
-            return imageName;
-        }
+
         private void MapModelToDB(EventBindingModel model, IFormFile eventImage, Event newEvent)
         {
             newEvent.Name = model.Title;
@@ -71,7 +64,7 @@ namespace WebApp.Web.Controllers
             }
             else
             {
-                newEvent.Image = UploadImage(eventImage);
+                newEvent.Image = this._imageService.UploadImage(eventImage);
             }
             newEvent.AdminId = this._userManager.GetUserId(User);
         }

@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\WebApp.Data\WebApp.Data.csproj" />
+    <ProjectReference Include="..\WebApp.ImageStorage\WebApp.ImageStorage.csproj" />
   </ItemGroup>
 
 </Project>
