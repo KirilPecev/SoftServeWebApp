@@ -19,6 +19,8 @@
     using Scheduler.Scheduler;
     using Services.EventService;
     using System;
+    using WebApp.Services.PositionService;
+    using WebApp.Services.SportService;
     using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
     public class Startup
@@ -68,6 +70,16 @@
             services.AddSingleton<IEventRepository, EventRepository>();
             services.AddScoped<IEventService, EventService>();
             services.AddScoped<IEventRepository, EventRepository>();
+
+            services.AddSingleton<ISportService, SportService>();
+            services.AddSingleton<ISportRepository, SportRepo>();
+            services.AddScoped<ISportService, SportService>();
+            services.AddScoped<ISportRepository, SportRepo>();
+
+            services.AddSingleton<IPositionService, PositionService>();
+            services.AddSingleton<IPositionRepo, PositionRepo>();
+            services.AddScoped<IPositionService, PositionService>();
+            services.AddScoped<IPositionRepo, PositionRepo>();
 
             services.AddDistributedRedisCache(option =>
             {

@@ -7,7 +7,7 @@ namespace WebApp.Web.Models.Event
 {
     public class HomePageBinding
     {
-        public IEnumerable<EventBindingModel> Events { get; set; }
+        public List<EventBindingModel> Events { get; set; }
 
         public EventBindingModel Modal { get; set; }
 
