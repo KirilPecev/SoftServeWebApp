@@ -1,77 +1,79 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using WebApp.Data;
 using WebApp.Domain;
 using WebApp.Services.EventService;
 using WebApp.Web.Models.Event;
+using WebApp.ImageStorage.AzureBlobStorage;
+using Microsoft.AspNetCore.Identity;
 
 namespace WebApp.Web.Controllers
 {
     public class HomePageController : Controller
     {
         private readonly IEventService _eventService;
-      
-        public HomePageController(IEventService eventService)
+        private readonly UserManager<WebAppUser> _userManager;
+
+        public HomePageController(IEventService eventService, UserManager<WebAppUser> userManager)
         {
             this._eventService = eventService;
+            this._userManager = userManager;
         }
 
         public IActionResult HomePageView()
         {
-            // request to the db
+
             return ReturnMainView();
         }
 
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        public IActionResult HomePageView(EventBindingModel model)
+        public IActionResult HomePageView(EventBindingModel model, IFormFile eventImage)
         {
-            if (!ModelState.IsValid)
-            {
-                var errorMessages = string.Empty;
-                foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
-                {
-                    errorMessages += error;
-                }
-                return BadRequest(errorMessages);
-            }
+            Event newEvent = new Event();
+            MapModelToDB(model, eventImage, newEvent);
 
-            Event addedEvent = new Event
-            {
-                Name = model.Name = HttpContext.Request.Form["Name"].ToString(),
-                Time = model.CurrentTime = DateTime.Now.Date
-                //BlobManager = model.BlobManager
-                //TODO Get current userID and bind to addedEvent
-            };
-            //model.Options = HttpContext.Request.Form["exampleFormControlTextarea"].ToString();
-            //TODO Hard coded sportId, implement in HomePageView Dropdown selector
-            addedEvent.SportId = 1;
-            _eventService.CreateEvent(addedEvent);
-
-            //GetEvent(eventModel);
+            this._eventService.CreateEvent(newEvent);
             return ReturnMainView();
         }
 
         private ViewResult ReturnMainView()
         {
             HomePageBinding model = new HomePageBinding();
-            var allEvents = _eventService.GetAllEvents().Select(e => new EventBindingModel()
-            {
-                Name = e.Name,
-            });
-            model.Events = allEvents;
+ 
 
             return View(model);
         }
 
-        //TODO Get the created event end return it to _EventDescriptionPartial
         [HttpGet]
         public JsonResult GetEvent(object model)
         {
             return Json(model);
+        }
+        private static string UploadImage(IFormFile eventImage)
+        {
+            string imageName;
+            string connectionString = "DefaultEndpointsProtocol=https;AccountName=sportapp;AccountKey=iObMXhyrN6dbB6tIcWWqJr0Z48rUubSPnYnxefhbF4Ek5UnKCvEgG0/12X/cNjdcZ2/iephB4jUcAch3ve3azA==;EndpointSuffix=core.windows.net";
+            BlobManager manager = new BlobManager(connectionString, "images");
+            using (var filestream = eventImage.OpenReadStream())
+            {
+                imageName = manager.UploadImage(eventImage.FileName, filestream);
+            }
+            return imageName;
+        }
+        private void MapModelToDB(EventBindingModel model, IFormFile eventImage, Event newEvent)
+        {
+            newEvent.Name = model.Title;
+            newEvent.Time = model.Time;
+            newEvent.SportId = model.SportId;
+            if(eventImage == null)
+            {
+                //Set some default image
+            }
+            else
+            {
+                newEvent.Image = UploadImage(eventImage);
+            }
+            newEvent.AdminId = this._userManager.GetUserId(User);
         }
     }
 }

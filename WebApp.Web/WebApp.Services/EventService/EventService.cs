@@ -4,8 +4,6 @@
     using System.Collections.Generic;
     using Data.Repo;
     using Domain;
-    using System;
-    using System.Collections.Generic;
 
     public class EventService : IEventService
     {
