@@ -26,7 +26,7 @@
 
         public Event GetEvent(int id)
         {
-            return dbSet.Find(id);
+            return dbSet.Where(e => e.Id == id).SingleOrDefault();
         }
     }
 }

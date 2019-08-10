@@ -2,7 +2,6 @@
 {
     using System.Collections.Generic;
     using Domain;
-    using System.Collections.Generic;
 
     public interface IEventService
     {

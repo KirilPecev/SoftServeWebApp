@@ -5,7 +5,7 @@ namespace WebApp.Data.Repo
 {
     public interface IRatingRepo
     {
-        List<Rating> GetAllRatings();
+        IEnumerable<Rating> GetAllRatings();
         void AddRating(Rating rating);
     }
 }
