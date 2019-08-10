@@ -9,9 +9,6 @@ namespace WebApp.Web.Models.Event
     {
         public string Name { get; set; }
         public int Rating { get; set; }
-        public int Id { get; set; }
-        public string Position { get; set; }
-        public int PositionId { get; set; }
-        public int Team { get; set; }
+        public string Id { get; set; }
     }
 }
