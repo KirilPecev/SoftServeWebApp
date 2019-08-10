@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using WebApp.Domain;
 using WebApp.Services.EventService;
 using WebApp.Web.Controllers.Mappers;
 using WebApp.Web.Models.Event;
@@ -10,9 +12,11 @@ namespace WebApp.Web.Controllers
     {
         private readonly IEventService _eventService;
         private readonly IEventMapper eventMapper;
+        private readonly UserManager<WebAppUser> _userManager;
 
-        public HomePageController(IEventService eventService, IEventMapper eventMapper)
+        public HomePageController(UserManager<WebAppUser> userManager, IEventService eventService, IEventMapper eventMapper)
         {
+            this._userManager = userManager;
             this._eventService = eventService;
             this.eventMapper = eventMapper;
         }
@@ -27,7 +31,7 @@ namespace WebApp.Web.Controllers
         [AutoValidateAntiforgeryToken]
         public IActionResult HomePageView(EventBindingModel model, IFormFile eventImage)
         {
-            this._eventService.CreateEvent(eventMapper.MapEventToDB(model,eventImage));
+            this._eventService.CreateEvent(eventMapper.MapEventToDB(model,eventImage,_userManager.GetUserId(User)));
             return ReturnMainView();
         }
 

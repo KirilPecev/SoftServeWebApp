@@ -13,18 +13,16 @@ namespace WebApp.Web.Controllers.Mappers
 {
     public class EventMapper : Controller, IEventMapper
     {
-        private readonly UserManager<WebAppUser> _userManager;
         private readonly ImageService _imageService;
         private readonly ISportService _sportService;
         private readonly IPositionService _positionSerivce;
-        public EventMapper(IEventService eventService, UserManager<WebAppUser> userManager, ISportService sportService, IPositionService positionService)
+        public EventMapper(IEventService eventService, ISportService sportService, IPositionService positionService)
         {
-            this._userManager = userManager;
             this._imageService = new ImageService();
             this._sportService = sportService;
             this._positionSerivce = positionService;
         }
-        public Event MapEventToDB(EventBindingModel model, IFormFile eventImage)
+        public Event MapEventToDB(EventBindingModel model, IFormFile eventImage, string adminId)
         {
             Event newEvent = new Event();
             newEvent.Name = model.Title;
@@ -40,7 +38,7 @@ namespace WebApp.Web.Controllers.Mappers
             {
                 newEvent.Image = this._imageService.UploadImage(eventImage);
             }
-            newEvent.AdminId = this._userManager.GetUserId(User);
+            newEvent.AdminId = adminId;
 
             return newEvent;
         }
