@@ -6,7 +6,5 @@ namespace WebApp.Data.CustomRepos
     public interface IEventAttendeesToBeApprovedRepo : IRepository<EventAttendeesToBeApproved>
     {
     }
-
-
 }
 
