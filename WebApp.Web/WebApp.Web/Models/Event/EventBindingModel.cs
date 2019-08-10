@@ -8,10 +8,10 @@ namespace WebApp.Web.Models.Event
 {
     public class EventBindingModel
     {
+        public int Id { get; set; }
         public EventBindingModel()
         {
-            Players = new List<PlayerModel>();
-            ToBeAprooved = new List<PlayerModel>();
+            Positions = new List<PositionModel>();
         }
         public string Title { get; set; }
         public string ImageName { get; set; }
@@ -21,7 +21,6 @@ namespace WebApp.Web.Models.Event
         public string Description { get; set; }
         public DateTime Time { get; set; }
         public int SportId { get; set; }
-        public List<PlayerModel> Players { get; set; }
-        public List<PlayerModel> ToBeAprooved { get; set; }
+        public List<PositionModel> Positions { get; set; }
     }
 }
