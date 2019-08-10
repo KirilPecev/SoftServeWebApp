@@ -59,7 +59,9 @@ namespace WebApp.Services.EventAttendance
 
         public IEnumerable<EventAttendeesToBeApproved> GetAllEventAttendeesToBeApprovedForUser(string userId)
         {
+
             var allAttendeesForUser = _eventAttendeesToBeApprovedRepo.GetAllByUserId(userId);
+
 
             return allAttendeesForUser;
         }
