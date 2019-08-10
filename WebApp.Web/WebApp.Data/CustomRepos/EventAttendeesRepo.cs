@@ -11,7 +11,6 @@ namespace WebApp.Data.CustomRepos
         public EventAttendeesRepo(WebAppDbContext webAppDbContext)
             : base(webAppDbContext)
         {
-
         }
     }
 }

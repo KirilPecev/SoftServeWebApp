@@ -13,6 +13,5 @@ namespace WebApp.Data.CustomRepos
         : base(context)
         {
         }
-
     }
 }
