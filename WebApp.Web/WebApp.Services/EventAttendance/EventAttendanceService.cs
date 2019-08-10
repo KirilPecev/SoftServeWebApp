@@ -17,7 +17,5 @@ namespace WebApp.Services.EventAttendance
             this._eventAttendeesRepo = eventAttendeesRepo;
             this._eventAttendeesToBeApprovedRepo = eventAttendeesToBeApprovedRepo;
         }
-
-
     }
 }
