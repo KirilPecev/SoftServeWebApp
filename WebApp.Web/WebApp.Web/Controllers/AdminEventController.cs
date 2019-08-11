@@ -1,13 +1,25 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using WebApp.Domain;
+using WebApp.Services.EventService;
+using WebApp.Web.Controllers.Mappers;
 
 namespace WebApp.Web.Controllers
 {
     public class AdminEventController : Controller
     {
-        [HttpGet]
-        public IActionResult AdminViewEvent()
+        private readonly IEventService _eventService;
+        private readonly IEventMapper eventMapper;
+
+        public AdminEventController(IEventService eventService, IEventMapper eventMapper)
         {
-            return View();
+            this._eventService = eventService;
+            this.eventMapper = eventMapper;
+        }
+        [HttpGet]
+        public IActionResult AdminViewEvent(int id)
+        {
+            Event dbEvent = this._eventService.GetEvent(id);
+            return View(eventMapper.MapDbToEvent(dbEvent));
         }
     }
 }
