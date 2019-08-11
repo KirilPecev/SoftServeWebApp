@@ -9,6 +9,8 @@ using System.Linq;
 
 namespace WebApp.Web.Controllers
 {
+    using System.Security.Claims;
+
     public class UsersController : Controller
     {
         private UserManager<WebAppUser> _userManager;
@@ -22,19 +24,21 @@ namespace WebApp.Web.Controllers
 
         public IActionResult Profile()
         {
-            string currentUser = User.Identity.Name;
-            double _score = ratingService.GetAllRatings().Where(r => r.Receiver.UserName == currentUser).First().Score;
+            // string currentUser = User.Identity.Name;
+            //// double _score = ratingService.GetAllRatings().Where(r => r.Receiver.UserName == currentUser).First().Score;
 
-            UserBindingModel model = new UserBindingModel(currentUser,
-                new List<UserScore>() {
-                     new UserScore ()
-                     {
-                         CurrentDate = DateTime.Now.ToShortDateString(),
-                         Score = _score
-                     }
-            });
+            // UserBindingModel model = new UserBindingModel(currentUser,
+            //     new List<UserScore>() {
+            //          new UserScore ()
+            //          {
+            //              CurrentDate = DateTime.Now.ToShortDateString(),
+            //              Score = _score
+            //          }
+            // });
 
-            return View("Profile", model);
+            // return View("Profile", model);
+
+            return this.Ok();
         }
     }
 }
