@@ -1,20 +1,7 @@
 ﻿@{
     Layout = null;
-    string[] positions = new string[]
-    {
-"Goalkeeper",
-"Right Fullback",
-"Left Fullback",
-"Center Back",
-"Center Back (or Sweeper)",
-"Defending Midfielder",
-"Right Midfielder",
-"Left Midfielder",
-"Central Midfielder",
-"Attacking Midfielder/Playmaker",
-"Striker"
-                    };
 }
+@model WebApp.Web.Models.Event.EventBindingModel
     <head>
         <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
         <link href="~/lib/bootstrap/dist/css/bootstrap-grid.css" rel="stylesheet" />
@@ -27,24 +14,25 @@
         <div id="content">
             <div class="row">
                 <div class="column">
-                    <img src="https://images.pexels.com/photos/414612/pexels-photo-414612.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" id="EventImage" />
-                    <center>Location</center>
+                    <img src=@Model.ImageURL id="EventImage" />
+                    <center>@Model.Location</center>
                 </div>
                 <div class="column">
-                    <center><h1>Title<h3>Time</h3></h1></center>
+                    <center><h1>@Model.Title<h3>@Model.Time</h3></h1></center>
                     <br />
                     <br />
-                    <center>Description</center>
+                    <center>@Model.Description</center>
                 </div>
             </div>
             <div class="row">
-                @for (int i = 0; i < 2; i++)
-                {
-                    <div class="column">
-                        <h3><center>TEAM @(i + 1)</center></h3>
-                        @await Html.PartialAsync($"_TeamPartial", positions)
-                    </div>
-                }
+                <div class="column">
+                    <h3><center>TEAM 1</center></h3>
+                    @await Html.PartialAsync($"_TeamPartial", Model.Positions.Take(Model.Positions.Count / 2).ToList())
+                </div>
+                <div class="column">
+                    <h3><center>TEAM 2</center></h3>
+                    @await Html.PartialAsync($"_TeamPartial", Model.Positions.TakeLast(Model.Positions.Count / 2).ToList())
+                </div>
             </div>
             <center>
                 <button type="button" class="btn btn-danger mx-3 mb-2" id="editButton">Edit</button>
