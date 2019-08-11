@@ -12,6 +12,7 @@
                 .HasOne(rating => rating.Receiver)
                 .WithMany(user => user.Ratings)
                 .HasForeignKey(fk => fk.ReceiverId);
+
         }
     }
 }
