@@ -7,6 +7,7 @@
     using System;
     using System.Linq;
     using System.Threading.Tasks;
+    using Services.EventService;
 
     public class EventsTask : ScheduledProcessor
     {
@@ -19,10 +20,10 @@
         public override Task ProcessInScope(IServiceProvider serviceProvider)
         {
 
-            var db = serviceProvider.GetService(typeof(WebAppDbContext)) as WebAppDbContext;
+            var eventService = serviceProvider.GetService(typeof(IEventService)) as IEventService;
             var cache = serviceProvider.GetService(typeof(IDistributedCache)) as IDistributedCache;
 
-            var events = db.Events.ToList();
+            var events = eventService.GetAllEvents().ToList();
 
             var serializedObject = JsonConvert.SerializeObject(events);
             cache.SetString("events", serializedObject);

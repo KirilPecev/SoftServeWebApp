@@ -25,13 +25,14 @@
             </div>
         </div>
         <div class="row">
-            @for (int i = 0; i < 2; i++)
-            {
-                <div class="column">
-                    <h3><center>TEAM @(i + 1)</center></h3>
-                    @await Html.PartialAsync($"_TeamPartial", Model.Positions)
-                </div>
-            }
+            <div class="column">
+                <h3><center>TEAM 1</center></h3>
+                @await Html.PartialAsync($"_TeamPartial", Model.Positions.Take(Model.Positions.Count / 2).ToList())
+            </div>
+            <div class="column">
+                <h3><center>TEAM 2</center></h3>
+                @await Html.PartialAsync($"_TeamPartial", Model.Positions.TakeLast(Model.Positions.Count / 2).ToList())
+            </div>
         </div>
     </div>
 </div>

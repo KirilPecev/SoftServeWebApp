@@ -15,9 +15,8 @@ namespace WebApp.Web.Controllers
             this._eventService = eventService;
             this.eventMapper = eventMapper;
         }
-        public IActionResult ViewEvent(int Id)
+        public IActionResult ViewEvent(Event dbEvent)
         {
-            Event dbEvent = this._eventService.GetEvent(Id);
             return View(eventMapper.MapDbToEvent(dbEvent));
         }
     }

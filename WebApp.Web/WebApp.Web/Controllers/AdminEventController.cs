@@ -25,9 +25,8 @@ namespace WebApp.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult AdminViewEvent(int id)
+        public IActionResult AdminViewEvent(Event dbEvent)
         {
-            Event dbEvent = this._eventService.GetEvent(id);
             return View(eventMapper.MapDbToEvent(dbEvent));
         }
 
