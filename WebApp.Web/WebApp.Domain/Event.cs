@@ -27,6 +27,8 @@
 
         public string Description { get; set; }
 
+        public bool IsDeleted { get; set; }
+
         public virtual ICollection<EventAttendees> Users { get; set; }
 
         public virtual ICollection<EventAttendeesToBeApproved> Positions { get; set; }

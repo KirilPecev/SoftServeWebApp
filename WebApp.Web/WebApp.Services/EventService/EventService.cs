@@ -44,7 +44,7 @@
         public IEnumerable<Event> GetAllEventsByUser(string id) 
         {
            var allEventsByUser = this._eventRepository.GetAllEvents()
-                .Where(x => x.AdminId == id)
+                .Where(x => x.AdminId == id && x.IsDeleted == false)
                 .ToList();
 
             return allEventsByUser;
@@ -54,7 +54,7 @@
         {
             var eventToBeDeleted =  this.GetEvent(id);
 
-             _eventRepository.Remove(eventToBeDeleted);
+            eventToBeDeleted.IsDeleted = true;
 
             await SaveChangesAsync();
         }
