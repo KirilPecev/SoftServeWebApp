@@ -5,16 +5,21 @@ using WebApp.Domain;
 using WebApp.Services.EventService;
 using WebApp.Web.Controllers.Mappers;
 using WebApp.Web.Models.Event;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
+
 
 namespace WebApp.Web.Controllers
 {
     public class AdminEventController : Controller
     {
+        private readonly UserManager<WebAppUser> _userManager;
         private readonly IEventService _eventService;
         private readonly IEventMapper eventMapper;
 
-        public AdminEventController(IEventService eventService, IEventMapper eventMapper)
+        public AdminEventController(UserManager<WebAppUser> userManager, IEventService eventService, IEventMapper eventMapper)
         {
+            this._userManager = userManager;
             this._eventService = eventService;
             this.eventMapper = eventMapper;
         }
@@ -27,11 +32,18 @@ namespace WebApp.Web.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetMyEvents(string id)
+        public IActionResult GetMyEvents()
         {
+            var userId = _userManager.GetUserId(User);
+
+            if (userId == null)
+            {
+                return BadRequest("No such User registerd");
+            }
+
             var allMappedEventsByUser = new List<EventBindingModel>();
 
-            var allEventsByUser = _eventService.GetAllEventsByUser(id);
+            var allEventsByUser = _eventService.GetAllEventsByUser(userId);
 
             foreach (var eventByUser in allEventsByUser)
             {

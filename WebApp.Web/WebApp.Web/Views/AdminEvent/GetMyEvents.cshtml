@@ -16,27 +16,61 @@
 
     @foreach (var userEvent in Model)
     {
-        <div id="content">
-            <div class="row">
-                <div class="column">
-                    <img src=@userEvent.ImageURL id="EventImage" />
-                    <center>@userEvent.Location</center>
+        <div class="d-flex flex-row bd-highlight justify-content-center">
+            <div class="jumbotron p-0 mt-5 bg-primary shadow">
+                <div class="d-flex justify-content-between">
+                    <h3 class="pt-2 pl-3">@userEvent.Title</h3>
+                    <h5 class="mt-3">@userEvent.Location</h5>
+                    <h6 class="mt-3 mr-3 ">Admin Name</h6>
                 </div>
-                <div class="column">
-                    <center><h1>@userEvent.Title<h3>@userEvent.Time.ToString()</h3></h1></center>
-                    <br />
-                    <br />
-                    <center>@userEvent.Description</center>
-                </div>
-            </div>
-            <div class="row">
-                @for (int i = 0; i < 2; i++)
+                <hr class="mt-1 mb-3">
+
+                @foreach (var position in userEvent.Positions)
                 {
-                    <div class="column">
-                        <h3><center>TEAM @(i + 1)</center></h3>
-                        @await Html.PartialAsync($"_TeamPartial", userEvent.Positions)
+                    <div class="row">
+                        <div class="col">
+                            @position.Name:
+                        </div>
+                        <div class="col">
+                            <button type="button" class="btn btn-danger mx-3 mb-2" data-toggle="modal" data-target="#exampleModal">@position.Aprooved.Name</button>
+                        </div>
+                        <div class="col">
+                            @await Html.PartialAsync($"_StarRatingPartial")
+                        </div>
+                        <div class="col">
+                            <button class="btn btn-info btn-sm mx-3 mb-2" role="button">Join Event</button>
+                        </div>
                     </div>
                 }
+
+                <!-- Modal -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h7 class="modal-title" id="exampleModalLabel">{Player Name}</h7>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row d-flex" style="width:500px; height:500px">
+                                    <div class="col">Description</div>
+                                    <div class="col">Description</div>
+                                    <div class="col">Description</div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" asp-controller="" asp-action="">View Profile</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr class="my-2">
+                <div class="d-flex justify-content-center">
+                    <a class="btn btn-info btn mb-2 ml-4" role="button" asp-controller="Event" asp-route-id="@userEvent.Id" asp-action="ViewEvent">Info</a>
+                </div>
             </div>
         </div>
     }
