@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Linq;
 using WebApp.Domain;
 using WebApp.Services.ScoreService;
 using WebApp.Web.Models;
@@ -47,6 +48,8 @@ namespace WebApp.Web.Controllers
             {
                 ranklist.Add(users[i], score[i]);
             }
+
+            ranklist.OrderBy(key => key.Value);
 
             return View(ranklist);
         }
