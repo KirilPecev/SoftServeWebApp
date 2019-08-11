@@ -86,6 +86,7 @@
             services.AddScoped<IPositionRepo, PositionRepo>();
             services.AddSingleton<IEventMapper, EventMapper>();
             services.AddScoped<IEventMapper, EventMapper>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddDistributedRedisCache(option =>
             {
