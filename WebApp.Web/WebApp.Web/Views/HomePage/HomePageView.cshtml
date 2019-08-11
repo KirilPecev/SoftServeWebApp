@@ -70,10 +70,10 @@
                                 </div>
 
                                 <label for="time"><br>Select Time and Date</label>
-                                <input asp-for="@Model.Modal.Time" type="datetime-local" id="time" name="Time" required="2019-01-01T12:00">
+                                <input asp-for="@Model.Modal.Time" type="datetime-local" id="time" name="Time" required value="2019-01-01T12:00">
 
-                                <div class="form-group" accept="image/jpg,image/jpeg">
-                                    <br> Your image: <input type="file" name="eventImage" id="eventImage"><br>
+                                <div class="form-group">
+                                    <br> Your image: <input type="file" name="eventImage" id="eventImage" accept="image/jpg"><br>
                                 </div>
                             </div>
 

@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using WebApp.ImageStorage.AzureBlobStorage;
 
 namespace WebApp.Web.Models.Event
 {
