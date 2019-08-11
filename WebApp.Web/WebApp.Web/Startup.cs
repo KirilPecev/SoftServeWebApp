@@ -20,6 +20,7 @@
     using Services.EventService;
     using System;
     using WebApp.Services.PositionService;
+    using WebApp.Services.RatingService;
     using WebApp.Services.SportService;
     using WebApp.Web.Controllers.Mappers;
     using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
@@ -65,6 +66,9 @@
             services.AddSingleton<IHostedService, SendEmailsTask>();
 
             services.AddSingleton<IRatingRepo, RatingRepo>();
+            services.AddSingleton<IRatingService, RatingService>();
+            services.AddScoped<IRatingRepo, RatingRepo>();
+            services.AddScoped<IRatingService, RatingService>();
 
             //TODO register services and repos
             services.AddSingleton<IEventService, EventService>();
