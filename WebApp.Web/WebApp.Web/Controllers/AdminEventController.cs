@@ -51,5 +51,15 @@ namespace WebApp.Web.Controllers
 
             return View(allMappedEventsByUser);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> DeleteEvent(int id)
+        {
+            await _eventService.DeleteEvent(id);
+
+            //TODO: pop with message of success or not
+
+          return RedirectToAction(nameof(GetMyEvents));
+        }
     }
 }

@@ -5,12 +5,14 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
 
-    public class EventService : IEventService
+    public class EventService : BaseService, IEventService
     {
         private IEventRepository _eventRepository;
 
-        public EventService(IEventRepository eventRepository)
+        public EventService(IEventRepository eventRepository, IUnitOfWork unitOfWork)
+            :base(unitOfWork)
         {
             this._eventRepository = eventRepository;
         }
@@ -46,6 +48,15 @@
                 .ToList();
 
             return allEventsByUser;
+        }
+
+        public async Task DeleteEvent(int id)
+        {
+            var eventToBeDeleted =  this.GetEvent(id);
+
+             _eventRepository.Remove(eventToBeDeleted);
+
+            await SaveChangesAsync();
         }
     }
 }

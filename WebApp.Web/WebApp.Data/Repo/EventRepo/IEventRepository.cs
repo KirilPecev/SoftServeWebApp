@@ -4,7 +4,7 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
-    public interface IEventRepository
+    public interface IEventRepository : IRepository<Event>
     {
         void CreateEvent(Event createEvent); 
 

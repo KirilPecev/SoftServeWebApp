@@ -2,6 +2,7 @@
 {
     using Domain;
     using System.Collections.Generic;
+    using System.Threading.Tasks;
 
     public interface IEventService
     {
@@ -12,5 +13,7 @@
         Event GetEvent(int id);
 
         IEnumerable<Event> GetAllEventsByUser(string id);
+
+        Task DeleteEvent(int id);
     }
 }
