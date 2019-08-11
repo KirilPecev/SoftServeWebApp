@@ -7,10 +7,9 @@ namespace WebApp.Web.Models
         public string Name { get; set; }
         public List<UserScore> Score { get; set; }
 
-        public UserBindingModel(string _Name, List<UserScore> _Score)
+        public UserBindingModel()
         {
-            Name = _Name;
-            Score = _Score;
+            Score = new List<UserScore>();
         }
     }
 }

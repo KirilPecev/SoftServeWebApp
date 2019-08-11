@@ -1,44 +1,49 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using WebApp.Domain;
-using WebApp.Services.RatingService;
 using WebApp.Web.Models;
 using System.Linq;
 
 namespace WebApp.Web.Controllers
 {
     using System.Security.Claims;
+    using WebApp.Services.ScoreService;
 
     public class UsersController : Controller
     {
         private UserManager<WebAppUser> _userManager;
-        private IRatingService ratingService;
+        private IScoreService scoreService;
 
-        public UsersController(UserManager<WebAppUser> userManager, IRatingService _ratingService)
+        public UsersController(UserManager<WebAppUser> userManager, IScoreService _scoreService)
         {
             _userManager = userManager;
-            ratingService = _ratingService;
+            scoreService = _scoreService;
         }
 
-        public IActionResult Profile()
+        public IActionResult Profile(string name)
         {
-            // string currentUser = User.Identity.Name;
-            //// double _score = ratingService.GetAllRatings().Where(r => r.Receiver.UserName == currentUser).First().Score;
+            string currentUser = name;
+            string ID = this._userManager.Users.FirstOrDefault(u => u.UserName == currentUser).Id;
+            List<Rating> rating = scoreService.GetAllData().Where(rid => rid.ReceiverId == ID).ToList();
 
-            // UserBindingModel model = new UserBindingModel(currentUser,
-            //     new List<UserScore>() {
-            //          new UserScore ()
-            //          {
-            //              CurrentDate = DateTime.Now.ToShortDateString(),
-            //              Score = _score
-            //          }
-            // });
+            UserBindingModel model = new UserBindingModel();
 
-            // return View("Profile", model);
+            model.Name = currentUser;
 
-            return this.Ok();
+            foreach (var item in rating)
+            {
+                foreach (var score in item.Scores)
+                {
+                    model.Score.Add(new UserScore()
+                    {
+                        CurrentDate = score.DateTime.ToShortDateString(),
+                        Score = score.Points
+                    });
+                }
+            }
+
+            return View("Profile", model);
         }
     }
 }
