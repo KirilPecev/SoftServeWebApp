@@ -1,16 +1,10 @@
-﻿@{
-    string[] atendees = new string[]
-    {
-        "Ivan",
-        "Pesho",
-        "Gosho"
-    };
-}
-@for (int i = 0; i < atendees.Length; i++)
+﻿@model List<WebApp.Web.Models.Event.PlayerModel>
+
+@for (int i = 0; i < @Model.Count; i++)
  {
     <div class="row">
         <div class="column">
-            <button type="button" class="btn btn-danger mx-3 mb-2" data-toggle="modal" data-target="#exampleModal" id="name">@atendees[i] Wants to join!</button>
+            <button type="button" class="btn btn-danger mx-3 mb-2" data-toggle="modal" data-target="#exampleModal" id="name">@Model[i].Name Wants to join!</button>
         </div>
         <div class="column">
             <button class="button" id="aproove">Aproove</button>

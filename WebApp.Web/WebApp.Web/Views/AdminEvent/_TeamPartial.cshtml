@@ -10,5 +10,5 @@
         <button class="btn btn-info btn-sm mx-3 mb-2" role="button">Join Event</button>
     </div>
 
-    @await Html.PartialAsync($"_AproovePartial");
+    @await Html.PartialAsync($"_AproovePartial", Model[i].ToBeAprooved);
 }
