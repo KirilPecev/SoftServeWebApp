@@ -9,22 +9,41 @@
         </div>
         <hr class="mt-1 mb-3">
 
-        @foreach(var position in Model.Positions)
+        <h5>TEAM 1</h5>
+        @foreach (var position in Model.Positions.Take(Model.Positions.Count / 2).ToList())
         {
-    <div class="row">
-        <div class="col">
-            @position.Name:
-        </div>
-        <div class="col">
-            <button type="button" class="btn btn-danger mx-3 mb-2" data-toggle="modal" data-target="#exampleModal">@position.Aprooved.Name</button>
-        </div>
-        <div class="col">
-            @await Html.PartialAsync($"_StarRatingPartial")
-        </div>
-        <div class="col">
-            <button class="btn btn-info btn-sm mx-3 mb-2" role="button">Join Event</button>
-        </div>
-    </div>
+            <div class="row">
+                <div class="col">
+                    @position.Name:
+                </div>
+                <div class="col">
+                    <button type="button" class="btn btn-danger mx-3 mb-2" data-toggle="modal" data-target="#exampleModal">@position.Aprooved.Name</button>
+                </div>
+                <div class="col">
+                    @await Html.PartialAsync($"_StarRatingPartial")
+                </div>
+                <div class="col">
+                    <button class="btn btn-info btn-sm mx-3 mb-2" role="button">Join Event</button>
+                </div>
+            </div>
+        }
+        <h5>TEAM 2</h5>
+        @foreach (var position in Model.Positions.TakeLast(Model.Positions.Count / 2).ToList())
+        {
+            <div class="row">
+                <div class="col">
+                    @position.Name:
+                </div>
+                <div class="col">
+                    <button type="button" class="btn btn-danger mx-3 mb-2" data-toggle="modal" data-target="#exampleModal">@position.Aprooved.Name</button>
+                </div>
+                <div class="col">
+                    @await Html.PartialAsync($"_StarRatingPartial")
+                </div>
+                <div class="col">
+                    <button class="btn btn-info btn-sm mx-3 mb-2" role="button">Join Event</button>
+                </div>
+            </div>
         }
 
         <!-- Modal -->
@@ -43,7 +62,7 @@
                             <div class="col">Description</div>
                             <div class="col">Description</div>
                         </div>
-                    </div>                    
+                    </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" asp-controller="" asp-action="">View Profile</button>
                     </div>
@@ -53,7 +72,7 @@
 
         <hr class="my-2">
         <div class="d-flex justify-content-center">
-            <a class="btn btn-info btn mb-2 ml-4" role="button" asp-controller="Event" asp-route-id="@Model.Id" asp-action="ViewEvent">Info</a>
+            <a class="btn btn-info btn mb-2 ml-4" role="button" asp-controller="HomePage" asp-route-id="@Model.Id" asp-action="DetermineEventView">Info</a>
         </div>
     </div>
 </div>

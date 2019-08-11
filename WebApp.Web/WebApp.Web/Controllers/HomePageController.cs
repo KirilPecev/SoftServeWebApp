@@ -38,7 +38,15 @@
             this._eventService.CreateEvent(eventMapper.MapEventToDB(model, eventImage, _userManager.GetUserId(User)));
             return ReturnMainView();
         }
+        public IActionResult DetermineEventView(int Id)
+        {
+            Event dbEvent = _eventService.GetEvent(Id);
 
+            if (dbEvent.AdminId == _userManager.GetUserId(User))
+                return RedirectToAction("AdminViewEvent", "AdminEvent", dbEvent);
+            else
+                return RedirectToAction("ViewEvent","Event", dbEvent);
+        }
         private ViewResult ReturnMainView()
         {
             HomePageBinding model = new HomePageBinding();
