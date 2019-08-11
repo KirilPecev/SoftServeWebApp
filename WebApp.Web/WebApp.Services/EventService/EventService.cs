@@ -1,15 +1,18 @@
 ﻿namespace WebApp.Services.EventService
 {
-    using System;
-    using System.Collections.Generic;
     using Data.Repo;
     using Domain;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
 
-    public class EventService : IEventService
+    public class EventService : BaseService, IEventService
     {
         private IEventRepository _eventRepository;
 
-        public EventService(IEventRepository eventRepository)
+        public EventService(IEventRepository eventRepository, IUnitOfWork unitOfWork)
+            :base(unitOfWork)
         {
             this._eventRepository = eventRepository;
         }
@@ -35,6 +38,25 @@
             {
                 return foundEvent;
             }
+        }
+
+        //TODO: Make it asyc
+        public IEnumerable<Event> GetAllEventsByUser(string id) 
+        {
+           var allEventsByUser = this._eventRepository.GetAllEvents()
+                .Where(x => x.AdminId == id && x.IsDeleted == false)
+                .ToList();
+
+            return allEventsByUser;
+        }
+
+        public async Task DeleteEvent(int id)
+        {
+            var eventToBeDeleted =  this.GetEvent(id);
+
+            eventToBeDeleted.IsDeleted = true;
+
+            await SaveChangesAsync();
         }
     }
 }

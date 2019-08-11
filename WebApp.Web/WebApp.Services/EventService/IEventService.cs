@@ -1,8 +1,8 @@
 ﻿namespace WebApp.Services.EventService
 {
-    using System.Collections.Generic;
     using Domain;
     using System.Collections.Generic;
+    using System.Threading.Tasks;
 
     public interface IEventService
     {
@@ -11,5 +11,9 @@
         IEnumerable<Event> GetAllEvents();
 
         Event GetEvent(int id);
+
+        IEnumerable<Event> GetAllEventsByUser(string id);
+
+        Task DeleteEvent(int id);
     }
 }

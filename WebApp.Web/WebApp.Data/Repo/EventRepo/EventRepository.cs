@@ -4,8 +4,9 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Threading.Tasks;
 
-    public class EventRepository : Repository<Event> ,IEventRepository
+    public class EventRepository : Repository<Event>, IEventRepository
     {
         private readonly WebAppDbContext dbContext;
         public EventRepository(WebAppDbContext dbContext) :base(dbContext)

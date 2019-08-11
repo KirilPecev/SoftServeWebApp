@@ -1,7 +1,7 @@
 ﻿@{
     Layout = null;
 }
-@model WebApp.Web.Models.Event.EventBindingModel
+@model EventBindingModel
     <head>
         <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
         <link href="~/lib/bootstrap/dist/css/bootstrap-grid.css" rel="stylesheet" />
@@ -36,7 +36,7 @@
             </div>
             <center>
                 <button type="button" class="btn btn-danger mx-3 mb-2" id="editButton">Edit</button>
-                <button type="button" class="btn btn-danger mx-3 mb-2" id="deleteButton">Delete</button>
+                <a type="button" class="btn btn-danger mx-3 mb-2" asp-controller="AdminEvent" asp-action="DeleteEvent" asp-route-id="@Model.Id"  id="deleteButton" >Delete</a>
             </center>
         </div>
     </div>
