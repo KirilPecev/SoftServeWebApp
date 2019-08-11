@@ -1,7 +1,9 @@
-﻿
+﻿@model Dictionary<string, double>
 @{
     ViewData["Title"] = "CurrentRankList";
     Layout = null;
+
+    byte countPlace = 1;
 }
 
 <head>
@@ -13,33 +15,47 @@
     @await Html.PartialAsync("_NavBarPartial")
 
     <table align="center" style="border-collapse:collapse">
-        @for (int i = 1; i <= 50; i++)
+        @foreach (var item in Model)
         {
+            <tr>
+                <td align="center" class="colW">@countPlace</td>
+                <td align="center"> @item.Key -> @item.Value </td>
+            </tr>
+
+            countPlace++;
+        }
+        @*@for (int i = 1; i <= Model.Count; i++)
+        {
+
             if (i == 1)
             {
                 <tr style="background-color:gold">
-                    <td align="center"> User[@i] / Location / Score </td>
+                    <td align="center" class="colW">@i</td>
+                    <td align="center"> User[@i] -> Score </td>
                 </tr>
             }
             else if (i == 2)
             {
                 <tr style="background-color:silver">
-                    <td align="center"> User[@i] / Location / Score </td>
+                    <td align="center" colW>@i</td>
+                    <td align="center"> User[@i] -> Score </td>
                 </tr>
             }
             else if (i == 3)
             {
                 <tr style="background-color:darkgoldenrod">
-                    <td align="center"> User[@i] / Location /Score </td>
+                    <td align="center" colW>@i</td>
+                    <td align="center"> User[@i] ->Score </td>
                 </tr>
             }
             else
             {
                 <tr>
-                    <td align="center"> User[@i] / Location / Score </td>
+                    <td align="center" colW>@i</td>
+                    <td align="center"> User[@i] -> Score </td>
                 </tr>
             }
-        }
+        }*@
     </table>
 </body>
 
@@ -57,5 +73,9 @@
     table, td {
         font-size: 25px;
         border: 2px solid black;
+    }
+
+    .colW {
+        width: 50px;
     }
 </style>
