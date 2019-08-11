@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using WebApp.Domain;
 using WebApp.Services.EventService;
 using WebApp.Web.Controllers.Mappers;
+using WebApp.Web.Models.Event;
 
 namespace WebApp.Web.Controllers
 {
@@ -24,11 +26,19 @@ namespace WebApp.Web.Controllers
             return View(eventMapper.MapDbToEvent(dbEvent));
         }
 
-        public async Task<IActionResult> GetMyEvents(string adminId)
+        [HttpGet]
+        public IActionResult GetMyEvents(string id)
         {
+            var allMappedEventsByUser = new List<EventBindingModel>();
 
+            var allEventsByUser = _eventService.GetAllEventsByUser(id);
 
-            return null;
+            foreach (var eventByUser in allEventsByUser)
+            {
+                allMappedEventsByUser.Add(eventMapper.MapDbToEvent(eventByUser));
+            }
+
+            return View(allMappedEventsByUser);
         }
     }
 }

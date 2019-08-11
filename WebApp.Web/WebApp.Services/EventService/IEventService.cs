@@ -1,6 +1,5 @@
 ﻿namespace WebApp.Services.EventService
 {
-    using System.Collections.Generic;
     using Domain;
     using System.Collections.Generic;
 
@@ -11,5 +10,7 @@
         IEnumerable<Event> GetAllEvents();
 
         Event GetEvent(int id);
+
+        IEnumerable<Event> GetAllEventsByUser(string id);
     }
 }
