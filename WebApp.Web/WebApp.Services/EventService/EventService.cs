@@ -1,9 +1,10 @@
 ﻿namespace WebApp.Services.EventService
 {
-    using System;
-    using System.Collections.Generic;
     using Data.Repo;
     using Domain;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
 
     public class EventService : IEventService
     {
@@ -35,6 +36,16 @@
             {
                 return foundEvent;
             }
+        }
+
+        //TODO: Make it asyc
+        public IEnumerable<Event> GetAllEventsByUser(string id) 
+        {
+           var allEventsByUser = this._eventRepository.GetAllEvents()
+                .Where(x => x.AdminId == id)
+                .ToList();
+
+            return allEventsByUser;
         }
     }
 }
