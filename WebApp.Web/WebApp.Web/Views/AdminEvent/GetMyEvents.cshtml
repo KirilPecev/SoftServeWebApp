@@ -1,8 +1,45 @@
-﻿@model  IEnumerable<EventBindingModel>
+﻿@model IEnumerable<EventBindingModel>
 
 @{
     ViewData["Title"] = "GetMyEvents";
 }
 
-<h1>GetMyEvents</h1>
+<head>
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/dist/css/bootstrap-grid.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/dist/css/bootstrap-reboot.css" rel="stylesheet" />
+</head>
+<div class="container">
+    <div id="sidebar">
+        @await Html.PartialAsync("_NavBarPartial")
+    </div>
+
+    @foreach (var userEvent in Model)
+    {
+        <div id="content">
+            <div class="row">
+                <div class="column">
+                    <img src=@userEvent.ImageURL id="EventImage" />
+                    <center>@userEvent.Location</center>
+                </div>
+                <div class="column">
+                    <center><h1>@userEvent.Title<h3>@userEvent.Time.ToString()</h3></h1></center>
+                    <br />
+                    <br />
+                    <center>@userEvent.Description</center>
+                </div>
+            </div>
+            <div class="row">
+                @for (int i = 0; i < 2; i++)
+                {
+                    <div class="column">
+                        <h3><center>TEAM @(i + 1)</center></h3>
+                        @await Html.PartialAsync($"_TeamPartial", userEvent.Positions)
+                    </div>
+                }
+            </div>
+        </div>
+    }
+</div>
+
 
