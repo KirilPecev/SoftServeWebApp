@@ -18,11 +18,11 @@ namespace WebApp.Web.Controllers
 
         public IActionResult CurrentRankList()
         {
-            Dictionary<string, double> ranklist = new Dictionary<string, double>();
+            Dictionary<string, int> ranklist = new Dictionary<string, int>();
             List<Rating> rating = scoreService.GetAllData();
 
             List<string> users = new List<string>();
-            List<double> score = new List<double>();
+            List<int> score = new List<int>();
 
             foreach (var item in rating)
             {
@@ -31,7 +31,7 @@ namespace WebApp.Web.Controllers
 
             foreach (var item in rating)
             {
-                double average = 0;
+                int average = 0;
                 int count = 0;
 
                 foreach (var _score in item.Scores)
