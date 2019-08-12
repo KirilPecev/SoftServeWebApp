@@ -9,14 +9,13 @@ using WebApp.Web.Models.Event;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using WebApp.Services.EventAttendance;
+using System;
+using WebApp.Scheduler.Scheduler;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace WebApp.Web.Controllers
-{
-    using System;
-    using Microsoft.AspNetCore.Http;
-    using Microsoft.Extensions.DependencyInjection;
-    using Scheduler.Scheduler;
-
+{ 
     public class AdminEventController : Controller
     {
         private readonly UserManager<WebAppUser> _userManager;
@@ -26,7 +25,8 @@ namespace WebApp.Web.Controllers
         private readonly IServiceProvider provider;
         private readonly IServiceScopeFactory factory;
 
-        public AdminEventController(IServiceProvider provider, IServiceScopeFactory factory, UserManager<WebAppUser> userManager, IEventService eventService, IEventMapper eventMapper, IEventAttendanceService attendanceService)
+        public AdminEventController(IServiceProvider provider, IServiceScopeFactory factory, 
+            UserManager<WebAppUser> userManager, IEventService eventService, IEventMapper eventMapper, IEventAttendanceService attendanceService)
         {
             this._userManager = userManager;
             this._eventService = eventService;
