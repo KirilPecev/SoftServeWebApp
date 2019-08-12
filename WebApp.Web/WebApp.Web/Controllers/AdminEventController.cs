@@ -1,5 +1,5 @@
 
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using WebApp.Domain;
@@ -11,6 +11,11 @@ using System.Security.Claims;
 using WebApp.Services.EventAttendance;
 
 namespace WebApp.Web.Controllers
+{
+    using System;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.Extensions.DependencyInjection;
+    using Scheduler.Scheduler;
 
     public class AdminEventController : Controller
     {
@@ -21,7 +26,7 @@ namespace WebApp.Web.Controllers
         private readonly IServiceProvider provider;
         private readonly IServiceScopeFactory factory;
 
-        public AdminEventController(IServiceProvider provider, IServiceScopeFactory factory, UserManager<WebAppUser> userManager, IEventService eventService, IEventMapper eventMapper)
+        public AdminEventController(IServiceProvider provider, IServiceScopeFactory factory, UserManager<WebAppUser> userManager, IEventService eventService, IEventMapper eventMapper, IEventAttendanceService attendanceService)
         {
             this._userManager = userManager;
             this._eventService = eventService;
