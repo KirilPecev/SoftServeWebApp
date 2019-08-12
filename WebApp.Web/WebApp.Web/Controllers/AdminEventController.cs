@@ -68,8 +68,8 @@ namespace WebApp.Web.Controllers
             int eventId = int.Parse(rv["eventId"]);
             int positionId = int.Parse(rv["positionId"]);
             string userID = rv["userId"];
-            attendanceService.ApproveUserForeEvent(userID, eventId, positionId);
-            return View();
+            attendanceService.ApproveUserForeEvent(userID, eventId, positionId).Wait();
+            return RedirectToAction("HomePageView", "HomePage");
         }
         public IActionResult IgnoreUser(IDictionary<string, string> rv)
         {
@@ -77,7 +77,7 @@ namespace WebApp.Web.Controllers
             int positionId = int.Parse(rv["positionId"]);
             string userID = rv["userId"];
             attendanceService.RemoveUserAtendeeToBeAprooved(userID, eventId, positionId);
-            return View();
+            return RedirectToAction("HomePageView", "HomePage");
         }
     }
 }

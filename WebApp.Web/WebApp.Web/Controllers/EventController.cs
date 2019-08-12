@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Linq;
 using WebApp.Domain;
 using WebApp.Services.EventAttendance;
 using WebApp.Services.EventService;
@@ -30,7 +31,9 @@ namespace WebApp.Web.Controllers
             int eventId = int.Parse(rv["eventId"]);
             int positionId = int.Parse(rv["positionId"]);
             string joinID = this.userManager.GetUserId(User);
-            attendanceService.RegisterUserForEvent(joinID, eventId, positionId);
+            if(!attendanceService.GetAllEventAttendeesForEvent(eventId).Any(a => a.UserId == joinID))
+               attendanceService.RegisterUserForEvent(joinID, eventId, positionId).Wait();
+
             return RedirectToAction("HomePageView", "HomePage");
         }
     }
