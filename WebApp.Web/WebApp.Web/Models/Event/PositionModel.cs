@@ -9,6 +9,7 @@ namespace WebApp.Web.Models.Event
             Aprooved = new PlayerModel();
             ToBeAprooved = new List<PlayerModel>();
         }
+        public int EventId { get; set; }
         public int Id { get; set; }
         public int Team { get; set; }
         public string Name { get; set; }

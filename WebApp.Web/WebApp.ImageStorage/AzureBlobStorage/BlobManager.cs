@@ -33,8 +33,12 @@
         }
         public string GetImageUrl(string imageName)
         {
-            var blob = blobContainer.GetBlockBlobReference(imageName);
-            return blob.Uri.AbsoluteUri;
+            if (imageName != null)
+            {
+                var blob = blobContainer.GetBlockBlobReference(imageName);
+                return blob.Uri.AbsoluteUri;
+            }
+            return null;
         }
         private CloudBlobContainer CreateContainer(string containerName)
         {

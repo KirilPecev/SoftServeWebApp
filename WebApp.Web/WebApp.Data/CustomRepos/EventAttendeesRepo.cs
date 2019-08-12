@@ -21,5 +21,10 @@ namespace WebApp.Data.CustomRepos
 
             return eventAttendee;
         }
+
+        public IEnumerable<EventAttendees> GetAll()
+        {
+            return dbSet;
+        }
     }
 }

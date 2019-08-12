@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using WebApp.Domain;
 using WebApp.Services;
+using WebApp.Services.EventAttendance;
 using WebApp.Services.EventService;
 using WebApp.Services.PositionService;
 using WebApp.Services.SportService;
@@ -13,14 +14,19 @@ namespace WebApp.Web.Controllers.Mappers
 {
     public class EventMapper : Controller, IEventMapper
     {
+        private readonly UserManager<WebAppUser> userManager;
         private readonly ImageService _imageService;
         private readonly ISportService _sportService;
         private readonly IPositionService _positionSerivce;
-        public EventMapper(IEventService eventService, ISportService sportService, IPositionService positionService)
+        private readonly IEventAttendanceService _attendanceService;
+        public EventMapper(IEventService eventService, ISportService sportService, IPositionService positionService, 
+            IEventAttendanceService attendanceService, UserManager<WebAppUser> userManager)
         {
             this._imageService = new ImageService();
             this._sportService = sportService;
             this._positionSerivce = positionService;
+            this._attendanceService = attendanceService;
+            this.userManager = userManager;
         }
         public Event MapEventToDB(EventBindingModel model, IFormFile eventImage, string adminId)
         {
@@ -67,6 +73,7 @@ namespace WebApp.Web.Controllers.Mappers
             EventBindingModel model = new EventBindingModel();
             dbEvent.Sport = _sportService.GetSports().Where(s => s.Id == dbEvent.SportId).SingleOrDefault();
             dbEvent.Sport.Positions = _positionSerivce.GetPositions().Where(p => p.SportId == dbEvent.SportId).ToList();
+            AddUsersToPositions(dbEvent);
             model.Id = dbEvent.Id;
             model.AdminId = dbEvent.AdminId;
             model.Title = dbEvent.Name;
@@ -74,27 +81,58 @@ namespace WebApp.Web.Controllers.Mappers
             model.Location = dbEvent.Location;
             model.Description = dbEvent.Description;
             model.ImageURL = _imageService.GetImageURL(dbEvent.Image);
-
             AttachPositions(dbEvent, model);
-            if (dbEvent.Users.Count > 0)
-            {
-                AttachUsersToPositions(dbEvent, model);
-            }
+            AttachUsersToPositions(dbEvent, model);
             return model;
         }
-        private static void AttachUsersToPositions(Event dbEvent, EventBindingModel model)
+        private void AddUsersToPositions(Event dbEvent)
+        {
+            if (dbEvent.Positions.Count == 0)
+            {
+                foreach (var position in dbEvent.Sport.Positions)
+                {
+                    var newPos = new EventAttendeesToBeApproved();
+                    newPos.Position = new Position();
+                    newPos.PositionId = position.Id;
+                    newPos.Position.Id = position.Id;
+                    newPos.Position.Name = position.Name;
+                    dbEvent.Positions.Add(newPos);
+                }
+            }
+            var atendees = _attendanceService.GetAllEventAttendeesForEvent(dbEvent.Id).ToList();
+            foreach (var atendee in atendees)
+            {
+                var position = dbEvent.Positions.First(p => p.PositionId == atendee.PositionId);
+                position.Position.EventAttendees.Add(atendee);
+            }
+            var atendeesForAprooving = _attendanceService.GetAllEventAttendeesToBeApprovedForEvent(dbEvent.Id).ToList();
+            foreach (var atendee in atendeesForAprooving)
+            {
+                var position = dbEvent.Positions.First(p => p.PositionId == atendee.PositionId);
+                position.Position.EventAttendeesToBeApproved.Add(atendee);
+            }
+        }
+        private void AttachUsersToPositions(Event dbEvent, EventBindingModel model)
         {
             foreach (var position in model.Positions)
             {
-                var positionUser = dbEvent.Users.Where(u => u.PositionId == position.Id).Single();
-                position.Aprooved.Id = positionUser.User.Id;
-                position.Aprooved.Name = positionUser.User.UserName;
-                //position.Aprooved.Rating
-                foreach (var toBeAprooved in dbEvent.Positions.Where(u => u.PositionId == position.Id))
+                var dbPosition = dbEvent.Positions.First(p => p.PositionId == position.Id).Position;
+                if(dbPosition.EventAttendees.Count!=0)
                 {
-                    PlayerModel pending = new PlayerModel();
-                    pending.Id = toBeAprooved.User.Id;
-                    pending.Name = toBeAprooved.User.UserName;
+                    string aproovedPlayerId = dbPosition.EventAttendees.First().UserId;
+                    position.Aprooved.Name = userManager.Users.FirstOrDefault(u => u.Id == aproovedPlayerId).UserName;
+                    position.Aprooved.Id = aproovedPlayerId;
+                }
+                if (dbPosition.EventAttendeesToBeApproved.Count != 0)
+                {
+                    var toBeAprooved = dbPosition.EventAttendeesToBeApproved.ToList();
+                    foreach (var user in toBeAprooved)
+                    {
+                        PlayerModel pendingAproval = new PlayerModel();
+                        pendingAproval.Name = userManager.Users.FirstOrDefault(u => u.Id == user.UserId).UserName;
+                        pendingAproval.Id = user.UserId;
+                        position.ToBeAprooved.Add(pendingAproval);
+                    }
                 }
             }
         }
@@ -103,6 +141,7 @@ namespace WebApp.Web.Controllers.Mappers
             foreach (var position in viewEvent.Sport.Positions)
             {
                 PositionModel newPosition = new PositionModel();
+                newPosition.EventId = viewEvent.Id;
                 newPosition.Id = position.Id;
                 newPosition.Name = position.Name;
                 newPosition.Team = position.Team;
