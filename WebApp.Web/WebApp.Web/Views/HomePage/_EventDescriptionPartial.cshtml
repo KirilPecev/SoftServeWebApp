@@ -30,10 +30,14 @@
                     }
                 </div>
                 <div class="col">
+<<<<<<< Updated upstream
                     @if (@position.Aprooved.Name != null)
                     {
                         @await Html.PartialAsync($"_StarRatingPartial")
                     }
+=======
+                    @await Html.PartialAsync($"_StarRatingPartial", new StarModel(position.EventId, position.Aprooved));
+>>>>>>> Stashed changes
                 </div>
                 <div class="col">
                     @if (@position.Aprooved.Name == null)
@@ -46,12 +50,56 @@
         <h5>TEAM 2</h5>
         @foreach (var position in Model.Positions.TakeLast(Model.Positions.Count / 2).ToList())
         {
+<<<<<<< Updated upstream
             IDictionary<string, string> rv = new Dictionary<string, string>();
             rv.Add("eventId", Model.Id.ToString());
             rv.Add("positionId", position.Id.ToString());
     <div class="row">
         <div class="col">
             @position.Name:
+=======
+                IDictionary<string, string> rv = new Dictionary<string, string>();
+                rv.Add("eventId", Model.Id.ToString());
+                rv.Add("positionId", position.Id.ToString());
+            <div class="row">
+                <div class="col">
+                    @position.Name:
+                </div>
+                <div class="col">
+                    <button type="button" class="btn btn-danger mx-3 mb-2" data-toggle="modal" data-target="#exampleModal">@position.Aprooved.Name</button>
+                </div>
+                <div class="col">
+                    @await Html.PartialAsync($"_StarRatingPartial", new StarModel(position.EventId, position.Aprooved))
+                </div>
+                <div class="col">
+                    <a class="btn btn-info btn mb-2 ml-4" role="button" asp-controller="Event" asp-all-route-data="@rv" asp-action="JoinUser">Join</a>
+                </div>
+            </div>
+        }
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h7 class="modal-title" id="exampleModalLabel">{Player Name}</h7>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row d-flex" style="width:500px; height:500px">
+                            <div class="col">Description</div>
+                            <div class="col">Description</div>
+                            <div class="col">Description</div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" asp-controller="" asp-action="">View Profile</button>
+                    </div>
+                </div>
+            </div>
+>>>>>>> Stashed changes
         </div>
         <div class="col">
             @if (@position.Aprooved.Name != null)

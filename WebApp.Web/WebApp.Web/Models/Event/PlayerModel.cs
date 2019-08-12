@@ -1,4 +1,6 @@
-﻿namespace WebApp.Web.Models.Event
+﻿using System.Collections.Generic;
+
+namespace WebApp.Web.Models.Event
 {
     public class PlayerModel
     {
