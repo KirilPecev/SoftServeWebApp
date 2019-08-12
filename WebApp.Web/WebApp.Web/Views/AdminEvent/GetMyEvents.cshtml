@@ -35,7 +35,14 @@
                             @position.Name:
                         </div>
                         <div class="col">
-                            <button type="button" class="btn btn-danger mx-3 mb-2" data-toggle="modal" data-target="#exampleModal">@position.Aprooved.Name</button>
+                            @if (@position.Aprooved.Name != null)
+                            {
+                                <a type="button" class="btn btn-danger mx-3 mb-2" asp-controller="Users" asp-action="Profile" asp-route-name="@position.Aprooved.Name">@position.Aprooved.Name</a>
+                            }
+                            else
+                            {
+                                <button type="button" class="btn btn-danger mx-3 mb-2" disabled="disabled">Awaiting...</button>
+                            }
                         </div>
                         <div class="col">
                             @await Html.PartialAsync($"_StarRatingPartial")
