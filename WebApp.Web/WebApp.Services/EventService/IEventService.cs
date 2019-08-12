@@ -15,5 +15,7 @@
         IEnumerable<Event> GetAllEventsByUser(string id);
 
         Task DeleteEvent(int id);
+
+        void EditEvent(Event editEvent);
     }
 }

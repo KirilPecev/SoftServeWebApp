@@ -25,6 +25,7 @@ namespace WebApp.Web.Controllers.Mappers
         public Event MapEventToDB(EventBindingModel model, IFormFile eventImage, string adminId)
         {
             Event newEvent = new Event();
+            newEvent.Id = model.Id;
             newEvent.Name = model.Title;
             newEvent.Time = model.Time;
             newEvent.SportId = model.SportId;
@@ -42,6 +43,25 @@ namespace WebApp.Web.Controllers.Mappers
 
             return newEvent;
         }
+
+        public Event MapEditEventToDB(EventBindingModel model, IFormFile eventImage, string adminId)
+        {
+            Event newEvent = new Event();
+            newEvent.Id = model.Id;
+            newEvent.Name = model.Title;
+            newEvent.Time = model.Time;
+            newEvent.SportId = model.SportId;
+            newEvent.Description = model.Description;
+            newEvent.Location = model.Location;
+            if (eventImage != null)
+            {
+                newEvent.Image = this._imageService.UploadImage(eventImage);
+            }
+            newEvent.AdminId = adminId;
+
+            return newEvent;
+        }
+
         public EventBindingModel MapDbToEvent(Event dbEvent)
         {
             EventBindingModel model = new EventBindingModel();
