@@ -7,6 +7,9 @@ namespace WebApp.Web.Controllers.Mappers
     public interface IEventMapper
     {
         Event MapEventToDB(EventBindingModel model, IFormFile eventImage, string adminId);
+
+        Event MapEditEventToDB(EventBindingModel model, IFormFile eventImage, string adminId);
+
         EventBindingModel MapDbToEvent(Event dbEvent);
     }
 }
