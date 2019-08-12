@@ -10,6 +10,7 @@ namespace WebApp.Web.Controllers
 {
     public class EventController : Controller
     {
+        private Event current;
         private readonly IEventMapper eventMapper;
         private readonly UserManager<WebAppUser> userManager;
         private readonly IEventAttendanceService attendanceService;
@@ -21,6 +22,7 @@ namespace WebApp.Web.Controllers
         }
         public IActionResult ViewEvent(Event dbEvent)
         {
+            this.current = dbEvent;
             return View(eventMapper.MapDbToEvent(dbEvent));
         }
         public IActionResult JoinUser(IDictionary<string,string> rv)
@@ -28,8 +30,8 @@ namespace WebApp.Web.Controllers
             int eventId = int.Parse(rv["eventId"]);
             int positionId = int.Parse(rv["positionId"]);
             string joinID = this.userManager.GetUserId(User);
-            attendanceService.ApproveUserForeEvent(joinID, eventId, positionId);
-            return RedirectToAction("ReturnMainView","HomePage", new { area = "" });
+            attendanceService.RegisterUserForEvent(joinID, eventId, positionId);
+            return RedirectToAction("HomePageView", "HomePage");
         }
     }
 }

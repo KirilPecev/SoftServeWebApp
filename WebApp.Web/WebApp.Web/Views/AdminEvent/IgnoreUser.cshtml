@@ -1,0 +1,35 @@
+﻿
+@{
+    Layout = null;
+}
+<html>
+
+    <head>
+        <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+        <link href="~/lib/bootstrap/dist/css/bootstrap-grid.css" rel="stylesheet" />
+        <link href="~/lib/bootstrap/dist/css/bootstrap-reboot.css" rel="stylesheet" />
+    </head>
+
+    <body>
+        <div id="sidebar">
+            @await Html.PartialAsync("_NavBarPartial")
+        </div>
+        <table align="center" style="margin-top:20%">
+            <tr>
+                <td>
+                    <h1>YOU HAVE DELETED THIS USER</h1>
+                </td>
+            </tr>
+        </table>
+    </body>
+</html>
+<style>
+    #grad1 {
+        width: 200px;
+        background: radial-gradient(#e66465, #9198e5);
+    }
+
+    body {
+        background: radial-gradient(#e66465, #9198e5);
+    }
+</style>

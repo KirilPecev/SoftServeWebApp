@@ -7,7 +7,7 @@ using WebApp.Web.Controllers.Mappers;
 using WebApp.Web.Models.Event;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
-
+using WebApp.Services.EventAttendance;
 
 namespace WebApp.Web.Controllers
 {
@@ -16,12 +16,14 @@ namespace WebApp.Web.Controllers
         private readonly UserManager<WebAppUser> _userManager;
         private readonly IEventService _eventService;
         private readonly IEventMapper eventMapper;
+        private readonly IEventAttendanceService attendanceService;
 
-        public AdminEventController(UserManager<WebAppUser> userManager, IEventService eventService, IEventMapper eventMapper)
+        public AdminEventController(UserManager<WebAppUser> userManager, IEventService eventService, IEventMapper eventMapper, IEventAttendanceService attendanceService)
         {
             this._userManager = userManager;
             this._eventService = eventService;
             this.eventMapper = eventMapper;
+            this.attendanceService = attendanceService;
         }
 
         [HttpGet]
@@ -60,6 +62,22 @@ namespace WebApp.Web.Controllers
             //TODO: pop with message of success or not
 
           return RedirectToAction(nameof(GetMyEvents));
+        }
+        public IActionResult AprooveUser(IDictionary<string, string> rv)
+        {
+            int eventId = int.Parse(rv["eventId"]);
+            int positionId = int.Parse(rv["positionId"]);
+            string userID = rv["userId"];
+            attendanceService.ApproveUserForeEvent(userID, eventId, positionId);
+            return View();
+        }
+        public IActionResult IgnoreUser(IDictionary<string, string> rv)
+        {
+            int eventId = int.Parse(rv["eventId"]);
+            int positionId = int.Parse(rv["positionId"]);
+            string userID = rv["userId"];
+            attendanceService.RemoveUserAtendeeToBeAprooved(userID, eventId, positionId);
+            return View();
         }
     }
 }

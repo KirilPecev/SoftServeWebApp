@@ -7,9 +7,11 @@ namespace WebApp.Data.CustomRepos
 {
     public class EventAttendeesToBeApprovedRepo : Repository<EventAttendeesToBeApproved>, IEventAttendeesToBeApprovedRepo
     {
+        private WebAppDbContext dbContext;
         public EventAttendeesToBeApprovedRepo(WebAppDbContext context)
         : base(context)
         {
+            this.dbContext = context;
         }
         public IEnumerable<EventAttendeesToBeApproved> GetAllByUserId(string id)
         {
@@ -22,6 +24,16 @@ namespace WebApp.Data.CustomRepos
         public IEnumerable<EventAttendeesToBeApproved> GetAll()
         {
             return this.dbSet;
+        }
+
+        public void RemoveUser(string userId, int eventId, int positionId)
+        {
+            var remove = this.dbSet.First(u => u.UserId == userId &&
+            u.PositionId == positionId &&
+            u.EventId == eventId
+            );
+            this.dbSet.Remove(remove);
+            this.dbContext.SaveChanges();
         }
     }
 }

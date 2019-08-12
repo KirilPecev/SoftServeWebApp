@@ -11,7 +11,10 @@ namespace WebApp.Services.EventAttendance
         Task<EventAttendees> ApproveUserForeEvent(string userId, int eventId, int positionId);
         IEnumerable<EventAttendeesToBeApproved> GetAllEventAttendeesToBeApprovedForUser(string userId);
         IEnumerable<EventAttendees> GetAllEventAttendeesForUser(string userId);
-        IEnumerable<EventAttendeesToBeApproved> GetAllEventAttendeesToBeApprovedForEvent(int eventId);
-        IEnumerable<EventAttendees> GetAllEventAttendeesForEvent(int eventId);
+        List<EventAttendeesToBeApproved> GetAllEventAttendeesToBeApprovedForEvent(int eventId);
+        List<EventAttendees> GetAllEventAttendeesForEvent(int eventId);
+        void RemoveUserAtendee(string userId,int  eventId,int positionId);
+        void RemoveUserAtendeeToBeAprooved(string userId, int eventId, int positionId);
+
     }
 }

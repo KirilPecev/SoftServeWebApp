@@ -102,6 +102,8 @@ namespace WebApp.Web.Controllers.Mappers
                     string aproovedPlayerId = dbPosition.EventAttendees.First().UserId;
                     position.Aprooved.Name = userManager.Users.FirstOrDefault(u => u.Id == aproovedPlayerId).UserName;
                     position.Aprooved.Id = aproovedPlayerId;
+                    position.Aprooved.EventId = dbEvent.Id;
+                    position.Aprooved.PositionId = position.Id;
                 }
                 if (dbPosition.EventAttendeesToBeApproved.Count != 0)
                 {
@@ -109,8 +111,10 @@ namespace WebApp.Web.Controllers.Mappers
                     foreach (var user in toBeAprooved)
                     {
                         PlayerModel pendingAproval = new PlayerModel();
-                        pendingAproval.Name = userManager.Users.FirstOrDefault(u => u.Id == user.UserId).UserName;
+                        pendingAproval.Name = userManager.Users.FirstOrDefault(u => u.Id == user.UserId).NormalizedUserName;
                         pendingAproval.Id = user.UserId;
+                        pendingAproval.EventId = dbEvent.Id;
+                        pendingAproval.PositionId = position.Id;
                         position.ToBeAprooved.Add(pendingAproval);
                     }
                 }
