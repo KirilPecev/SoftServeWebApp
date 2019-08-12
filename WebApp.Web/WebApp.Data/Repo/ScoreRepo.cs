@@ -8,8 +8,6 @@ namespace WebApp.Data.Repo
 {
     public class ScoreRepo : Repository<Rating>, IScoreRepo
     {
-        private readonly WebAppDbContext dbContext;
-
         public ScoreRepo(WebAppDbContext dbContext) : base(dbContext)
         {
         }

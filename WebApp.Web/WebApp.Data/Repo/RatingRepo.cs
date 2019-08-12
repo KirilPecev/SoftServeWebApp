@@ -6,8 +6,6 @@ namespace WebApp.Data.Repo
 {
     public class RatingRepo : Repository<Rating>, IRatingRepo
     {
-        private readonly WebAppDbContext dbContext;
-
         public RatingRepo(WebAppDbContext dbContext) : base(dbContext)
         {
         }
@@ -20,7 +18,6 @@ namespace WebApp.Data.Repo
         public void AddRating(Rating rating)
         {
             dbSet.Add(rating);
-            dbContext.SaveChanges();
         }
     }
 }

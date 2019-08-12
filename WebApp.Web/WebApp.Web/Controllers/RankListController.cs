@@ -40,7 +40,14 @@ namespace WebApp.Web.Controllers
                     count++;
                 }
 
-                average /= count;
+                if (count != 0)
+                {
+                    average /= count;
+                }
+                else
+                {
+                    average /= 1;
+                }
                 score.Add(average);
             }
 
@@ -49,9 +56,16 @@ namespace WebApp.Web.Controllers
                 ranklist.Add(users[i], score[i]);
             }
 
-            ranklist.OrderBy(key => key.Value);
+            var sortedRankList = from entry in ranklist orderby entry.Value descending select entry;
 
-            return View(ranklist);
+            Dictionary<string, int> _sortedRankList = new Dictionary<string, int>();
+
+            foreach (var item in sortedRankList)
+            {
+                _sortedRankList.Add(item.Key, item.Value);
+            }
+
+            return View(_sortedRankList);
         }
     }
 }
