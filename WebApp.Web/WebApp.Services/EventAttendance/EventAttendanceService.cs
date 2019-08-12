@@ -45,8 +45,8 @@ namespace WebApp.Services.EventAttendance
                 PositionId = positionId
             };
 
-            await _eventAttendeesRepo.AddAsync(approvedUser);
             RemoveUserAtendeeToBeAprooved(userId, eventId, positionId);
+            await _eventAttendeesRepo.AddAsync(approvedUser);     
             await SaveChangesAsync();
             return approvedUser;
         }
@@ -83,7 +83,7 @@ namespace WebApp.Services.EventAttendance
         }
         public void RemoveUserAtendeeToBeAprooved(string userId, int eventId, int positionId)
         {
-            _eventAttendeesToBeApprovedRepo.RemoveUser(userId, eventId, positionId);
+            _eventAttendeesToBeApprovedRepo.ClearUsers(userId, eventId);
         }
     }
 }

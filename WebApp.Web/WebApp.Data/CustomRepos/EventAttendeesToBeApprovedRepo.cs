@@ -33,7 +33,18 @@ namespace WebApp.Data.CustomRepos
             u.EventId == eventId
             );
             this.dbSet.Remove(remove);
-            this.dbContext.SaveChanges();
+            dbContext.SaveChanges();
+        }
+        public void ClearUsers(string userId, int eventId)
+        {
+            var remove = this.dbSet.Where(u => u.UserId == userId &&
+            u.EventId == eventId
+            );
+            foreach (var toRemove in remove)
+            {
+                this.dbSet.Remove(toRemove);
+            }
+            dbContext.SaveChanges();
         }
     }
 }
