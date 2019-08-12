@@ -7,9 +7,11 @@ namespace WebApp.Data.CustomRepos
 {
     public class EventAttendeesRepo : Repository<EventAttendees>, IEventAttendeesRepo
     {
+        private WebAppDbContext dbContext;
         public EventAttendeesRepo(WebAppDbContext webAppDbContext)
             : base(webAppDbContext)
         {
+            this.dbContext = webAppDbContext;
         }
 
 
@@ -25,6 +27,15 @@ namespace WebApp.Data.CustomRepos
         public IEnumerable<EventAttendees> GetAll()
         {
             return dbSet;
+        }
+        public void RemoveUser(string userId, int eventId, int positionId)
+        {
+            var remove = this.dbSet.First(u => u.UserId == userId &&
+            u.PositionId == positionId &&
+            u.EventId == eventId
+            );
+            this.dbSet.Remove(remove);
+            dbContext.SaveChanges();
         }
     }
 }

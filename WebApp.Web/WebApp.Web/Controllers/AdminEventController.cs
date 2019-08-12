@@ -1,23 +1,23 @@
-﻿namespace WebApp.Web.Controllers
-{
-    using Domain;
-    using Mappers;
-    using Microsoft.AspNetCore.Identity;
-    using Microsoft.AspNetCore.Mvc;
-    using Microsoft.Extensions.DependencyInjection;
-    using Models.Event;
-    using Scheduler.Scheduler;
-    using Services.EventService;
-    using System;
-    using System.Collections.Generic;
-    using System.Threading.Tasks;
-    using Microsoft.AspNetCore.Http;
+
+﻿using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using WebApp.Domain;
+using WebApp.Services.EventService;
+using WebApp.Web.Controllers.Mappers;
+using WebApp.Web.Models.Event;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
+using WebApp.Services.EventAttendance;
+
+namespace WebApp.Web.Controllers
 
     public class AdminEventController : Controller
     {
         private readonly UserManager<WebAppUser> _userManager;
         private readonly IEventService _eventService;
         private readonly IEventMapper eventMapper;
+        private readonly IEventAttendanceService attendanceService;
         private readonly IServiceProvider provider;
         private readonly IServiceScopeFactory factory;
 
@@ -26,6 +26,7 @@
             this._userManager = userManager;
             this._eventService = eventService;
             this.eventMapper = eventMapper;
+            this.attendanceService = attendanceService;
             this.provider = provider;
             this.factory = factory;
         }
@@ -81,6 +82,22 @@
             task.ProcessInScope(provider);
 
             return this.RedirectToAction("GetMyEvents");
+        }
+        public IActionResult AprooveUser(IDictionary<string, string> rv)
+        {
+            int eventId = int.Parse(rv["eventId"]);
+            int positionId = int.Parse(rv["positionId"]);
+            string userID = rv["userId"];
+            attendanceService.ApproveUserForeEvent(userID, eventId, positionId).Wait();
+            return RedirectToAction("HomePageView", "HomePage");
+        }
+        public IActionResult IgnoreUser(IDictionary<string, string> rv)
+        {
+            int eventId = int.Parse(rv["eventId"]);
+            int positionId = int.Parse(rv["positionId"]);
+            string userID = rv["userId"];
+            attendanceService.RemoveUserAtendeeToBeAprooved(userID, eventId, positionId);
+            return RedirectToAction("HomePageView", "HomePage");
         }
     }
 }

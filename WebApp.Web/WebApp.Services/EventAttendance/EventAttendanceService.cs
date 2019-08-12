@@ -46,8 +46,8 @@ namespace WebApp.Services.EventAttendance
             };
 
             await _eventAttendeesRepo.AddAsync(approvedUser);
+            RemoveUserAtendeeToBeAprooved(userId, eventId, positionId);
             await SaveChangesAsync();
-
             return approvedUser;
         }
 
@@ -58,19 +58,16 @@ namespace WebApp.Services.EventAttendance
             return allAttendeesForUser;
         }
 
-        public IEnumerable<EventAttendees> GetAllEventAttendeesForEvent(int eventId)
+        public List<EventAttendees> GetAllEventAttendeesForEvent(int eventId)
         {
-            var allAttendeesForEvent = _eventAttendeesRepo.GetAll().Where(a => a.EventId == eventId);
+            var allAttendeesForEvent = _eventAttendeesRepo.GetAll().Where(a => a.EventId == eventId).ToList();
 
             return allAttendeesForEvent;
         }
 
-        public IEnumerable<EventAttendeesToBeApproved> GetAllEventAttendeesToBeApprovedForEvent(int eventId)
+        public List<EventAttendeesToBeApproved> GetAllEventAttendeesToBeApprovedForEvent(int eventId)
         {
-
-            var allAttendeesForEvent = _eventAttendeesToBeApprovedRepo.GetAll().Where(a => a.EventId == eventId);
-
-
+            var allAttendeesForEvent = _eventAttendeesToBeApprovedRepo.GetAll().Where(a => a.EventId == eventId).ToList();
             return allAttendeesForEvent;
         }
 
@@ -78,9 +75,15 @@ namespace WebApp.Services.EventAttendance
         {
 
             var allAttendeesForUser = _eventAttendeesToBeApprovedRepo.GetAllByUserId(userId);
-
-
             return allAttendeesForUser;
+        }
+        public void RemoveUserAtendee(string userId, int eventId, int positionId)
+        {
+            _eventAttendeesRepo.RemoveUser(userId, eventId, positionId);
+        }
+        public void RemoveUserAtendeeToBeAprooved(string userId, int eventId, int positionId)
+        {
+            _eventAttendeesToBeApprovedRepo.RemoveUser(userId, eventId, positionId);
         }
     }
 }
