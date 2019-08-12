@@ -20,7 +20,14 @@
                     @position.Name:
                 </div>
                 <div class="col">
-                    <button type="button" class="btn btn-danger mx-3 mb-2" data-toggle="modal" data-target="#exampleModal">@position.Aprooved.Name</button>
+                    @if (@position.Aprooved.Name != null)
+                    {
+                        <a type="button" class="btn btn-danger mx-3 mb-2" asp-controller="Users" asp-action="Profile" asp-route-name="@position.Aprooved.Name">@position.Aprooved.Name</a>
+                    }
+                    else
+                    {
+                        <button type="button" class="btn btn-danger mx-3 mb-2" disabled="disabled">Awaiting...</button>
+                    }
                 </div>
                 <div class="col">
                     @await Html.PartialAsync($"_StarRatingPartial")
@@ -33,15 +40,22 @@
         <h5>TEAM 2</h5>
         @foreach (var position in Model.Positions.TakeLast(Model.Positions.Count / 2).ToList())
         {
-                IDictionary<string, string> rv = new Dictionary<string, string>();
-                rv.Add("eventId", Model.Id.ToString());
-                rv.Add("positionId", position.Id.ToString());
+            IDictionary<string, string> rv = new Dictionary<string, string>();
+            rv.Add("eventId", Model.Id.ToString());
+            rv.Add("positionId", position.Id.ToString());
             <div class="row">
                 <div class="col">
                     @position.Name:
                 </div>
                 <div class="col">
-                    <button type="button" class="btn btn-danger mx-3 mb-2" data-toggle="modal" data-target="#exampleModal">@position.Aprooved.Name</button>
+                    @if (@position.Aprooved.Name != null)
+                    {
+                        <a type="button" class="btn btn-danger mx-3 mb-2" asp-controller="Users" asp-action="Profile" asp-route-name="@position.Aprooved.Name">@position.Aprooved.Name</a>
+                    }
+                    else
+                    {
+                        <button type="button" class="btn btn-danger mx-3 mb-2" disabled="disabled">Awaiting...</button>
+                    }
                 </div>
                 <div class="col">
                     @await Html.PartialAsync($"_StarRatingPartial")
@@ -52,29 +66,6 @@
             </div>
         }
 
-        <!-- Modal -->
-        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h7 class="modal-title" id="exampleModalLabel">{Player Name}</h7>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row d-flex" style="width:500px; height:500px">
-                            <div class="col">Description</div>
-                            <div class="col">Description</div>
-                            <div class="col">Description</div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" asp-controller="" asp-action="">View Profile</button>
-                    </div>
-                </div>
-            </div>
-        </div>
 
         <hr class="my-2">
         <div class="d-flex justify-content-center">
