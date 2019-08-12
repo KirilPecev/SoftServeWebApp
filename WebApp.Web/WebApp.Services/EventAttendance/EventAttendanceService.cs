@@ -9,14 +9,21 @@ using WebApp.Domain;
 
 namespace WebApp.Services.EventAttendance
 {
+    using Microsoft.AspNetCore.Identity;
+    using Notifications;
+
     public class EventAttendanceService : BaseService, IEventAttendanceService
     {
+        private readonly IEmailSender sender;
+        private readonly UserManager<WebAppUser> userManager;
         private readonly IEventAttendeesRepo _eventAttendeesRepo;
         private readonly IEventAttendeesToBeApprovedRepo _eventAttendeesToBeApprovedRepo;
 
-        public EventAttendanceService(IEventAttendeesToBeApprovedRepo eventAttendeesToBeApprovedRepo, IEventAttendeesRepo eventAttendeesRepo, IUnitOfWork unitOfWork)
+        public EventAttendanceService(IEmailSender sender, UserManager<WebAppUser> userManager, IEventAttendeesToBeApprovedRepo eventAttendeesToBeApprovedRepo, IEventAttendeesRepo eventAttendeesRepo, IUnitOfWork unitOfWork)
             : base(unitOfWork)
         {
+            this.sender = sender;
+            this.userManager = userManager;
             this._eventAttendeesRepo = eventAttendeesRepo;
             this._eventAttendeesToBeApprovedRepo = eventAttendeesToBeApprovedRepo;
         }
@@ -46,8 +53,12 @@ namespace WebApp.Services.EventAttendance
             };
 
             RemoveUserAtendeeToBeAprooved(userId, eventId, positionId);
-            await _eventAttendeesRepo.AddAsync(approvedUser);     
+            await _eventAttendeesRepo.AddAsync(approvedUser);
             await SaveChangesAsync();
+
+            var email = this.userManager.Users.SingleOrDefault(u => u.Id == approvedUser.UserId).Email;
+            await this.sender.SendEmailAsync(email, "Event", "You have been approved for event. Check you events.");
+
             return approvedUser;
         }
 
