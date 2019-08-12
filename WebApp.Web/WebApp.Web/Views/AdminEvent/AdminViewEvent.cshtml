@@ -2,72 +2,120 @@
     Layout = null;
 }
 @model EventBindingModel
-    <head>
-        <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
-        <link href="~/lib/bootstrap/dist/css/bootstrap-grid.css" rel="stylesheet" />
-        <link href="~/lib/bootstrap/dist/css/bootstrap-reboot.css" rel="stylesheet" />
-    </head>
-    <div class="container">
-        <div id="sidebar">
-            @await Html.PartialAsync("_NavBarPartial")
-        </div>
-        <div id="content">
-            <div class="row">
-                <div class="column">
-                    <img src=@Model.ImageURL id="EventImage" />
-                    <center>@Model.Location</center>
-                </div>
-                <div class="column">
-                    <center><h1>@Model.Title<h3>@Model.Time</h3></h1></center>
-                    <br />
-                    <br />
-                    <center>@Model.Description</center>
-                </div>
-            </div>
-            <div class="row">
-                <div class="column">
-                    <h3><center>TEAM 1</center></h3>
-                    @await Html.PartialAsync($"_TeamPartial", Model.Positions.Take(Model.Positions.Count / 2).ToList())
-                </div>
-                <div class="column">
-                    <h3><center>TEAM 2</center></h3>
-                    @await Html.PartialAsync($"_TeamPartial", Model.Positions.TakeLast(Model.Positions.Count / 2).ToList())
-                </div>
-            </div>
-            <center>
-                <button type="button" class="btn btn-danger mx-3 mb-2" id="editButton">Edit</button>
-                <a type="button" class="btn btn-danger mx-3 mb-2" asp-controller="AdminEvent" asp-action="DeleteEvent" asp-route-id="@Model.Id"  id="deleteButton" >Delete</a>
-            </center>
-        </div>
+<head>
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/dist/css/bootstrap-grid.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap/dist/css/bootstrap-reboot.css" rel="stylesheet" />
+</head>
+<div class="container">
+    <div id="sidebar">
+        @await Html.PartialAsync("_NavBarPartial")
     </div>
+    <div id="content">
+        <div class="row">
+            <div class="column">
+                <img src=@Model.ImageURL id="EventImage" />
+                <center>@Model.Location</center>
+            </div>
+            <div class="column">
+                <center><h1>@Model.Title<h3>@Model.Time</h3></h1></center>
+                <br />
+                <br />
+                <center>@Model.Description</center>
+            </div>
+        </div>
+        <div class="row">
+            <div class="column">
+                <h3><center>TEAM 1</center></h3>
+                @await Html.PartialAsync($"_TeamPartial", Model.Positions.Take(Model.Positions.Count / 2).ToList())
+            </div>
+            <div class="column">
+                <h3><center>TEAM 2</center></h3>
+                @await Html.PartialAsync($"_TeamPartial", Model.Positions.TakeLast(Model.Positions.Count / 2).ToList())
+            </div>
+        </div>
+        <center>
+            <button type="button" class="btn btn-danger mx-3 mb-2" data-toggle="modal" data-target="#exampleModalCenter" id="editButton">
+                Edit
+            </button>
+            <a type="button" class="btn btn-danger mx-3 mb-2" asp-controller="AdminEvent" asp-action="DeleteEvent" asp-route-id="@Model.Id" id="deleteButton">Delete</a>
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <form asp-action="Edit" method="post" enctype="multipart/form-data">
+                            <div class="modal-header d-flex justify-content-center">
+                                <div class="form-group" style="width: 20rem">
+                                    <input asp-for="@Model.Title" type="text" class="form-control" id="Title" name="Title" required aria-describedby="TitleInput" placeholder="Event Title" />
+                                </div>
+                            </div>
+
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label for="exampleFormControlTextarea">Description</label>
+                                    <textarea asp-for="@Model.Description" class="form-control" id="Description" name="Description" required rows="3"></textarea>
+                                </div>
+                                <div class="form-group" style="width: 20rem">
+                                    <input asp-for="@Model.Location" type="text" class="form-control" id="Location " name="Location" required aria-describedby="TitleInput" placeholder="Event Location" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleFormControlSelect1">Example select</label>
+                                    <select asp-for="@Model.SportId" class="form-control" id="exampleFormControlSelect1" name="SportId" required>
+                                        <option value="1">Football</option>
+                                    </select>
+                                </div>
+
+                                <label for="time"><br>Select Time and Date</label>
+                                <input asp-for="@Model.Time" type="datetime-local" id="time" name="Time" required value="2019-01-01T12:00">
+
+                                <div class="form-group">
+                                    <br> Your image: <input type="file" name="eventImage" id="eventImage" accept="image/jpg"><br>
+                                </div>
+                            </div>
+                            <input type="hidden" asp-for="@Model.Id"/>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <input type="submit" value="Save" />
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </center>
+    </div>
+</div>
 <style>
-    body{
+    body {
         margin: 0;
-        padding:0;
+        padding: 0;
     }
-    .container { 
-        position:relative; 
-        padding:10px; 
-        top:0px; 
-        right: 0; 
-        left: 0; 
+
+    .container {
+        position: relative;
+        padding: 10px;
+        top: 0px;
+        right: 0;
+        left: 0;
         height: 1200px;
-        width:100%;
-        min-width:1000px;
+        width: 100%;
+        min-width: 1000px;
     }
+
     #sidebar {
-        position:absolute;
-        top:0; 
-        bottom:0; 
-        left:0;
-        width:200px;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 200px;
         height: 1000px;
     }
-    #content { 
-        height:700px; 
+
+    #content {
+        height: 700px;
         margin-left: 200px;
-        padding:10px; 
+        padding: 10px;
     }
+
     #EventImage {
         position: relative;
         display: block;
@@ -80,11 +128,13 @@
         width: 100%;
         max-width: 600px;
     }
+
     .column {
         float: left;
         width: 50%;
     }
-    .button{
+
+    .button {
         background-color: black;
         border: none;
         color: white;
@@ -96,7 +146,8 @@
         margin: 4px 2px;
         cursor: pointer;
     }
-    #deleteButton{
+
+    #deleteButton {
         background-color: red;
         border: none;
         color: white;
@@ -108,7 +159,8 @@
         margin: 4px 2px;
         cursor: pointer;
     }
-    #editButton{
+
+    #editButton {
         background-color: orange;
         border: none;
         color: white;
@@ -121,4 +173,8 @@
         cursor: pointer;
     }
 </style>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 

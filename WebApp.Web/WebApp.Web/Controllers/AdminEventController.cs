@@ -1,33 +1,40 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using WebApp.Domain;
-using WebApp.Services.EventService;
-using WebApp.Web.Controllers.Mappers;
-using WebApp.Web.Models.Event;
-using Microsoft.AspNetCore.Identity;
-using System.Security.Claims;
-
-
-namespace WebApp.Web.Controllers
+﻿namespace WebApp.Web.Controllers
 {
+    using Domain;
+    using Mappers;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.DependencyInjection;
+    using Models.Event;
+    using Scheduler.Scheduler;
+    using Services.EventService;
+    using System;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using Microsoft.AspNetCore.Http;
+
     public class AdminEventController : Controller
     {
         private readonly UserManager<WebAppUser> _userManager;
         private readonly IEventService _eventService;
         private readonly IEventMapper eventMapper;
+        private readonly IServiceProvider provider;
+        private readonly IServiceScopeFactory factory;
 
-        public AdminEventController(UserManager<WebAppUser> userManager, IEventService eventService, IEventMapper eventMapper)
+        public AdminEventController(IServiceProvider provider, IServiceScopeFactory factory, UserManager<WebAppUser> userManager, IEventService eventService, IEventMapper eventMapper)
         {
             this._userManager = userManager;
             this._eventService = eventService;
             this.eventMapper = eventMapper;
+            this.provider = provider;
+            this.factory = factory;
         }
 
         [HttpGet]
         public IActionResult AdminViewEvent(Event dbEvent)
         {
-            return View(eventMapper.MapDbToEvent(dbEvent));
+            var model = eventMapper.MapDbToEvent(dbEvent);
+            return View(model);
         }
 
         [HttpGet]
@@ -57,9 +64,23 @@ namespace WebApp.Web.Controllers
         {
             await _eventService.DeleteEvent(id);
 
+            var task = new EventsTask(factory);
+            task.ProcessInScope(provider);
+
             //TODO: pop with message of success or not
 
-          return RedirectToAction(nameof(GetMyEvents));
+            return RedirectToAction(nameof(GetMyEvents));
+        }
+
+        public IActionResult Edit(EventBindingModel model, IFormFile eventImage)
+        {
+            var viewModel = eventMapper.MapEditEventToDB(model, eventImage, _userManager.GetUserId(User));
+            this._eventService.EditEvent(viewModel);
+
+            var task = new EventsTask(factory);
+            task.ProcessInScope(provider);
+
+            return this.Ok();
         }
     }
 }
