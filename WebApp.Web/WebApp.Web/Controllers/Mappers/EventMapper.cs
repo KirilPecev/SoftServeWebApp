@@ -116,18 +116,18 @@ namespace WebApp.Web.Controllers.Mappers
         {
             foreach (var position in model.Positions)
             {
-                var dbPosition = dbEvent.Positions.First(p => p.PositionId == position.Id).Position;
-                if(dbPosition.EventAttendees.Count!=0)
+                var dbPosition = dbEvent.Positions.FirstOrDefault(p => p.PositionId == position.Id);
+                if(dbPosition != null && dbPosition.Position.EventAttendees.Count!=0)
                 {
-                    string aproovedPlayerId = dbPosition.EventAttendees.First().UserId;
+                    string aproovedPlayerId = dbPosition.Position.EventAttendees.First().UserId;
                     position.Aprooved.Name = userManager.Users.FirstOrDefault(u => u.Id == aproovedPlayerId).UserName;
                     position.Aprooved.Id = aproovedPlayerId;
                     position.Aprooved.EventId = dbEvent.Id;
                     position.Aprooved.PositionId = position.Id;
                 }
-                if (dbPosition.EventAttendeesToBeApproved.Count != 0)
+                if (dbPosition != null && dbPosition.Position.EventAttendeesToBeApproved.Count != 0)
                 {
-                    var toBeAprooved = dbPosition.EventAttendeesToBeApproved.ToList();
+                    var toBeAprooved = dbPosition.Position.EventAttendeesToBeApproved.ToList();
                     foreach (var user in toBeAprooved)
                     {
                         PlayerModel pendingAproval = new PlayerModel();

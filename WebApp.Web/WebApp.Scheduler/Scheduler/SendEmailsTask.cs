@@ -38,10 +38,10 @@
                 }
             }
 
-            //foreach (var email in emails)
-            //{
-            //    emailSender.SendEmailAsync(email, "Sport events", "You have incoming events tomorrow").Wait();
-            //}
+            foreach (var email in emails)
+            {
+                emailSender.SendEmailAsync(email, "Sport events", "You have incoming events tomorrow").Wait();
+            }
 
             Console.WriteLine($"Sended emails to {emails.Count} users.({DateTime.Now})");
             return Task.CompletedTask;
