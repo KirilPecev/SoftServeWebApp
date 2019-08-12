@@ -80,7 +80,7 @@
             var task = new EventsTask(factory);
             task.ProcessInScope(provider);
 
-            return this.Ok();
+            return this.RedirectToAction("GetMyEvents");
         }
     }
 }
