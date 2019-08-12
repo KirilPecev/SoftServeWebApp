@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WebApp.Data.CustomRepos;
@@ -55,6 +56,22 @@ namespace WebApp.Services.EventAttendance
             var allAttendeesForUser = _eventAttendeesRepo.GetAllByUserId(userId);
 
             return allAttendeesForUser;
+        }
+
+        public IEnumerable<EventAttendees> GetAllEventAttendeesForEvent(int eventId)
+        {
+            var allAttendeesForEvent = _eventAttendeesRepo.GetAll().Where(a => a.EventId == eventId);
+
+            return allAttendeesForEvent;
+        }
+
+        public IEnumerable<EventAttendeesToBeApproved> GetAllEventAttendeesToBeApprovedForEvent(int eventId)
+        {
+
+            var allAttendeesForEvent = _eventAttendeesToBeApprovedRepo.GetAll().Where(a => a.EventId == eventId);
+
+
+            return allAttendeesForEvent;
         }
 
         public IEnumerable<EventAttendeesToBeApproved> GetAllEventAttendeesToBeApprovedForUser(string userId)

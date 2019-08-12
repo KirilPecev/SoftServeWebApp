@@ -19,5 +19,9 @@ namespace WebApp.Data.CustomRepos
 
             return eventAttendeesToBeApproved;
         }
+        public IEnumerable<EventAttendeesToBeApproved> GetAll()
+        {
+            return this.dbSet;
+        }
     }
 }
