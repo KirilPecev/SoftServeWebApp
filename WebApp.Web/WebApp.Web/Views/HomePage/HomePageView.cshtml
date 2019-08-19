@@ -18,9 +18,9 @@
         <div class="col p-0 m-0" style="background-color: whitesmoke">
 
             <nav class="navbar p-0 m-0 justify-content-center d-flex bd-highlight sticky-top" id="centerNav">
-                <form class="form-inline mt-2 bd-highlight">
+                <form asp-controller="HomePage" asp-action="SearchForEvent" class="form-inline mt-2 bd-highlight">
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search events" id="searchForm">
+                        <input type="text" class="form-control" placeholder="Search events by location" id="searchForm" name="searchedEvent">
                         <div class="input-group-append">
                             <button class="btn" id="searching">
                                 <img src="~/images/homepage/icons8-search-48.png" style="width: 2vw" />

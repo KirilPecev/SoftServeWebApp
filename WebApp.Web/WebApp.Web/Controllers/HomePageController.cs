@@ -2,6 +2,7 @@
 {
     using Domain;
     using Mappers;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
@@ -12,7 +13,7 @@
     using Scheduler.Scheduler;
     using Services.EventService;
     using System;
-    using Microsoft.AspNetCore.Authorization;
+    using System.Linq;
 
     public class HomePageController : Controller
     {
@@ -75,6 +76,26 @@
             }
 
             return View(model);
+        }
+
+        public ViewResult SearchForEvent(string searchedEvent)
+        {
+            HomePageBinding model = new HomePageBinding();
+
+            var events = this.distributedCache.GetString("events");
+            var deserializedEvents = JsonConvert.DeserializeObject<Event[]>(events);
+
+            if (searchedEvent != null)
+            {
+                deserializedEvents = deserializedEvents.Where(e => e.Location.Contains(searchedEvent)).ToArray();
+            }
+
+            foreach (var dbEvent in deserializedEvents)
+            {
+                model.Events.Add(eventMapper.MapDbToEvent(dbEvent));
+            }
+
+            return View("HomePageView", model);
         }
     }
 }
