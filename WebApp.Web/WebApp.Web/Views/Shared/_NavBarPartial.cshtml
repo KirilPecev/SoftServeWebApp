@@ -1,19 +1,30 @@
 
 ﻿<nav id="mySideNav" class="sidenav">
-     <a asp-controller="Users" asp-action="Profile" asp-route-name="@this.User.Identity.Name"style="margin-bottom: 20px">
-         <img width="100" height="100" src="http://icons.iconarchive.com/icons/graphicloads/flat-finance/128/person-icon.png" />
-     </a>
-     @if (this.User.Identity.IsAuthenticated)
-     {
-     <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })" style="margin-bottom:0em">
-         <button type="submit" id="logout">Logout</button>
-     </form> 
-     }
-    <a class="nav-link notImg" asp-area="" asp-controller="HomePage" asp-action="HomePageView">Home</a>
-    <a class="nav-link notImg" asp-area="" asp-controller="Users" asp-action="Profile" asp-route-name="@this.User.Identity.Name">Profile</a>
-    <a class="nav-link notImg" asp-area="" asp-controller="RankList" asp-action="CurrentRankList">Rank List</a>
-    <a class="nav-link notImg" asp-area="" asp-controller="AdminEvent" asp-action="GetMyEvents">My Events</a>
+    @if (this.User.Identity.IsAuthenticated)
+    {
+        <a asp-controller="Users" asp-action="Profile" asp-route-name="@this.User.Identity.Name" style="margin-bottom: 20px">
+            <img width="100" height="100" src="http://icons.iconarchive.com/icons/graphicloads/flat-finance/128/person-icon.png" />
+        </a>
+    }
+    else
+    {
+        <a style="margin-bottom: 20px">
+            <img width="100" height="100" src="http://icons.iconarchive.com/icons/graphicloads/flat-finance/128/person-icon.png" />
+        </a>
+        <a class="nav-link notImg" asp-area="Identity" asp-page="/Account/Login">Login</a>
+    }
 
+    <a class="nav-link notImg" asp-area="" asp-controller="HomePage" asp-action="HomePageView">Home</a>
+
+    @if (this.User.Identity.IsAuthenticated)
+    {
+        <a class="nav-link notImg" asp-area="" asp-controller="Users" asp-action="Profile" asp-route-name="@this.User.Identity.Name">Profile</a>
+        <a class="nav-link notImg" asp-area="" asp-controller="RankList" asp-action="CurrentRankList">Rank List</a>
+        <a class="nav-link notImg" asp-area="" asp-controller="AdminEvent" asp-action="GetMyEvents">My Events</a>
+        <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new {area = ""})" style="margin-bottom: 0em">
+            <button type="submit" id="logout">Logout</button>
+        </form>
+    }
 </nav>
 
 <style>

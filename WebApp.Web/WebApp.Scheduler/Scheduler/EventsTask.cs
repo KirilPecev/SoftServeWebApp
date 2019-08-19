@@ -1,13 +1,12 @@
 ﻿namespace WebApp.Scheduler.Scheduler
 {
-    using Data;
     using Microsoft.Extensions.Caching.Distributed;
     using Microsoft.Extensions.DependencyInjection;
     using Newtonsoft.Json;
+    using Services.EventService;
     using System;
     using System.Linq;
     using System.Threading.Tasks;
-    using Services.EventService;
 
     public class EventsTask : ScheduledProcessor
     {
