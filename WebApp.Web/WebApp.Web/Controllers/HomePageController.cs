@@ -12,6 +12,7 @@
     using Scheduler.Scheduler;
     using Services.EventService;
     using System;
+    using Microsoft.AspNetCore.Authorization;
 
     public class HomePageController : Controller
     {
@@ -49,6 +50,7 @@
             return ReturnMainView();
         }
 
+        [Authorize]
         public IActionResult DetermineEventView(int Id)
         {
             Event dbEvent = eventService.GetEvent(Id);
@@ -59,6 +61,7 @@
                 return RedirectToAction("ViewEvent", "Event", dbEvent);
         }
 
+        [Authorize]
         private ViewResult ReturnMainView()
         {
             HomePageBinding model = new HomePageBinding();
@@ -72,12 +75,6 @@
             }
 
             return View(model);
-        }
-
-        [HttpGet]
-        public JsonResult GetEvent(object model)
-        {
-            return Json(model);
         }
     }
 }

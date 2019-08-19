@@ -27,10 +27,13 @@
                         </div>
                     </div>
                 </form>
-
-                <button type="button" class="btn btn-outline-info mb-2 bd-highlight" data-toggle="modal" data-target="#exampleModalCenter" style="margin-left: 4rem">
-                    Create Event
-                </button>
+                
+                @if (this.User.Identity.IsAuthenticated)
+                {
+                    <button type="button" class="btn btn-outline-info mb-2 bd-highlight" data-toggle="modal" data-target="#exampleModalCenter" style="margin-left: 4rem">
+                        Create Event
+                    </button>
+                }
             </nav>
 
 
