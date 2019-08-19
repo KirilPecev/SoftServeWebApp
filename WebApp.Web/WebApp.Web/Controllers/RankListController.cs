@@ -1,15 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Linq;
-using WebApp.Domain;
-using WebApp.Services.ScoreService;
-using WebApp.Web.Models;
-
-namespace WebApp.Web.Controllers
+﻿namespace WebApp.Web.Controllers
 {
+    using Domain;
+    using Microsoft.AspNetCore.Mvc;
+    using Services.ScoreService;
+    using System.Collections.Generic;
+    using System.Linq;
+
     public class RankListController : Controller
     {
-        private IScoreService scoreService;
+        private readonly IScoreService scoreService;
 
         public RankListController(IScoreService _scoreService)
         {
