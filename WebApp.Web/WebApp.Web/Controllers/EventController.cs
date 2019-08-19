@@ -7,6 +7,7 @@
     using Services.EventAttendance;
     using System.Collections.Generic;
     using System.Linq;
+    using Microsoft.AspNetCore.Authorization;
 
     public class EventController : Controller
     {
@@ -21,11 +22,13 @@
             this.attendanceService = attendanceService;
         }
 
+        [Authorize]
         public IActionResult ViewEvent(Event dbEvent)
         {
             return View(eventMapper.MapDbToEvent(dbEvent));
         }
 
+        [Authorize]
         public IActionResult JoinUser(IDictionary<string, string> rv)
         {
             int eventId = int.Parse(rv["eventId"]);

@@ -1,6 +1,7 @@
 ﻿namespace WebApp.Web.Controllers
 {
     using Domain;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Models;
@@ -19,6 +20,7 @@
             scoreService = _scoreService;
         }
 
+        [Authorize]
         public IActionResult Profile(string name)
         {
             string currentUser = name;

@@ -12,6 +12,7 @@ namespace WebApp.Web.Controllers
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using Microsoft.AspNetCore.Authorization;
     using WebApp.Scheduler.Scheduler;
 
     public class AdminEventController : Controller
@@ -35,6 +36,7 @@ namespace WebApp.Web.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public IActionResult AdminViewEvent(Event dbEvent)
         {
             var model = eventMapper.MapDbToEvent(dbEvent);
@@ -42,6 +44,7 @@ namespace WebApp.Web.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public IActionResult GetMyEvents()
         {
             var userId = userManager.GetUserId(User);
@@ -64,6 +67,7 @@ namespace WebApp.Web.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> DeleteEvent(int id)
         {
             await eventService.DeleteEvent(id);
@@ -76,6 +80,7 @@ namespace WebApp.Web.Controllers
             return RedirectToAction(nameof(GetMyEvents));
         }
 
+        [Authorize]
         public IActionResult Edit(EventBindingModel model, IFormFile eventImage)
         {
             var viewModel = eventMapper.MapEditEventToDB(model, eventImage, userManager.GetUserId(User));
@@ -86,6 +91,8 @@ namespace WebApp.Web.Controllers
 
             return this.RedirectToAction("GetMyEvents");
         }
+
+        [Authorize]
         public IActionResult AprooveUser(IDictionary<string, string> rv)
         {
             int eventId = int.Parse(rv["eventId"]);
@@ -94,6 +101,8 @@ namespace WebApp.Web.Controllers
             attendanceService.ApproveUserForeEvent(userID, eventId, positionId).Wait();
             return RedirectToAction("HomePageView", "HomePage");
         }
+
+        [Authorize]
         public IActionResult IgnoreUser(IDictionary<string, string> rv)
         {
             int eventId = int.Parse(rv["eventId"]);

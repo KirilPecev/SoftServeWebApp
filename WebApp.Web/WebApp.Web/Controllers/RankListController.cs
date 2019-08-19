@@ -1,6 +1,7 @@
 ﻿namespace WebApp.Web.Controllers
 {
     using Domain;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Services.ScoreService;
     using System.Collections.Generic;
@@ -15,6 +16,7 @@
             scoreService = _scoreService;
         }
 
+        [Authorize]
         public IActionResult CurrentRankList()
         {
             Dictionary<string, int> ranklist = new Dictionary<string, int>();
