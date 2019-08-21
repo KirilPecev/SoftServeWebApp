@@ -13,18 +13,13 @@
                 return Redirect("/Identity/Account/Login");
             }
 
-            return View();
+            return this.RedirectToAction("HomePageView","HomePage");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
-
-        public IActionResult FirstTimeIntoApp()
-        {
-            return View();
         }
     }
 }

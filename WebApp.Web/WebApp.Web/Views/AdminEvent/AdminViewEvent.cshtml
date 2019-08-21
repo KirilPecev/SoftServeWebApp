@@ -1,4 +1,5 @@
 ﻿@{
+    ViewData["Title"] = "Event";
     Layout = null;
 }
 @model EventBindingModel
@@ -72,7 +73,7 @@
                                     <br> Your image: <input type="file" name="eventImage" id="eventImage" accept="image/jpg"><br>
                                 </div>
                             </div>
-                            <input type="hidden" asp-for="@Model.Id"/>
+                            <input type="hidden" asp-for="@Model.Id" />
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                                 <input type="submit" value="Save" />

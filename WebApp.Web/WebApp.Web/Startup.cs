@@ -1,6 +1,8 @@
 ﻿namespace WebApp.Web
 {
+    using Controllers.Mappers;
     using Data;
+    using Data.CustomRepos;
     using Data.Repo;
     using Data.Seeding;
     using Domain;
@@ -17,15 +19,13 @@
     using Notifications;
     using Notifications.Entities;
     using Scheduler.Scheduler;
+    using Services.EventAttendance;
     using Services.EventService;
+    using Services.PositionService;
+    using Services.RatingService;
+    using Services.ScoreService;
+    using Services.SportService;
     using System;
-    using WebApp.Data.CustomRepos;
-    using WebApp.Services.EventAttendance;
-    using WebApp.Services.PositionService;
-    using WebApp.Services.RatingService;
-    using WebApp.Services.ScoreService;
-    using WebApp.Services.SportService;
-    using WebApp.Web.Controllers.Mappers;
     using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
     public class Startup

@@ -1,8 +1,8 @@
 ﻿namespace WebApp.Web.Controllers
 {
-    using System;
     using Domain;
     using Mappers;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
@@ -12,23 +12,25 @@
     using Newtonsoft.Json;
     using Scheduler.Scheduler;
     using Services.EventService;
+    using System;
+    using System.Linq;
 
     public class HomePageController : Controller
     {
-        private readonly IEventService _eventService;
+        private readonly IEventService eventService;
         private readonly IEventMapper eventMapper;
         private readonly IServiceProvider provider;
         private readonly IServiceScopeFactory factory;
         private readonly IDistributedCache distributedCache;
-        private readonly UserManager<WebAppUser> _userManager;
+        private readonly UserManager<WebAppUser> userManager;
 
         public HomePageController(IServiceProvider provider, IServiceScopeFactory factory, IDistributedCache distributedCache, UserManager<WebAppUser> userManager, IEventService eventService, IEventMapper eventMapper)
         {
             this.provider = provider;
             this.factory = factory;
             this.distributedCache = distributedCache;
-            this._userManager = userManager;
-            this._eventService = eventService;
+            this.userManager = userManager;
+            this.eventService = eventService;
             this.eventMapper = eventMapper;
         }
 
@@ -42,23 +44,25 @@
         [AutoValidateAntiforgeryToken]
         public IActionResult HomePageView(EventBindingModel model, IFormFile eventImage)
         {
-            this._eventService.CreateEvent(eventMapper.MapEventToDB(model, eventImage, _userManager.GetUserId(User)));
+            this.eventService.CreateEvent(eventMapper.MapEventToDB(model, eventImage, userManager.GetUserId(User)));
             var task = new EventsTask(factory);
             task.ProcessInScope(provider);
 
             return ReturnMainView();
         }
 
+        [Authorize]
         public IActionResult DetermineEventView(int Id)
         {
-            Event dbEvent = _eventService.GetEvent(Id);
+            Event dbEvent = eventService.GetEvent(Id);
 
-            if (dbEvent.AdminId == _userManager.GetUserId(User))
+            if (dbEvent.AdminId == userManager.GetUserId(User))
                 return RedirectToAction("AdminViewEvent", "AdminEvent", dbEvent);
             else
-                return RedirectToAction("ViewEvent","Event", dbEvent);
+                return RedirectToAction("ViewEvent", "Event", dbEvent);
         }
 
+        [Authorize]
         private ViewResult ReturnMainView()
         {
             HomePageBinding model = new HomePageBinding();
@@ -74,10 +78,24 @@
             return View(model);
         }
 
-        [HttpGet]
-        public JsonResult GetEvent(object model)
+        public ViewResult SearchForEvent(string searchedEvent)
         {
-            return Json(model);
+            HomePageBinding model = new HomePageBinding();
+
+            var events = this.distributedCache.GetString("events");
+            var deserializedEvents = JsonConvert.DeserializeObject<Event[]>(events);
+
+            if (searchedEvent != null)
+            {
+                deserializedEvents = deserializedEvents.Where(e => e.Location.Contains(searchedEvent)).ToArray();
+            }
+
+            foreach (var dbEvent in deserializedEvents)
+            {
+                model.Events.Add(eventMapper.MapDbToEvent(dbEvent));
+            }
+
+            return View("HomePageView", model);
         }
     }
 }

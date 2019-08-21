@@ -1,30 +1,30 @@
-﻿using System.Collections.Generic;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using WebApp.Domain;
-using WebApp.Web.Models;
-using System.Linq;
-
-namespace WebApp.Web.Controllers
+﻿namespace WebApp.Web.Controllers
 {
-    using System.Security.Claims;
-    using WebApp.Services.ScoreService;
+    using Domain;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Mvc;
+    using Models;
+    using Services.ScoreService;
+    using System.Collections.Generic;
+    using System.Linq;
 
     public class UsersController : Controller
     {
-        private UserManager<WebAppUser> _userManager;
-        private IScoreService scoreService;
+        private readonly UserManager<WebAppUser> userManager;
+        private readonly IScoreService scoreService;
 
         public UsersController(UserManager<WebAppUser> userManager, IScoreService _scoreService)
         {
-            _userManager = userManager;
+            this.userManager = userManager;
             scoreService = _scoreService;
         }
 
+        [Authorize]
         public IActionResult Profile(string name)
         {
             string currentUser = name;
-            string ID = this._userManager.Users.FirstOrDefault(u => u.UserName == currentUser).Id;
+            string ID = this.userManager.Users.FirstOrDefault(u => u.UserName == currentUser).Id;
             List<Rating> rating = scoreService.GetAllData().Where(rid => rid.ReceiverId == ID).ToList();
 
             UserBindingModel model = new UserBindingModel();

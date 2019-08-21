@@ -1,35 +1,34 @@
-
-using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using WebApp.Domain;
-using WebApp.Services.EventService;
-using WebApp.Web.Controllers.Mappers;
-using WebApp.Web.Models.Event;
-using Microsoft.AspNetCore.Identity;
-using System.Security.Claims;
-using WebApp.Services.EventAttendance;
-using System;
-using WebApp.Scheduler.Scheduler;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.DependencyInjection;
-
 namespace WebApp.Web.Controllers
-{ 
+{
+    using Domain;
+    using Mappers;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.DependencyInjection;
+    using Models.Event;
+    using Services.EventAttendance;
+    using Services.EventService;
+    using System;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using Microsoft.AspNetCore.Authorization;
+    using WebApp.Scheduler.Scheduler;
+
     public class AdminEventController : Controller
     {
-        private readonly UserManager<WebAppUser> _userManager;
-        private readonly IEventService _eventService;
+        private readonly UserManager<WebAppUser> userManager;
+        private readonly IEventService eventService;
         private readonly IEventMapper eventMapper;
         private readonly IEventAttendanceService attendanceService;
         private readonly IServiceProvider provider;
         private readonly IServiceScopeFactory factory;
 
-        public AdminEventController(IServiceProvider provider, IServiceScopeFactory factory, 
+        public AdminEventController(IServiceProvider provider, IServiceScopeFactory factory,
             UserManager<WebAppUser> userManager, IEventService eventService, IEventMapper eventMapper, IEventAttendanceService attendanceService)
         {
-            this._userManager = userManager;
-            this._eventService = eventService;
+            this.userManager = userManager;
+            this.eventService = eventService;
             this.eventMapper = eventMapper;
             this.attendanceService = attendanceService;
             this.provider = provider;
@@ -37,6 +36,7 @@ namespace WebApp.Web.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public IActionResult AdminViewEvent(Event dbEvent)
         {
             var model = eventMapper.MapDbToEvent(dbEvent);
@@ -44,9 +44,10 @@ namespace WebApp.Web.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public IActionResult GetMyEvents()
         {
-            var userId = _userManager.GetUserId(User);
+            var userId = userManager.GetUserId(User);
 
             if (userId == null)
             {
@@ -55,7 +56,7 @@ namespace WebApp.Web.Controllers
 
             var allMappedEventsByUser = new List<EventBindingModel>();
 
-            var allEventsByUser = _eventService.GetAllEventsByUser(userId);
+            var allEventsByUser = eventService.GetAllEventsByUser(userId);
 
             foreach (var eventByUser in allEventsByUser)
             {
@@ -66,28 +67,32 @@ namespace WebApp.Web.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> DeleteEvent(int id)
         {
-            await _eventService.DeleteEvent(id);
+            await eventService.DeleteEvent(id);
 
             var task = new EventsTask(factory);
-            task.ProcessInScope(provider);
+            await task.ProcessInScope(provider);
 
             //TODO: pop with message of success or not
 
             return RedirectToAction(nameof(GetMyEvents));
         }
 
+        [Authorize]
         public IActionResult Edit(EventBindingModel model, IFormFile eventImage)
         {
-            var viewModel = eventMapper.MapEditEventToDB(model, eventImage, _userManager.GetUserId(User));
-            this._eventService.EditEvent(viewModel);
+            var viewModel = eventMapper.MapEditEventToDB(model, eventImage, userManager.GetUserId(User));
+            this.eventService.EditEvent(viewModel);
 
             var task = new EventsTask(factory);
             task.ProcessInScope(provider);
 
             return this.RedirectToAction("GetMyEvents");
         }
+
+        [Authorize]
         public IActionResult AprooveUser(IDictionary<string, string> rv)
         {
             int eventId = int.Parse(rv["eventId"]);
@@ -96,6 +101,8 @@ namespace WebApp.Web.Controllers
             attendanceService.ApproveUserForeEvent(userID, eventId, positionId).Wait();
             return RedirectToAction("HomePageView", "HomePage");
         }
+
+        [Authorize]
         public IActionResult IgnoreUser(IDictionary<string, string> rv)
         {
             int eventId = int.Parse(rv["eventId"]);
