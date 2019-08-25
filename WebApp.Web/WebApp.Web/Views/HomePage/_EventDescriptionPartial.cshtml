@@ -5,7 +5,7 @@
         <div class="d-flex justify-content-between">
             <h3 class="pt-2 pl-3">@Model.Title</h3>
             <h5 class="mt-3">@Model.Location</h5>
-            <h6 class="mt-3 mr-3 ">Admin Name</h6>
+            <h6 class="mt-3 mr-3 ">Admin: @Model.AdminName</h6>
         </div>
         <hr class="mt-1 mb-3">
 
@@ -15,6 +15,7 @@
             IDictionary<string, string> rv = new Dictionary<string, string>();
             rv.Add("eventId", Model.Id.ToString());
             rv.Add("positionId", position.Id.ToString());
+            StarModel starModel = new StarModel(position.EventId, position.Aprooved);
             <div class="row">
                 <div class="col">
                     @position.Name:
@@ -32,7 +33,7 @@
                 <div class="col">
                     @if (@position.Aprooved.Name != null)
                     {
-                        @await Html.PartialAsync($"_StarRatingPartial")
+                        @await Html.PartialAsync($"_StarRatingPartial", starModel)
                     }
                 </div>
                 <div class="col">
@@ -40,43 +41,52 @@
                     {
                         <a class="btn btn-info btn mb-2 ml-4" role="button" asp-controller="Event" asp-all-route-data="@rv" asp-action="JoinUser">Join</a>
                     }
+                    else
+                    {
+                        <a type="button" class="btn btn-info btn mb-2 ml-4" disabled="disabled">Ready</a>
+                    }
                 </div>
             </div>
         }
         <h5>TEAM 2</h5>
         @foreach (var position in Model.Positions.TakeLast(Model.Positions.Count / 2).ToList())
-        {
+         {
             IDictionary<string, string> rv = new Dictionary<string, string>();
             rv.Add("eventId", Model.Id.ToString());
             rv.Add("positionId", position.Id.ToString());
-    <div class="row">
-        <div class="col">
-            @position.Name:
-        </div>
-        <div class="col">
-            @if (@position.Aprooved.Name != null)
-            {
-                <a type="button" class="btn btn-danger mx-3 mb-2" asp-controller="Users" asp-action="Profile" asp-route-name="@position.Aprooved.Name">@position.Aprooved.Name</a>
-            }
-            else
-            {
-                <button type="button" class="btn btn-danger mx-3 mb-2" disabled="disabled">Awaiting...</button>
-            }
-        </div>
-        <div class="col">
-            @if (@position.Aprooved.Name != null)
-            {
-                @await Html.PartialAsync($"_StarRatingPartial")
-            }
-        </div>
-        <div class="col">
-            @if (@position.Aprooved.Name == null)
-            {
-                <a class="btn btn-info btn mb-2 ml-4" role="button" asp-controller="Event" asp-all-route-data="@rv" asp-action="JoinUser">Join</a>
-            }
-        </div>
-    </div>
-        }
+            StarModel starModel = new StarModel(position.EventId, position.Aprooved);
+            <div class="row">
+                <div class="col">
+                    @position.Name:
+                </div>
+                <div class="col">
+                    @if (@position.Aprooved.Name != null)
+                    {
+                        <a type="button" class="btn btn-danger mx-3 mb-2" asp-controller="Users" asp-action="Profile" asp-route-name="@position.Aprooved.Name">@position.Aprooved.Name</a>
+                    }
+                    else
+                    {
+                        <button type="button" class="btn btn-danger mx-3 mb-2" disabled="disabled">Awaiting...</button>
+                    }
+                </div>
+                <div class="col">
+                    @if (@position.Aprooved.Name != null)
+                    {
+                        @await Html.PartialAsync($"_StarRatingPartial", starModel)
+                    }
+                </div>
+                <div class="col">
+                    @if (@position.Aprooved.Name == null)
+                    {
+                        <a class="btn btn-info btn mb-2 ml-4" role="button" asp-controller="Event" asp-all-route-data="@rv" asp-action="JoinUser">Join</a>
+                    }
+                    else
+                    {
+                        <a type="button" class="btn btn-info btn mb-2 ml-4" disabled="disabled">Ready</a>
+                    }
+                </div>
+            </div>
+         }
 
         <hr class="my-2">
         <div class="d-flex justify-content-center">
@@ -94,9 +104,9 @@
         color: white
     }
 
-        a:hover, a:focus {
-            background-color: transparent
-        }
+    a:hover, a:focus {
+        background-color: transparent
+    }
 </style>
 
 

@@ -1,6 +1,7 @@
 ﻿@model List<PositionModel>
 @for (int i = 0; i < Model.Count; i++)
-{
+ {
+    StarModel starModel = new StarModel(Model[i].EventId,Model[i].Aprooved);
     <div class="row">
         <h5>@Model[i].Name: </h5>
     </div>
@@ -8,7 +9,7 @@
         <button type="button" class="btn btn-danger mx-3 mb-2" data-toggle="modal" data-target="#exampleModal" style="max-width:150px">@Model[i].Aprooved.Name</button>
         @if (@Model[i].Aprooved.Name != null)
         {
-            @await Html.PartialAsync($"_StarRatingPartial")
+            @await Html.PartialAsync($"_StarRatingPartial", starModel)
         }
         @{
             IDictionary<string, string> rv = new Dictionary<string, string>();
@@ -19,7 +20,11 @@
         {
             <a class="btn btn-info btn mb-2 ml-4" role="button" asp-controller="Event" asp-all-route-data="@rv" asp-action="JoinUser">Join</a>
         }
+        else
+        {
+            <a type="button" class="btn btn-info btn mb-2 ml-4" disabled="disabled">Ready</a>
+        }
     </div>
 
     @await Html.PartialAsync($"_AproovePartial", Model[i].ToBeAprooved);
-}
+ }

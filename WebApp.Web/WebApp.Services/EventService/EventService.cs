@@ -24,7 +24,7 @@
 
         public IEnumerable<Event> GetAllEvents()
         {
-            return this._eventRepository.GetAllEvents();
+            return this._eventRepository.GetAllEvents().Where(e => e.IsDeleted == false);
         }
 
         public Event GetEvent(int id)

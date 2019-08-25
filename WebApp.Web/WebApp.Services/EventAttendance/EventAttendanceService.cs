@@ -36,10 +36,12 @@ namespace WebApp.Services.EventAttendance
                 EventId = eventId,
                 PositionId = positionId
             };
-
-            await _eventAttendeesToBeApprovedRepo.AddAsync(newEventAttendee);
-            await SaveChangesAsync();
-
+            var all = _eventAttendeesToBeApprovedRepo.GetAll().ToList();
+            if (!all.Exists(a => a.EventId == eventId && a.UserId == a.UserId && a.PositionId == positionId))
+            {
+                await _eventAttendeesToBeApprovedRepo.AddAsync(newEventAttendee);
+                await SaveChangesAsync();
+            }
             return newEventAttendee;
         }
 

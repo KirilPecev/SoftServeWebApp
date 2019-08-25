@@ -76,6 +76,7 @@ namespace WebApp.Web.Controllers.Mappers
             AddUsersToPositions(dbEvent);
             model.Id = dbEvent.Id;
             model.AdminId = dbEvent.AdminId;
+            model.AdminName = userManager.Users.First(u => u.Id == dbEvent.AdminId).UserName;
             model.Title = dbEvent.Name;
             model.Time = dbEvent.Time;
             model.Location = dbEvent.Location;
@@ -131,7 +132,7 @@ namespace WebApp.Web.Controllers.Mappers
                     foreach (var user in toBeAprooved)
                     {
                         PlayerModel pendingAproval = new PlayerModel();
-                        pendingAproval.Name = userManager.Users.FirstOrDefault(u => u.Id == user.UserId).NormalizedUserName;
+                        pendingAproval.Name = userManager.Users.FirstOrDefault(u => u.Id == user.UserId).UserName;
                         pendingAproval.Id = user.UserId;
                         pendingAproval.EventId = dbEvent.Id;
                         pendingAproval.PositionId = position.Id;

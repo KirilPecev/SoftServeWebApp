@@ -2,17 +2,20 @@
 {
     using Domain;
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Services.ScoreService;
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
     public class RankListController : Controller
     {
         private readonly IScoreService scoreService;
-
-        public RankListController(IScoreService _scoreService)
+        private readonly UserManager<WebAppUser> userManager;
+        public RankListController(IScoreService _scoreService, UserManager<WebAppUser> userManager)
         {
+            this.userManager = userManager;
             scoreService = _scoreService;
         }
 
@@ -23,38 +26,26 @@
             List<Rating> rating = scoreService.GetAllData();
 
             List<string> users = new List<string>();
-            List<int> score = new List<int>();
 
             foreach (var item in rating)
             {
+                if(!users.Exists(u => u == item.ReceiverId))
                 users.Add(item.ReceiverId);
             }
 
-            foreach (var item in rating)
+            foreach (var user in users)
             {
-                int average = 0;
+                var userRatings = rating.Where(r => r.ReceiverId == user).ToList();
+                double average = 0;
                 int count = 0;
-
-                foreach (var _score in item.Scores)
+                foreach (var item in userRatings)
                 {
-                    average += _score.Points;
+                    average += item.Scores.First().Points;
                     count++;
                 }
-
-                if (count != 0)
-                {
-                    average /= count;
-                }
-                else
-                {
-                    average /= 1;
-                }
-                score.Add(average);
-            }
-
-            for (int i = 0; i < users.Count; i++)
-            {
-                ranklist.Add(users[i], score[i]);
+                average /= count;
+                string userName = userManager.Users.FirstOrDefault(u => u.Id == user).UserName;
+                ranklist.Add(userName, (int)Math.Round(average));
             }
 
             var sortedRankList = from entry in ranklist orderby entry.Value descending select entry;

@@ -14,6 +14,7 @@ namespace WebApp.Web.Models.Event
         public string ImageName { get; set; }
         public string ImageURL { get; set; }
         public string AdminId { get; set; }
+        public string AdminName { get; set; }
         public string Location { get; set; }
         public string Description { get; set; }
         public DateTime Time { get; set; }
