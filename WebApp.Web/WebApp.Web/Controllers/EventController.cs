@@ -41,7 +41,7 @@
             if (!attendanceService.GetAllEventAttendeesForEvent(eventId).Any(a => a.UserId == joinID))
                 attendanceService.RegisterUserForEvent(joinID, eventId, positionId).Wait();
 
-            return RedirectToAction("HomePageView", "HomePage");
+            return RedirectToAction("DetermineEventView", "HomePage", new { Id = eventId });
         }
 
         public IActionResult AddRating(IDictionary<string, string> rv)
@@ -51,7 +51,7 @@
             int score = int.Parse(rv["rating"]);
             int eventId = int.Parse(rv["eventID"]);
             ratingService.AddRating(eventId, giverId, recieverId, score, DateTime.Now);
-            return RedirectToAction("HomePageView", "HomePage");
+            return RedirectToAction("DetermineEventView", "HomePage", new { Id = eventId });
         }
     }
 }

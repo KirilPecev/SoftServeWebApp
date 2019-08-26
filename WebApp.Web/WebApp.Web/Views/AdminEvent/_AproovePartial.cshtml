@@ -8,8 +8,8 @@
     rv.Add("userId", Model[i].Id);
     <div class="row">
         <div class="column">
-            <button type="button" class="btn btn-danger mx-3 mb-2" data-toggle="modal" data-target="#exampleModal" id="name">@Model[i].Name Wants to join!</button>
-        </div>
+            <a type="button" class="btn btn-danger mx-3 mb-2" asp-controller="Users" asp-action="Profile" asp-route-name="@Model[i].Name" id="name">@Model[i].Name Wants to join!</a>
+</div>
         <div class="column">
             <a class="button" role="button" asp-controller="AdminEvent" asp-route-EventId="@int.Parse(rv["eventId"])" asp-route-PositionId="@int.Parse(rv["positionId"])" asp-route-UserId="@rv["userId"]"  asp-action="ApproveUser" id="aproove">Approve</a>
             <a class="button" role="button" asp-controller="AdminEvent" asp-route-EventId="@int.Parse(rv["eventId"])" asp-route-PositionId="@int.Parse(rv["positionId"])" asp-route-UserId="@rv["userId"]"  asp-action="IgnoreUser" id="ignore">Ignore</a>
