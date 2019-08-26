@@ -99,7 +99,7 @@ namespace WebApp.Web.Controllers
             string userId = model.UserId;
 
             attendanceService.ApproveUserForeEvent(userId, eventId, positionId).Wait();
-            return RedirectToAction("HomePageView", "HomePage");
+            return RedirectToAction("DetermineEventView", "HomePage", new { Id = eventId });
         }
 
         [Authorize]
@@ -110,7 +110,7 @@ namespace WebApp.Web.Controllers
             string userId = model.UserId;
 
             attendanceService.RemoveUserAttendeeToBeApproved(userId, eventId, positionId);
-            return RedirectToAction("HomePageView", "HomePage");
+            return RedirectToAction("DetermineEventView", "HomePage", new { Id = eventId });
         }
     }
 }
