@@ -10,6 +10,7 @@
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Models;
 
     public class EventController : Controller
     {
@@ -32,10 +33,10 @@
         }
 
         [Authorize]
-        public IActionResult JoinUser(IDictionary<string, string> rv)
+        public IActionResult JoinUser(JoinUserModel model)
         {
-            int eventId = int.Parse(rv["eventId"]);
-            int positionId = int.Parse(rv["positionId"]);
+            int eventId = model.EventId;
+            int positionId = model.PositionId;
             string joinID = this.userManager.GetUserId(User);
             if (!attendanceService.GetAllEventAttendeesForEvent(eventId).Any(a => a.UserId == joinID))
                 attendanceService.RegisterUserForEvent(joinID, eventId, positionId).Wait();
