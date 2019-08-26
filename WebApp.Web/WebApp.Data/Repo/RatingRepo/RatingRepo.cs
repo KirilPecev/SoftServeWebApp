@@ -1,26 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using WebApp.Domain;
-
-namespace WebApp.Data.Repo
+﻿namespace WebApp.Data.Repo.RatingRepo
 {
+    using Domain;
+    using GenericRepository;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
     public class RatingRepo : Repository<Rating>, IRatingRepo
     {
-        private WebAppDbContext dbContext;
+        private readonly WebAppDbContext dbContext;
+
         public RatingRepo(WebAppDbContext dbContext) : base(dbContext)
         {
             this.dbContext = dbContext;
         }
 
-        public List<Rating> GetAllRatings()
+        public IEnumerable<Rating> GetAllRatings()
         {
             return dbSet.ToList();
         }
 
         public void AddRating(int eventID, string giverId, string recieverId, int score, DateTime time)
         {
-            if (GetAllRatings().Exists(r => r.GiverId == giverId && r.ReceiverId == recieverId && r.EventId == eventID))
+            if (GetAllRatings().ToList().Exists(r => r.GiverId == giverId && r.ReceiverId == recieverId && r.EventId == eventID))
             {
                 return;
             }
@@ -28,8 +30,10 @@ namespace WebApp.Data.Repo
             {
                 MakeNewRating(eventID, giverId, recieverId, score, time);
             }
+
             dbContext.SaveChanges();
         }
+
         private void MakeNewRating(int eventID, string giverId, string recieverId, int score, DateTime time)
         {
             Rating newRating = new Rating();

@@ -1,15 +1,16 @@
-﻿using System.Collections.Generic;
-
-namespace WebApp.Web.Models
+﻿namespace WebApp.Web.Models
 {
+    using System.Collections.Generic;
+
     public class UserBindingModel
     {
-        public string Name { get; set; }
-        public List<UserScore> Score { get; set; }
-
         public UserBindingModel()
         {
             Score = new List<UserScore>();
         }
+
+        public string Name { get; set; }
+
+        public IEnumerable<UserScore> Score { get; set; }
     }
 }

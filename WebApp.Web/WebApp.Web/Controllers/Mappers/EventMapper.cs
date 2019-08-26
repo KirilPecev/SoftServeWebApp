@@ -1,34 +1,36 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using System.Linq;
-using WebApp.Domain;
-using WebApp.Services;
-using WebApp.Services.EventAttendance;
-using WebApp.Services.EventService;
-using WebApp.Services.PositionService;
-using WebApp.Services.SportService;
-using WebApp.Web.Models.Event;
-
-namespace WebApp.Web.Controllers.Mappers
+﻿namespace WebApp.Web.Controllers.Mappers
 {
+    using Domain;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Mvc;
+    using Models.Event;
+    using Services;
+    using Services.EventAttendance;
+    using Services.EventService;
+    using Services.PositionService;
+    using Services.SportService;
+    using System.Linq;
+
     public class EventMapper : Controller, IEventMapper
     {
         private readonly UserManager<WebAppUser> userManager;
-        private readonly ImageService _imageService;
-        private readonly ISportService _sportService;
-        private readonly IPositionService _positionSerivce;
-        private readonly IEventAttendanceService _attendanceService;
-        public EventMapper(IEventService eventService, ISportService sportService, IPositionService positionService, 
+        private readonly ImageService imageService;
+        private readonly ISportService sportService;
+        private readonly IPositionService positionService;
+        private readonly IEventAttendanceService attendanceService;
+
+        public EventMapper(IEventService eventService, ISportService sportService, IPositionService positionService,
             IEventAttendanceService attendanceService, UserManager<WebAppUser> userManager)
         {
-            this._imageService = new ImageService();
-            this._sportService = sportService;
-            this._positionSerivce = positionService;
-            this._attendanceService = attendanceService;
+            this.imageService = new ImageService();
+            this.sportService = sportService;
+            this.positionService = positionService;
+            this.attendanceService = attendanceService;
             this.userManager = userManager;
         }
-        public Event MapEventToDB(EventBindingModel model, IFormFile eventImage, string adminId)
+
+        public Event NewEvent(EventBindingModel model, IFormFile eventImage, string adminId)
         {
             Event newEvent = new Event();
             newEvent.Id = model.Id;
@@ -37,20 +39,13 @@ namespace WebApp.Web.Controllers.Mappers
             newEvent.SportId = model.SportId;
             newEvent.Description = model.Description;
             newEvent.Location = model.Location;
-            if (eventImage == null)
-            {
-                newEvent.Image = "defaultImage.jpg";
-            }
-            else
-            {
-                newEvent.Image = this._imageService.UploadImage(eventImage);
-            }
+            newEvent.Image = eventImage == null ? "defaultImage.jpg" : this.imageService.UploadImage(eventImage);
             newEvent.AdminId = adminId;
 
             return newEvent;
         }
 
-        public Event MapEditEventToDB(EventBindingModel model, IFormFile eventImage, string adminId)
+        public Event ModifiedEvent(EventBindingModel model, IFormFile eventImage, string adminId)
         {
             Event newEvent = new Event();
             newEvent.Id = model.Id;
@@ -61,18 +56,18 @@ namespace WebApp.Web.Controllers.Mappers
             newEvent.Location = model.Location;
             if (eventImage != null)
             {
-                newEvent.Image = this._imageService.UploadImage(eventImage);
+                newEvent.Image = this.imageService.UploadImage(eventImage);
             }
             newEvent.AdminId = adminId;
 
             return newEvent;
         }
 
-        public EventBindingModel MapDbToEvent(Event dbEvent)
+        public EventBindingModel ViewEvent(Event dbEvent)
         {
             EventBindingModel model = new EventBindingModel();
-            dbEvent.Sport = _sportService.GetSports().Where(s => s.Id == dbEvent.SportId).SingleOrDefault();
-            dbEvent.Sport.Positions = _positionSerivce.GetPositions().Where(p => p.SportId == dbEvent.SportId).ToList();
+            dbEvent.Sport = sportService.GetSports().Where(s => s.Id == dbEvent.SportId).SingleOrDefault();
+            dbEvent.Sport.Positions = positionService.GetPositions().Where(p => p.SportId == dbEvent.SportId).ToList();
             AddUsersToPositions(dbEvent);
             model.Id = dbEvent.Id;
             model.AdminId = dbEvent.AdminId;
@@ -81,11 +76,12 @@ namespace WebApp.Web.Controllers.Mappers
             model.Time = dbEvent.Time;
             model.Location = dbEvent.Location;
             model.Description = dbEvent.Description;
-            model.ImageURL = _imageService.GetImageURL(dbEvent.Image);
+            model.ImageURL = imageService.GetImageUrl(dbEvent.Image);
             AttachPositions(dbEvent, model);
             AttachUsersToPositions(dbEvent, model);
             return model;
         }
+
         private void AddUsersToPositions(Event dbEvent)
         {
             if (dbEvent.Positions.Count == 0)
@@ -100,31 +96,32 @@ namespace WebApp.Web.Controllers.Mappers
                     dbEvent.Positions.Add(newPos);
                 }
             }
-            var atendees = _attendanceService.GetAllEventAttendeesForEvent(dbEvent.Id).ToList();
+            var atendees = attendanceService.GetAllEventAttendeesForEvent(dbEvent.Id).ToList();
             foreach (var atendee in atendees)
             {
                 var position = dbEvent.Positions.First(p => p.PositionId == atendee.PositionId);
                 position.Position.EventAttendees.Add(atendee);
             }
-            var atendeesForAprooving = _attendanceService.GetAllEventAttendeesToBeApprovedForEvent(dbEvent.Id).ToList();
+            var atendeesForAprooving = attendanceService.GetAllEventAttendeesToBeApprovedForEvent(dbEvent.Id).ToList();
             foreach (var atendee in atendeesForAprooving)
             {
                 var position = dbEvent.Positions.First(p => p.PositionId == atendee.PositionId);
                 position.Position.EventAttendeesToBeApproved.Add(atendee);
             }
         }
+
         private void AttachUsersToPositions(Event dbEvent, EventBindingModel model)
         {
             foreach (var position in model.Positions)
             {
                 var dbPosition = dbEvent.Positions.FirstOrDefault(p => p.PositionId == position.Id);
-                if(dbPosition != null && dbPosition.Position.EventAttendees.Count!=0)
+                if (dbPosition != null && dbPosition.Position.EventAttendees.Count != 0)
                 {
                     string aproovedPlayerId = dbPosition.Position.EventAttendees.First().UserId;
-                    position.Aprooved.Name = userManager.Users.FirstOrDefault(u => u.Id == aproovedPlayerId).UserName;
-                    position.Aprooved.Id = aproovedPlayerId;
-                    position.Aprooved.EventId = dbEvent.Id;
-                    position.Aprooved.PositionId = position.Id;
+                    position.Approved.Name = userManager.Users.FirstOrDefault(u => u.Id == aproovedPlayerId).UserName;
+                    position.Approved.Id = aproovedPlayerId;
+                    position.Approved.EventId = dbEvent.Id;
+                    position.Approved.PositionId = position.Id;
                 }
                 if (dbPosition != null && dbPosition.Position.EventAttendeesToBeApproved.Count != 0)
                 {
@@ -136,11 +133,12 @@ namespace WebApp.Web.Controllers.Mappers
                         pendingAproval.Id = user.UserId;
                         pendingAproval.EventId = dbEvent.Id;
                         pendingAproval.PositionId = position.Id;
-                        position.ToBeAprooved.Add(pendingAproval);
+                        position.ToBeApproved.Add(pendingAproval);
                     }
                 }
             }
         }
+
         private static void AttachPositions(Event viewEvent, EventBindingModel model)
         {
             foreach (var position in viewEvent.Sport.Positions)

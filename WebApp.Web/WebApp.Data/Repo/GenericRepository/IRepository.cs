@@ -1,4 +1,4 @@
-﻿namespace WebApp.Data.Repo
+﻿namespace WebApp.Data.Repo.GenericRepository
 {
     using Domain;
     using Microsoft.EntityFrameworkCore.ChangeTracking;

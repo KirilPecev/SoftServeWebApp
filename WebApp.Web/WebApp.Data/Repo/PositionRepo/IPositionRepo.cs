@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using WebApp.Domain;
-
-namespace WebApp.Data.Repo
+﻿namespace WebApp.Data.Repo.PositionRepo
 {
+    using Domain;
+    using System.Collections.Generic;
+
     public interface IPositionRepo
     {
         IEnumerable<Position> GetPositions();

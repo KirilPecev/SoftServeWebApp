@@ -1,19 +1,19 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using WebApp.Data.Repo;
-using WebApp.Domain;
-
-namespace WebApp.Data.CustomRepos
+﻿namespace WebApp.Data.Repo.EventAttendeesRepo
 {
+    using Domain;
+    using GenericRepository;
+    using System.Collections.Generic;
+    using System.Linq;
+
     public class EventAttendeesRepo : Repository<EventAttendees>, IEventAttendeesRepo
     {
-        private WebAppDbContext dbContext;
+        private readonly WebAppDbContext dbContext;
+
         public EventAttendeesRepo(WebAppDbContext webAppDbContext)
             : base(webAppDbContext)
         {
             this.dbContext = webAppDbContext;
         }
-
 
         public IEnumerable<EventAttendees> GetAllByUserId(string id)
         {
@@ -28,24 +28,30 @@ namespace WebApp.Data.CustomRepos
         {
             return dbSet;
         }
+
         public void RemoveUser(string userId, int eventId, int positionId)
         {
-            var remove = this.dbSet.First(u => u.UserId == userId &&
-            u.PositionId == positionId &&
-            u.EventId == eventId
-            );
+            var remove = this.dbSet
+                .First(u => u.UserId == userId &&
+                            u.PositionId == positionId &&
+                            u.EventId == eventId);
+
             this.dbSet.Remove(remove);
+
             dbContext.SaveChanges();
         }
+
         public void ClearUsers(string userId, int eventId)
         {
-            var remove = this.dbSet.Where(u => u.UserId == userId &&
-            u.EventId == eventId
-            );
+            var remove = this.dbSet
+                .Where(u => u.UserId == userId &&
+                            u.EventId == eventId);
+
             foreach (var toRemove in remove)
             {
                 this.dbSet.Remove(toRemove);
             }
+
             dbContext.SaveChanges();
         }
     }

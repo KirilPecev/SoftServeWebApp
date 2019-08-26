@@ -1,31 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using WebApp.Data.CustomRepos;
-using WebApp.Data.Repo;
-using WebApp.Domain;
-
-namespace WebApp.Services.EventAttendance
+﻿namespace WebApp.Services.EventAttendance
 {
+    using Data.Repo.EventAttendeesRepo;
+    using Data.Repo.EventAttendeesToBeApprovedRepo;
+    using Data.Repo.UnitOfWork;
+    using Domain;
     using Microsoft.AspNetCore.Identity;
     using Notifications;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
 
     public class EventAttendanceService : BaseService, IEventAttendanceService
     {
         private readonly IEmailSender sender;
         private readonly UserManager<WebAppUser> userManager;
-        private readonly IEventAttendeesRepo _eventAttendeesRepo;
-        private readonly IEventAttendeesToBeApprovedRepo _eventAttendeesToBeApprovedRepo;
+        private readonly IEventAttendeesRepo eventAttendeesRepo;
+        private readonly IEventAttendeesToBeApprovedRepo eventAttendeesToBeApprovedRepo;
 
         public EventAttendanceService(IEmailSender sender, UserManager<WebAppUser> userManager, IEventAttendeesToBeApprovedRepo eventAttendeesToBeApprovedRepo, IEventAttendeesRepo eventAttendeesRepo, IUnitOfWork unitOfWork)
             : base(unitOfWork)
         {
             this.sender = sender;
             this.userManager = userManager;
-            this._eventAttendeesRepo = eventAttendeesRepo;
-            this._eventAttendeesToBeApprovedRepo = eventAttendeesToBeApprovedRepo;
+            this.eventAttendeesRepo = eventAttendeesRepo;
+            this.eventAttendeesToBeApprovedRepo = eventAttendeesToBeApprovedRepo;
         }
 
         public async Task<EventAttendeesToBeApproved> RegisterUserForEvent(string userId, int eventId, int positionId)
@@ -36,12 +34,15 @@ namespace WebApp.Services.EventAttendance
                 EventId = eventId,
                 PositionId = positionId
             };
-            var all = _eventAttendeesToBeApprovedRepo.GetAll().ToList();
+
+            var all = eventAttendeesToBeApprovedRepo.GetAll().ToList();
+
             if (!all.Exists(a => a.EventId == eventId && a.UserId == a.UserId && a.PositionId == positionId))
             {
-                await _eventAttendeesToBeApprovedRepo.AddAsync(newEventAttendee);
+                await eventAttendeesToBeApprovedRepo.AddAsync(newEventAttendee);
                 await SaveChangesAsync();
             }
+
             return newEventAttendee;
         }
 
@@ -54,8 +55,8 @@ namespace WebApp.Services.EventAttendance
                 PositionId = positionId
             };
 
-            RemoveUserAtendeeToBeAprooved(userId, eventId, positionId);
-            await _eventAttendeesRepo.AddAsync(approvedUser);
+            RemoveUserAttendeeToBeApproved(userId, eventId, positionId);
+            await eventAttendeesRepo.AddAsync(approvedUser);
             await SaveChangesAsync();
 
             var email = this.userManager.Users.SingleOrDefault(u => u.Id == approvedUser.UserId).Email;
@@ -66,37 +67,32 @@ namespace WebApp.Services.EventAttendance
 
         public IEnumerable<EventAttendees> GetAllEventAttendeesForUser(string userId)
         {
-            var allAttendeesForUser = _eventAttendeesRepo.GetAllByUserId(userId);
-
-            return allAttendeesForUser;
+            return eventAttendeesRepo.GetAllByUserId(userId);
         }
 
-        public List<EventAttendees> GetAllEventAttendeesForEvent(int eventId)
+        public IEnumerable<EventAttendees> GetAllEventAttendeesForEvent(int eventId)
         {
-            var allAttendeesForEvent = _eventAttendeesRepo.GetAll().Where(a => a.EventId == eventId).ToList();
-
-            return allAttendeesForEvent;
+            return eventAttendeesRepo.GetAll().Where(a => a.EventId == eventId).ToList();
         }
 
-        public List<EventAttendeesToBeApproved> GetAllEventAttendeesToBeApprovedForEvent(int eventId)
+        public IEnumerable<EventAttendeesToBeApproved> GetAllEventAttendeesToBeApprovedForEvent(int eventId)
         {
-            var allAttendeesForEvent = _eventAttendeesToBeApprovedRepo.GetAll().Where(a => a.EventId == eventId).ToList();
-            return allAttendeesForEvent;
+            return eventAttendeesToBeApprovedRepo.GetAll().Where(a => a.EventId == eventId).ToList();
         }
 
         public IEnumerable<EventAttendeesToBeApproved> GetAllEventAttendeesToBeApprovedForUser(string userId)
         {
+            return eventAttendeesToBeApprovedRepo.GetAllByUserId(userId);
+        }
 
-            var allAttendeesForUser = _eventAttendeesToBeApprovedRepo.GetAllByUserId(userId);
-            return allAttendeesForUser;
-        }
-        public void RemoveUserAtendee(string userId, int eventId, int positionId)
+        public void RemoveUserAttendee(string userId, int eventId, int positionId)
         {
-            _eventAttendeesRepo.RemoveUser(userId, eventId, positionId);
+            eventAttendeesRepo.RemoveUser(userId, eventId, positionId);
         }
-        public void RemoveUserAtendeeToBeAprooved(string userId, int eventId, int positionId)
+
+        public void RemoveUserAttendeeToBeApproved(string userId, int eventId, int positionId)
         {
-            _eventAttendeesToBeApprovedRepo.ClearUsers(userId, eventId);
+            eventAttendeesToBeApprovedRepo.ClearUsers(userId, eventId);
         }
     }
 }

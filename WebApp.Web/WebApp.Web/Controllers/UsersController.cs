@@ -14,34 +14,36 @@
         private readonly UserManager<WebAppUser> userManager;
         private readonly IScoreService scoreService;
 
-        public UsersController(UserManager<WebAppUser> userManager, IScoreService _scoreService)
+        public UsersController(UserManager<WebAppUser> userManager, IScoreService scoreService)
         {
             this.userManager = userManager;
-            scoreService = _scoreService;
+            this.scoreService = scoreService;
         }
 
         [Authorize]
         public IActionResult Profile(string name)
         {
-            string currentUser = name;
-            string ID = this.userManager.Users.FirstOrDefault(u => u.UserName == currentUser).Id;
-            List<Rating> rating = scoreService.GetAllData().Where(rid => rid.ReceiverId == ID).ToList();
+            string id = this.userManager.Users.FirstOrDefault(u => u.UserName == name).Id;
+            List<Rating> rating = scoreService.GetAllData().Where(rid => rid.ReceiverId == id).ToList();
+            List<UserScore> userScores = new List<UserScore>();
 
             UserBindingModel model = new UserBindingModel();
 
-            model.Name = currentUser;
+            model.Name = name;
 
             foreach (var item in rating)
             {
                 foreach (var score in item.Scores)
                 {
-                    model.Score.Add(new UserScore()
+                    userScores.Add(new UserScore()
                     {
                         CurrentDate = score.DateTime.ToShortDateString(),
                         Score = score.Points
                     });
                 }
             }
+
+            model.Score = userScores;
 
             return View("Profile", model);
         }

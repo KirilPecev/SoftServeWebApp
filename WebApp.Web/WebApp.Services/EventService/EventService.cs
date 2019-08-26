@@ -1,6 +1,7 @@
 ﻿namespace WebApp.Services.EventService
 {
-    using Data.Repo;
+    using Data.Repo.EventRepo;
+    using Data.Repo.UnitOfWork;
     using Domain;
     using System;
     using System.Collections.Generic;
@@ -9,45 +10,41 @@
 
     public class EventService : BaseService, IEventService
     {
-        private IEventRepository _eventRepository;
+        private readonly IEventRepository eventRepository;
 
         public EventService(IEventRepository eventRepository, IUnitOfWork unitOfWork)
             : base(unitOfWork)
         {
-            this._eventRepository = eventRepository;
+            this.eventRepository = eventRepository;
         }
 
         public void CreateEvent(Event createEvent)
         {
-            this._eventRepository.CreateEvent(createEvent);
+            this.eventRepository.CreateEvent(createEvent);
         }
 
         public IEnumerable<Event> GetAllEvents()
         {
-            return this._eventRepository.GetAllEvents().Where(e => e.IsDeleted == false);
+            return this.eventRepository.GetAllEvents().Where(e => e.IsDeleted == false);
         }
 
         public Event GetEvent(int id)
         {
-            Event foundEvent = this._eventRepository.GetEvent(id);
+            Event foundEvent = this.eventRepository.GetEvent(id);
+
             if (foundEvent == null)
             {
                 throw new ArgumentException($"No Event with ID: {id} exists!");
             }
-            else
-            {
-                return foundEvent;
-            }
+
+            return foundEvent;
         }
 
-        //TODO: Make it asyc
         public IEnumerable<Event> GetAllEventsByUser(string id)
         {
-           var allEventsByUser = this._eventRepository.GetAllEvents()
-                .Where(x => x.AdminId == id && x.IsDeleted == false)
-                .ToList();
-                
-            return allEventsByUser;
+            return this.eventRepository.GetAllEvents()
+                 .Where(x => x.AdminId == id && x.IsDeleted == false)
+                 .ToList();
         }
 
         public async Task DeleteEvent(int id)
@@ -68,6 +65,7 @@
             newEvent.Location = editEvent.Location;
             newEvent.SportId = editEvent.SportId;
             newEvent.Time = editEvent.Time;
+
             if (editEvent.Image != null)
             {
                 newEvent.Image = editEvent.Image;
