@@ -1,9 +1,25 @@
+@using Microsoft.Extensions.Caching.Distributed
 <title>@ViewData["Title"] - WebApp.Web</title>
-﻿<nav id="mySideNav" class="sidenav">
+@inject IDistributedCache Cache
+
+@{
+    string imgSrc = String.Empty;
+    if (this.User.Identity.IsAuthenticated)
+    {
+        var thumbnailBytes = Cache.Get(this.User.Identity.Name);
+        if (thumbnailBytes != null)
+        {
+            var base64 = Convert.ToBase64String(thumbnailBytes);
+            imgSrc = String.Format($"data:image/jpg;base64,{base64}");
+        }
+    }
+}
+
+<nav id="mySideNav" class="sidenav">
     @if (this.User.Identity.IsAuthenticated)
     {
         <a asp-controller="Users" asp-action="Profile" asp-route-name="@this.User.Identity.Name" style="margin-bottom: 20px">
-            <img width="100" height="100" src="http://icons.iconarchive.com/icons/graphicloads/flat-finance/128/person-icon.png" />
+            <img width="100" height="100" src="@imgSrc" />
         </a>
     }
     else
@@ -42,18 +58,18 @@
         padding-top: 20px;
     }
 
-    .sidenav a {
-        padding: 6px 6px 6px 32px;
-        text-decoration: none;
-        font-size: 25px;
-        color: white;
-        display: block;
-    }
+        .sidenav a {
+            padding: 6px 6px 6px 32px;
+            text-decoration: none;
+            font-size: 25px;
+            color: white;
+            display: block;
+        }
 
-    .sidenav a.notImg:hover {
-        color: darkblue;
-        background-color: white;
-    }
+            .sidenav a.notImg:hover {
+                color: darkblue;
+                background-color: white;
+            }
 
     #logout {
         background-color: darkblue;
@@ -68,8 +84,8 @@
         height: 50px;
     }
 
-    #logout:hover {
-        color: darkblue;
-        background-color: white;
-    }
+        #logout:hover {
+            color: darkblue;
+            background-color: white;
+        }
 </style>

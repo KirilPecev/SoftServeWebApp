@@ -1,17 +1,17 @@
-﻿@model UserBindingModel
+﻿@using Microsoft.Extensions.Caching.Distributed
+@model UserBindingModel
+@inject IDistributedCache Cache
 @{
     ViewData["Title"] = "Profile";
     Layout = null;
 
-    //    string[] sports = new string[]
-    //    {
-    //"Basketball",
-    //"Table Tennis",
-    //"Football",
-    //"Tennis",
-    //"Badminton",
-    //"Chess"
-    //    };
+    var thumbnailBytes = Cache.Get(Model.Name);
+    string imgSrc = "http://icons.iconarchive.com/icons/graphicloads/flat-finance/128/person-icon.png";
+    if (thumbnailBytes != null)
+    {
+        var base64 = Convert.ToBase64String(thumbnailBytes);
+        imgSrc = String.Format($"data:image/jpg;base64,{base64}");
+    }
 }
 
 <head>
@@ -26,7 +26,7 @@
     <table align="center" class="user">
         <tr>
             <td>
-                <img width="200" height="200" src="http://icons.iconarchive.com/icons/graphicloads/flat-finance/128/person-icon.png" />
+                <img width="200" height="200" src="@imgSrc"/>
             </td>
         </tr>
         <tr>
@@ -35,10 +35,10 @@
             </td>
         </tr>
         @*<tr>
-            <td>
-                Location
-            </td>
-        </tr>*@
+                <td>
+                    Location
+                </td>
+            </tr>*@
     </table>
 
     <!-- Score Chart -->
@@ -73,63 +73,63 @@
 
     <!-- Pick Sport -->
     @*<div class="container-fluid" style="margin-top: 130px">
-        <div class="row">
-            <select id="mySelect" name="sports2" size="1" class="mb-3 ml-1 mr-1" style="width:100%" onchange="Show()">
-                @for (int i = 0; i < sports.Length; i++)
-                {
-                    if (i == 0)
+            <div class="row">
+                <select id="mySelect" name="sports2" size="1" class="mb-3 ml-1 mr-1" style="width:100%" onchange="Show()">
+                    @for (int i = 0; i < sports.Length; i++)
                     {
-                        <option value="blank">-</option>
-                        <option>@sports[i]</option>
+                        if (i == 0)
+                        {
+                            <option value="blank">-</option>
+                            <option>@sports[i]</option>
+                        }
+                        else
+                        {
+                            <option>@sports[i]</option>
+                        }
                     }
-                    else
-                    {
-                        <option>@sports[i]</option>
-                    }
-                }
-            </select>
-        </div>
-        <div class="row">
-            <div class="col sport pr-0 pl-1 hidE" id="bsk">
-                <span class="float-left">@sports[0]</span>
-                <span class="float-right mt-1 mr-0">
-                    <button id="btn1" class="sport_btn" type="button" onclick="Hide(this)"><img width="25" height="25" src="http://icons.iconarchive.com/icons/awicons/vista-artistic/128/delete-icon.png" /></button>
-                </span>
+                </select>
             </div>
-            <div class="col sport pr-0 pl-1 hidE" id="tbt">
-                <span class="float-left">@sports[1]</span>
-                <span class="float-right mt-1 mr-0">
-                    <button id="btn2" class="sport_btn" type="button" onclick="Hide(this)"><img width="25" height="25" src="http://icons.iconarchive.com/icons/awicons/vista-artistic/128/delete-icon.png" /></button>
-                </span>
+            <div class="row">
+                <div class="col sport pr-0 pl-1 hidE" id="bsk">
+                    <span class="float-left">@sports[0]</span>
+                    <span class="float-right mt-1 mr-0">
+                        <button id="btn1" class="sport_btn" type="button" onclick="Hide(this)"><img width="25" height="25" src="http://icons.iconarchive.com/icons/awicons/vista-artistic/128/delete-icon.png" /></button>
+                    </span>
+                </div>
+                <div class="col sport pr-0 pl-1 hidE" id="tbt">
+                    <span class="float-left">@sports[1]</span>
+                    <span class="float-right mt-1 mr-0">
+                        <button id="btn2" class="sport_btn" type="button" onclick="Hide(this)"><img width="25" height="25" src="http://icons.iconarchive.com/icons/awicons/vista-artistic/128/delete-icon.png" /></button>
+                    </span>
+                </div>
+                <div class="col sport pr-0 pl-1 hidE" id="ftb">
+                    <span class="float-left">@sports[2]</span>
+                    <span class="float-right mt-1 mr-0">
+                        <button id="btn3" class="sport_btn" type="button" onclick="Hide(this)"><img width="25" height="25" src="http://icons.iconarchive.com/icons/awicons/vista-artistic/128/delete-icon.png" /></button>
+                    </span>
+                </div>
             </div>
-            <div class="col sport pr-0 pl-1 hidE" id="ftb">
-                <span class="float-left">@sports[2]</span>
-                <span class="float-right mt-1 mr-0">
-                    <button id="btn3" class="sport_btn" type="button" onclick="Hide(this)"><img width="25" height="25" src="http://icons.iconarchive.com/icons/awicons/vista-artistic/128/delete-icon.png" /></button>
-                </span>
+            <div class="row">
+                <div class="col sport pr-0 pl-1 hidE" id="tn">
+                    <span class="float-left">@sports[3]</span>
+                    <span class="float-right mt-1 mr-0">
+                        <button id="btn4" class="sport_btn" type="button" onclick="Hide(this)"><img width="25" height="25" src="http://icons.iconarchive.com/icons/awicons/vista-artistic/128/delete-icon.png" /></button>
+                    </span>
+                </div>
+                <div class="col sport pr-0 pl-1 hidE" id="bmt">
+                    <span class="float-left">@sports[4]</span>
+                    <span class="float-right mt-1 mr-0">
+                        <button id="btn5" class="sport_btn" type="button" onclick="Hide(this)"><img width="25" height="25" src="http://icons.iconarchive.com/icons/awicons/vista-artistic/128/delete-icon.png" /></button>
+                    </span>
+                </div>
+                <div class="col sport pr-0 pl-1 hidE" id="ch">
+                    <span class="float-left">@sports[5]</span>
+                    <span class="float-right mt-1 mr-0">
+                        <button id="btn6" class="sport_btn" type="button" onclick="Hide(this)"><img width="25" height="25" src="http://icons.iconarchive.com/icons/awicons/vista-artistic/128/delete-icon.png" /></button>
+                    </span>
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col sport pr-0 pl-1 hidE" id="tn">
-                <span class="float-left">@sports[3]</span>
-                <span class="float-right mt-1 mr-0">
-                    <button id="btn4" class="sport_btn" type="button" onclick="Hide(this)"><img width="25" height="25" src="http://icons.iconarchive.com/icons/awicons/vista-artistic/128/delete-icon.png" /></button>
-                </span>
-            </div>
-            <div class="col sport pr-0 pl-1 hidE" id="bmt">
-                <span class="float-left">@sports[4]</span>
-                <span class="float-right mt-1 mr-0">
-                    <button id="btn5" class="sport_btn" type="button" onclick="Hide(this)"><img width="25" height="25" src="http://icons.iconarchive.com/icons/awicons/vista-artistic/128/delete-icon.png" /></button>
-                </span>
-            </div>
-            <div class="col sport pr-0 pl-1 hidE" id="ch">
-                <span class="float-left">@sports[5]</span>
-                <span class="float-right mt-1 mr-0">
-                    <button id="btn6" class="sport_btn" type="button" onclick="Hide(this)"><img width="25" height="25" src="http://icons.iconarchive.com/icons/awicons/vista-artistic/128/delete-icon.png" /></button>
-                </span>
-            </div>
-        </div>
-    </div>*@
+        </div>*@
 </body>
 
 <style>

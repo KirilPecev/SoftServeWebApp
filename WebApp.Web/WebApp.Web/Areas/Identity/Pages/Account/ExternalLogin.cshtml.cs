@@ -1,33 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Logging;
-using WebApp.Domain;
-
-namespace WebApp.Web.Areas.Identity.Pages.Account
+﻿namespace WebApp.Web.Areas.Identity.Pages.Account
 {
+    using System;
+    using Domain;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.RazorPages;
+    using Microsoft.Extensions.Logging;
+    using System.ComponentModel.DataAnnotations;
+    using System.IO;
+    using System.Net.Http;
+    using System.Security.Claims;
+    using System.Threading.Tasks;
+    using Microsoft.Extensions.Caching.Distributed;
+
     [AllowAnonymous]
     public class ExternalLoginModel : PageModel
     {
         private readonly SignInManager<WebAppUser> _signInManager;
         private readonly UserManager<WebAppUser> _userManager;
         private readonly ILogger<ExternalLoginModel> _logger;
+        private readonly IDistributedCache cache;
 
         public ExternalLoginModel(
             SignInManager<WebAppUser> signInManager,
             UserManager<WebAppUser> userManager,
-            ILogger<ExternalLoginModel> logger)
+            ILogger<ExternalLoginModel> logger,
+            IDistributedCache cache)
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _logger = logger;
+            this.cache = cache;
         }
 
         [BindProperty]
@@ -66,7 +70,7 @@ namespace WebApp.Web.Areas.Identity.Pages.Account
             if (remoteError != null)
             {
                 ErrorMessage = $"Error from external provider: {remoteError}";
-                return RedirectToPage("./Login", new {ReturnUrl = returnUrl });
+                return RedirectToPage("./Login", new { ReturnUrl = returnUrl });
             }
             var info = await _signInManager.GetExternalLoginInfoAsync();
             if (info == null)
@@ -76,9 +80,20 @@ namespace WebApp.Web.Areas.Identity.Pages.Account
             }
 
             // Sign in the user with this external login provider if the user already has a login.
-            var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor : true);
+            var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
             if (result.Succeeded)
             {
+                byte[] thumbnailBytes = null;
+                string nameIdentifier = info.Principal.FindFirstValue(ClaimTypes.NameIdentifier);
+                string email = info.Principal.FindFirstValue(ClaimTypes.Email);
+                string thumbnailUrl = $"https://graph.facebook.com/{nameIdentifier}/picture?type=large";
+                using (HttpClient httpClient = new HttpClient())
+                {
+                    thumbnailBytes = await httpClient.GetByteArrayAsync(thumbnailUrl);
+                }
+
+                await cache.SetAsync(email, thumbnailBytes);
+
                 _logger.LogInformation("{Name} logged in with {LoginProvider} provider.", info.Principal.Identity.Name, info.LoginProvider);
                 return LocalRedirect(returnUrl);
             }

@@ -4,10 +4,12 @@
     using Microsoft.Azure.Storage.Blob;
     using System;
     using System.IO;
+
     public class BlobManager
     {
-        private CloudStorageAccount storageAccount;
-        private CloudBlobContainer blobContainer;
+        private readonly CloudStorageAccount storageAccount;
+        private readonly CloudBlobContainer blobContainer;
+
         public BlobManager(string connectionString, string containerName)
         {
             CloudStorageAccount account;
@@ -20,6 +22,7 @@
             {
                 throw new ArgumentException("Connection string is wrong or missing!");
             }
+
             blobContainer = CreateContainer(containerName);
         }
 
@@ -31,6 +34,7 @@
             blockBlob.UploadFromStream(sourceFile);
             return blobName;
         }
+
         public string GetImageUrl(string imageName)
         {
             if (imageName != null)
@@ -40,6 +44,7 @@
             }
             return null;
         }
+
         private CloudBlobContainer CreateContainer(string containerName)
         {
             CloudBlobClient cloudBlobClient = storageAccount.CreateCloudBlobClient();
