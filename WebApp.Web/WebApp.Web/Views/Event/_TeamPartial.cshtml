@@ -16,7 +16,7 @@
             }
             @if (@Model[i].Approved.Name == null)
             {
-                <a class="btn btn-info btn mb-2 ml-4" role="button" asp-controller="Event" asp-all-route-data="@rv" asp-action="JoinUser">Join</a>
+                <a class="btn btn-info btn mb-2 ml-4" role="button" asp-controller="Event" asp-route-EventId="@rv["eventId"]" asp-route-PositionId="@rv["positionId"]" asp-action="JoinUser">Join</a>
             }
             else
             {

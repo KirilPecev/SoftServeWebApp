@@ -7,6 +7,7 @@ namespace WebApp.Web.Controllers
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.DependencyInjection;
+    using Models;
     using Models.Event;
     using Services.EventAttendance;
     using Services.EventService;
@@ -91,22 +92,24 @@ namespace WebApp.Web.Controllers
         }
 
         [Authorize]
-        public IActionResult AprooveUser(IDictionary<string, string> rv)
+        public IActionResult ApproveUser(ApproveOrIgnoreUserModel model)
         {
-            int eventId = int.Parse(rv["eventId"]);
-            int positionId = int.Parse(rv["positionId"]);
-            string userID = rv["userId"];
-            attendanceService.ApproveUserForeEvent(userID, eventId, positionId).Wait();
+            int eventId = model.EventId;
+            int positionId = model.PositionId;
+            string userId = model.UserId;
+
+            attendanceService.ApproveUserForeEvent(userId, eventId, positionId).Wait();
             return RedirectToAction("HomePageView", "HomePage");
         }
 
         [Authorize]
-        public IActionResult IgnoreUser(IDictionary<string, string> rv)
+        public IActionResult IgnoreUser(ApproveOrIgnoreUserModel model)
         {
-            int eventId = int.Parse(rv["eventId"]);
-            int positionId = int.Parse(rv["positionId"]);
-            string userID = rv["userId"];
-            attendanceService.RemoveUserAttendeeToBeApproved(userID, eventId, positionId);
+            int eventId = model.EventId;
+            int positionId = model.PositionId;
+            string userId = model.UserId;
+
+            attendanceService.RemoveUserAttendeeToBeApproved(userId, eventId, positionId);
             return RedirectToAction("HomePageView", "HomePage");
         }
     }
