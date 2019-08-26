@@ -2,8 +2,14 @@
 {
     using Controllers.Mappers;
     using Data;
-    using Data.CustomRepos;
-    using Data.Repo;
+    using Data.Repo.EventAttendeesRepo;
+    using Data.Repo.EventAttendeesToBeApprovedRepo;
+    using Data.Repo.EventRepo;
+    using Data.Repo.PositionRepo;
+    using Data.Repo.RatingRepo;
+    using Data.Repo.ScoreRepo;
+    using Data.Repo.SportRepo;
+    using Data.Repo.UnitOfWork;
     using Data.Seeding;
     using Domain;
     using Microsoft.AspNetCore.Builder;

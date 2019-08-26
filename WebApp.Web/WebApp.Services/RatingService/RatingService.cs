@@ -1,28 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using WebApp.Data.Repo;
-using WebApp.Domain;
-
-namespace WebApp.Services.RatingService
+﻿namespace WebApp.Services.RatingService
 {
+    using Data.Repo.RatingRepo;
+    using Domain;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
     public class RatingService : IRatingService
     {
-        private IRatingRepo rating;
+        private readonly IRatingRepo rating;
+
         public RatingService(IRatingRepo ratingRepo)
         {
             rating = ratingRepo;
         }
 
-        public List<Rating> GetAllRatings()
+        public IEnumerable<Rating> GetAllRatings()
         {
             return rating.GetAllRatings().ToList();
         }
 
-        public void AddRating(int eventID, string giverId, string recieverId, int score, DateTime time)
+        public void AddRating(int eventId, string giverId, string receiverId, int score, DateTime time)
         {
-            this.rating.AddRating(eventID, giverId, recieverId, score, time);
+            this.rating.AddRating(eventId, giverId, receiverId, score, time);
         }
     }
 }

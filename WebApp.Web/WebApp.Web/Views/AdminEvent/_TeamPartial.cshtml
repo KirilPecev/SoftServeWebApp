@@ -1,13 +1,13 @@
 ﻿@model List<PositionModel>
 @for (int i = 0; i < Model.Count; i++)
  {
-    StarModel starModel = new StarModel(Model[i].EventId,Model[i].Aprooved);
+    StarModel starModel = new StarModel(Model[i].EventId,Model[i].Approved);
     <div class="row">
         <h5>@Model[i].Name: </h5>
     </div>
     <div class="row">
-        <button type="button" class="btn btn-danger mx-3 mb-2" data-toggle="modal" data-target="#exampleModal" style="max-width:150px">@Model[i].Aprooved.Name</button>
-        @if (@Model[i].Aprooved.Name != null)
+        <button type="button" class="btn btn-danger mx-3 mb-2" data-toggle="modal" data-target="#exampleModal" style="max-width:150px">@Model[i].Approved.Name</button>
+        @if (@Model[i].Approved.Name != null)
         {
             @await Html.PartialAsync($"_StarRatingPartial", starModel)
         }
@@ -16,7 +16,7 @@
             rv.Add("eventId", Model[i].EventId.ToString());
             rv.Add("positionId", Model[i].Id.ToString());
         }
-        @if (@Model[i].Aprooved.Name == null)
+        @if (@Model[i].Approved.Name == null)
         {
             <a class="btn btn-info btn mb-2 ml-4" role="button" asp-controller="Event" asp-all-route-data="@rv" asp-action="JoinUser">Join</a>
         }
@@ -26,5 +26,5 @@
         }
     </div>
 
-    @await Html.PartialAsync($"_AproovePartial", Model[i].ToBeAprooved);
+    @await Html.PartialAsync($"_AproovePartial", Model[i].ToBeApproved);
  }

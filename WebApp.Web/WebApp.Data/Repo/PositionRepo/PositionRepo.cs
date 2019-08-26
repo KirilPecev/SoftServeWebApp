@@ -1,15 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using WebApp.Domain;
-
-namespace WebApp.Data.Repo
+﻿namespace WebApp.Data.Repo.PositionRepo
 {
+    using Domain;
+    using GenericRepository;
+    using System.Collections.Generic;
+
     public class PositionRepo : Repository<Position>, IPositionRepo
     {
-        public PositionRepo(WebAppDbContext dbContext):base(dbContext)
+        public PositionRepo(WebAppDbContext dbContext) : base(dbContext)
         {
         }
+
         public IEnumerable<Position> GetPositions()
         {
             return dbSet;

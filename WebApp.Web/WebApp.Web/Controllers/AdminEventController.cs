@@ -2,6 +2,7 @@ namespace WebApp.Web.Controllers
 {
     using Domain;
     using Mappers;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
@@ -12,7 +13,6 @@ namespace WebApp.Web.Controllers
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using Microsoft.AspNetCore.Authorization;
     using WebApp.Scheduler.Scheduler;
 
     public class AdminEventController : Controller
@@ -39,7 +39,7 @@ namespace WebApp.Web.Controllers
         [Authorize]
         public IActionResult AdminViewEvent(Event dbEvent)
         {
-            var model = eventMapper.MapDbToEvent(dbEvent);
+            var model = eventMapper.ViewEvent(dbEvent);
             return View(model);
         }
 
@@ -51,7 +51,7 @@ namespace WebApp.Web.Controllers
 
             if (userId == null)
             {
-                return BadRequest("No such User registerd");
+                return BadRequest("No such User registered!");
             }
 
             var allMappedEventsByUser = new List<EventBindingModel>();
@@ -60,7 +60,7 @@ namespace WebApp.Web.Controllers
 
             foreach (var eventByUser in allEventsByUser)
             {
-                allMappedEventsByUser.Add(eventMapper.MapDbToEvent(eventByUser));
+                allMappedEventsByUser.Add(eventMapper.ViewEvent(eventByUser));
             }
 
             return View(allMappedEventsByUser);
@@ -75,15 +75,13 @@ namespace WebApp.Web.Controllers
             var task = new EventsTask(factory);
             await task.ProcessInScope(provider);
 
-            //TODO: pop with message of success or not
-
             return RedirectToAction(nameof(GetMyEvents));
         }
 
         [Authorize]
         public IActionResult Edit(EventBindingModel model, IFormFile eventImage)
         {
-            var viewModel = eventMapper.MapEditEventToDB(model, eventImage, userManager.GetUserId(User));
+            var viewModel = eventMapper.ModifiedEvent(model, eventImage, userManager.GetUserId(User));
             this.eventService.EditEvent(viewModel);
 
             var task = new EventsTask(factory);
@@ -108,7 +106,7 @@ namespace WebApp.Web.Controllers
             int eventId = int.Parse(rv["eventId"]);
             int positionId = int.Parse(rv["positionId"]);
             string userID = rv["userId"];
-            attendanceService.RemoveUserAtendeeToBeAprooved(userID, eventId, positionId);
+            attendanceService.RemoveUserAttendeeToBeApproved(userID, eventId, positionId);
             return RedirectToAction("HomePageView", "HomePage");
         }
     }

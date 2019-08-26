@@ -1,18 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using WebApp.Data.Repo;
-using WebApp.Domain;
-
-namespace WebApp.Services.PositionService
+﻿namespace WebApp.Services.PositionService
 {
+    using Data.Repo.PositionRepo;
+    using Domain;
+    using System.Collections.Generic;
+
     public class PositionService : IPositionService
     {
-        private IPositionRepo positionRepo;
+        private readonly IPositionRepo positionRepo;
+
         public PositionService(IPositionRepo positionRepo)
         {
             this.positionRepo = positionRepo;
         }
+
         public IEnumerable<Position> GetPositions()
         {
             return positionRepo.GetPositions();

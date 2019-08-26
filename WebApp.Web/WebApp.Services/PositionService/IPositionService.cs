@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using WebApp.Domain;
-
-namespace WebApp.Services.PositionService
+﻿namespace WebApp.Services.PositionService
 {
+    using Domain;
+    using System.Collections.Generic;
+
     public interface IPositionService
     {
         IEnumerable<Position> GetPositions();

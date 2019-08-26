@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using WebApp.Domain;
-
-namespace WebApp.Services.ScoreService
+﻿namespace WebApp.Services.ScoreService
 {
+    using Domain;
+    using System.Collections.Generic;
+
     public interface IScoreService
     {
-        List<Rating> GetAllData();
+        IEnumerable<Rating> GetAllData();
+
+        Dictionary<string, int> SortedRankList();
     }
 }

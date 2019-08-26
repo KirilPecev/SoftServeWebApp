@@ -1,30 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using WebApp.Domain;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
-
-namespace WebApp.Data.Repo
+﻿namespace WebApp.Data.Repo.ScoreRepo
 {
+    using Domain;
+    using GenericRepository;
+    using Microsoft.EntityFrameworkCore;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+
     public class ScoreRepo : Repository<Rating>, IScoreRepo
     {
         public ScoreRepo(WebAppDbContext dbContext) : base(dbContext)
         {
         }
 
-        public List<Rating> GetAllData()
+        public IEnumerable<Rating> GetAllData()
         {
             return dbSet
-                .Include(x=>x.Scores)
+                .Include(x => x.Scores)
                 .ToList();
         }
 
-        public List<int> GetScores(List<int> scores)
+        public IEnumerable<int> GetScores(List<int> scores)
         {
             return scores;
         }
 
-        public List<string> GetDates(List<DateTime> dates)
+        public IEnumerable<string> GetDates(List<DateTime> dates)
         {
             List<string> ddates = new List<string>();
 
@@ -32,6 +33,7 @@ namespace WebApp.Data.Repo
             {
                 ddates.Add(item.ToShortDateString());
             }
+
             return ddates;
         }
     }

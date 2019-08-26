@@ -2,14 +2,14 @@
 {
     using Domain;
     using Mappers;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
     using Services.EventAttendance;
+    using Services.RatingService;
+    using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Microsoft.AspNetCore.Authorization;
-    using WebApp.Services.RatingService;
-    using System;
 
     public class EventController : Controller
     {
@@ -28,7 +28,7 @@
         [Authorize]
         public IActionResult ViewEvent(Event dbEvent)
         {
-            return View(eventMapper.MapDbToEvent(dbEvent));
+            return View(eventMapper.ViewEvent(dbEvent));
         }
 
         [Authorize]
@@ -42,6 +42,7 @@
 
             return RedirectToAction("HomePageView", "HomePage");
         }
+
         public IActionResult AddRating(IDictionary<string, string> rv)
         {
             string giverId = userManager.GetUserId(User);

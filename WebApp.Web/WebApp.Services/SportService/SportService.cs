@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using WebApp.Data.Repo;
-using WebApp.Domain;
-
-namespace WebApp.Services.SportService
+﻿namespace WebApp.Services.SportService
 {
+    using Data.Repo.SportRepo;
+    using Domain;
+    using System.Collections.Generic;
+
     public class SportService : ISportService
     {
-        private ISportRepository sportRepository;
+        private readonly ISportRepository sportRepository;
+
         public SportService(ISportRepository repository)
         {
             this.sportRepository = repository;

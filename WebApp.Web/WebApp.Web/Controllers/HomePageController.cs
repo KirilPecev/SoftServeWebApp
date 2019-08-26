@@ -44,7 +44,7 @@
         [AutoValidateAntiforgeryToken]
         public IActionResult HomePageView(EventBindingModel model, IFormFile eventImage)
         {
-            this.eventService.CreateEvent(eventMapper.MapEventToDB(model, eventImage, userManager.GetUserId(User)));
+            this.eventService.CreateEvent(eventMapper.NewEvent(model, eventImage, userManager.GetUserId(User)));
             var task = new EventsTask(factory);
             task.ProcessInScope(provider);
 
@@ -74,7 +74,7 @@
             {
                 if (dbEvent.IsDeleted)
                     continue;
-                model.Events.Add(eventMapper.MapDbToEvent(dbEvent));
+                model.Events.Add(eventMapper.ViewEvent(dbEvent));
             }
 
             return View(model);
@@ -84,20 +84,25 @@
         {
             HomePageBinding model = new HomePageBinding();
 
-            var events = this.distributedCache.GetString("events");
-            var deserializedEvents = JsonConvert.DeserializeObject<Event[]>(events);
+            var events = GetEvents();
 
             if (searchedEvent != null)
             {
-                deserializedEvents = deserializedEvents.Where(e => e.Location.Contains(searchedEvent)).ToArray();
+                events = events.Where(e => e.Location.Contains(searchedEvent)).ToArray();
             }
 
-            foreach (var dbEvent in deserializedEvents)
+            foreach (var dbEvent in events)
             {
-                model.Events.Add(eventMapper.MapDbToEvent(dbEvent));
+                model.Events.Add(eventMapper.ViewEvent(dbEvent));
             }
 
             return View("HomePageView", model);
+        }
+
+        private Event[] GetEvents()
+        {
+            var events = this.distributedCache.GetString("events");
+            return JsonConvert.DeserializeObject<Event[]>(events);
         }
     }
 }

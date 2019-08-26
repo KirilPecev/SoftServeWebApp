@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using WebApp.Domain;
-
-namespace WebApp.Services.RatingService
+﻿namespace WebApp.Services.RatingService
 {
+    using Domain;
+    using System;
+    using System.Collections.Generic;
+
     public interface IRatingService
     {
-        List<Rating> GetAllRatings();
-        void AddRating(int eventId, string giverId, string recieverId, int score, DateTime time);
+        IEnumerable<Rating> GetAllRatings();
+
+        void AddRating(int eventId, string giverId, string receiverId, int score, DateTime time);
     }
 }

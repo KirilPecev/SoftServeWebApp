@@ -1,15 +1,15 @@
-﻿using Microsoft.AspNetCore.Http;
-using WebApp.Domain;
-using WebApp.Web.Models.Event;
-
-namespace WebApp.Web.Controllers.Mappers
+﻿namespace WebApp.Web.Controllers.Mappers
 {
+    using Domain;
+    using Microsoft.AspNetCore.Http;
+    using Models.Event;
+
     public interface IEventMapper
     {
-        Event MapEventToDB(EventBindingModel model, IFormFile eventImage, string adminId);
+        Event NewEvent(EventBindingModel model, IFormFile eventImage, string adminId);
 
-        Event MapEditEventToDB(EventBindingModel model, IFormFile eventImage, string adminId);
+        Event ModifiedEvent(EventBindingModel model, IFormFile eventImage, string adminId);
 
-        EventBindingModel MapDbToEvent(Event dbEvent);
+        EventBindingModel ViewEvent(Event dbEvent);
     }
 }

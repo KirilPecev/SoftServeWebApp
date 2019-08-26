@@ -1,20 +1,20 @@
-﻿using System.Threading.Tasks;
-using WebApp.Data.Repo;
-
-namespace WebApp.Services
+﻿namespace WebApp.Services
 {
+    using Data.Repo.UnitOfWork;
+    using System.Threading.Tasks;
+
     public class BaseService
     {
-        readonly IUnitOfWork _unitOfWork;
+        readonly IUnitOfWork unitOfWork;
 
         public BaseService(IUnitOfWork unitOfWork)
         {
-            this._unitOfWork = unitOfWork;
+            this.unitOfWork = unitOfWork;
         }
 
         public async Task<int> SaveChangesAsync()
         {
-            return await _unitOfWork.SaveChanges();
+            return await unitOfWork.SaveChanges();
         }
     }
 }

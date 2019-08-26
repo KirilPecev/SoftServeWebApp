@@ -1,12 +1,12 @@
-﻿namespace WebApp.Data.Repo
+﻿namespace WebApp.Data.Repo.EventRepo
 {
     using Domain;
+    using GenericRepository;
     using System.Collections.Generic;
-    using System.Threading.Tasks;
 
     public interface IEventRepository : IRepository<Event>
     {
-        void CreateEvent(Event createEvent); 
+        void CreateEvent(Event createEvent);
 
         IEnumerable<Event> GetAllEvents();
 

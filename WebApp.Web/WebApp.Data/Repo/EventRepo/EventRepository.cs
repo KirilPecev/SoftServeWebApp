@@ -1,15 +1,15 @@
-﻿namespace WebApp.Data.Repo
+﻿namespace WebApp.Data.Repo.EventRepo
 {
     using Domain;
-    using System;
+    using GenericRepository;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Threading.Tasks;
 
     public class EventRepository : Repository<Event>, IEventRepository
     {
         private readonly WebAppDbContext dbContext;
-        public EventRepository(WebAppDbContext dbContext) :base(dbContext)
+
+        public EventRepository(WebAppDbContext dbContext) : base(dbContext)
         {
             this.dbContext = dbContext;
         }
@@ -27,7 +27,7 @@
 
         public Event GetEvent(int id)
         {
-            return dbSet.Where(e => e.Id == id).SingleOrDefault();
+            return dbSet.SingleOrDefault(e => e.Id == id);
         }
     }
 }

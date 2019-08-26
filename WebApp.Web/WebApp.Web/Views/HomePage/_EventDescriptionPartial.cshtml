@@ -15,15 +15,15 @@
             IDictionary<string, string> rv = new Dictionary<string, string>();
             rv.Add("eventId", Model.Id.ToString());
             rv.Add("positionId", position.Id.ToString());
-            StarModel starModel = new StarModel(position.EventId, position.Aprooved);
+            StarModel starModel = new StarModel(position.EventId, position.Approved);
             <div class="row">
                 <div class="col">
                     @position.Name:
                 </div>
                 <div class="col">
-                    @if (@position.Aprooved.Name != null)
+                    @if (@position.Approved.Name != null)
                     {
-                        <a type="button" class="btn btn-danger mx-3 mb-2" asp-controller="Users" asp-action="Profile" asp-route-name="@position.Aprooved.Name">@position.Aprooved.Name</a>
+                        <a type="button" class="btn btn-danger mx-3 mb-2" asp-controller="Users" asp-action="Profile" asp-route-name="@position.Approved.Name">@position.Approved.Name</a>
                     }
                     else
                     {
@@ -31,13 +31,13 @@
                     }
                 </div>
                 <div class="col">
-                    @if (@position.Aprooved.Name != null)
+                    @if (@position.Approved.Name != null)
                     {
                         @await Html.PartialAsync($"_StarRatingPartial", starModel)
                     }
                 </div>
                 <div class="col">
-                    @if (@position.Aprooved.Name == null)
+                    @if (@position.Approved.Name == null)
                     {
                         <a class="btn btn-info btn mb-2 ml-4" role="button" asp-controller="Event" asp-all-route-data="@rv" asp-action="JoinUser">Join</a>
                     }
@@ -54,15 +54,15 @@
             IDictionary<string, string> rv = new Dictionary<string, string>();
             rv.Add("eventId", Model.Id.ToString());
             rv.Add("positionId", position.Id.ToString());
-            StarModel starModel = new StarModel(position.EventId, position.Aprooved);
+            StarModel starModel = new StarModel(position.EventId, position.Approved);
             <div class="row">
                 <div class="col">
                     @position.Name:
                 </div>
                 <div class="col">
-                    @if (@position.Aprooved.Name != null)
+                    @if (@position.Approved.Name != null)
                     {
-                        <a type="button" class="btn btn-danger mx-3 mb-2" asp-controller="Users" asp-action="Profile" asp-route-name="@position.Aprooved.Name">@position.Aprooved.Name</a>
+                        <a type="button" class="btn btn-danger mx-3 mb-2" asp-controller="Users" asp-action="Profile" asp-route-name="@position.Approved.Name">@position.Approved.Name</a>
                     }
                     else
                     {
@@ -70,13 +70,13 @@
                     }
                 </div>
                 <div class="col">
-                    @if (@position.Aprooved.Name != null)
+                    @if (@position.Approved.Name != null)
                     {
                         @await Html.PartialAsync($"_StarRatingPartial", starModel)
                     }
                 </div>
                 <div class="col">
-                    @if (@position.Aprooved.Name == null)
+                    @if (@position.Approved.Name == null)
                     {
                         <a class="btn btn-info btn mb-2 ml-4" role="button" asp-controller="Event" asp-all-route-data="@rv" asp-action="JoinUser">Join</a>
                     }
