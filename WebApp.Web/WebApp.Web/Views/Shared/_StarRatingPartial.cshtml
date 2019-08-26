@@ -1,42 +1,68 @@
-﻿
-@*
-    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model StarModel
+@{
+    IDictionary<string, string> rv1 = new Dictionary<string, string>();
+    rv1.Add("recieverId", Model.player.Id);
+    rv1.Add("rating", 1.ToString());
+    rv1.Add("eventID", Model.EventId.ToString());
 
+    IDictionary<string, string> rv2 = new Dictionary<string, string>();
+    rv2.Add("recieverId", Model.player.Id);
+    rv2.Add("rating", 2.ToString());
+    rv2.Add("eventID", Model.EventId.ToString());
 
+    IDictionary<string, string> rv3 = new Dictionary<string, string>();
+    rv3.Add("recieverId", Model.player.Id);
+    rv3.Add("rating", 3.ToString());
+    rv3.Add("eventID", Model.EventId.ToString());
+
+    IDictionary<string, string> rv4 = new Dictionary<string, string>();
+    rv4.Add("recieverId", Model.player.Id);
+    rv4.Add("rating", 4.ToString());
+    rv4.Add("eventID", Model.EventId.ToString());
+
+    IDictionary<string, string> rv5 = new Dictionary<string, string>();
+    rv5.Add("recieverId", Model.player.Id);
+    rv5.Add("rating", 5.ToString());
+    rv5.Add("eventID", Model.EventId.ToString());
+}
 <div class="rating">
-    <input type="radio" id="star5" name="rating" value="5" /><label for="star5"></label>
-    <input type="radio" id="star4" name="rating" value="4" /><label for="star4"></label>
-    <input type="radio" id="star3" name="rating" value="3" /><label for="star3"></label>
-    <input type="radio" id="star2" name="rating" value="2" /><label for="star2"></label>
-    <input type="radio" id="star1" name="rating" value="1" /><label for="star1"></label>
+    <a type="radio" id="star5" name="rating" asp-controller="Event" asp-all-route-data="@rv5" asp-action="AddRating" /><label for="star5"></label>
+    <a type="radio" id="star4" name="rating" asp-controller="Event" asp-all-route-data="@rv4" asp-action="AddRating" /><label for="star4"></label>
+    <a type="radio" id="star3" name="rating" asp-controller="Event" asp-all-route-data="@rv3" asp-action="AddRating" /><label for="star3"></label>
+    <a type="radio" id="star2" name="rating" asp-controller="Event" asp-all-route-data="@rv2" asp-action="AddRating" /><label for="star2"></label>
+    <a type="radio" id="star1" name="rating" asp-controller="Event" asp-all-route-data="@rv1" asp-action="AddRating" /><label for="star1"></label>
 </div>
 
 
 <style>
     .rating {
     }
-    .rating label {
-        float: right;
-        position: relative;
-        width: 20px;
-        height: 20px;
-        cursor: pointer;
-        margin-top: -4px
-    }
-    .rating label:not(:first-of-type) {
-        margin-right: 14px;
-    }
-    .rating label:before {
-        content: "\2605";
-        font-size: 40px;
-        color: #ccc;
-        line-height: 1;
-    }
-    .rating input {
-        display: none;
-    }
-    .rating input:checked ~ label:before, .rating:not(:checked) > label:hover:before, .rating:not(:checked) > label:hover ~ label:before {
-        color: #f9df4a;
-    }
+
+   .rating label {
+            float: right;
+            position: relative;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            margin-top: -4px
+        }
+
+            .rating label:not(:first-of-type) {
+                margin-right: 14px;
+            }
+
+            .rating label:before {
+                content: "\2605";
+                font-size: 40px;
+                color: #ccc;
+                line-height: 1;
+            }
+
+        .rating input {
+            display: none;
+        }
+
+            .rating input:checked ~ label:before, .rating:not(:checked) > label:hover:before, .rating:not(:checked) > label:hover ~ label:before {
+                color: #f9df4a;
+            }
 </style>

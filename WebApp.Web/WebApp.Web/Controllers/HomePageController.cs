@@ -72,6 +72,8 @@
 
             foreach (var dbEvent in deserializedEvents)
             {
+                if (dbEvent.IsDeleted)
+                    continue;
                 model.Events.Add(eventMapper.MapDbToEvent(dbEvent));
             }
 

@@ -19,5 +19,10 @@ namespace WebApp.Services.RatingService
         {
             return rating.GetAllRatings().ToList();
         }
+
+        public void AddRating(int eventID, string giverId, string recieverId, int score, DateTime time)
+        {
+            this.rating.AddRating(eventID, giverId, recieverId, score, time);
+        }
     }
 }
