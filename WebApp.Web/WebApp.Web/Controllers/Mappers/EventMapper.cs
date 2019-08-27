@@ -3,16 +3,15 @@
     using Domain;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Identity;
-    using Microsoft.AspNetCore.Mvc;
     using Models.Event;
     using Services;
-    using Services.EventAttendance;
+    using Services.EventAttendanceService;
     using Services.EventService;
     using Services.PositionService;
     using Services.SportService;
     using System.Linq;
 
-    public class EventMapper : Controller, IEventMapper
+    public class EventMapper : IEventMapper
     {
         private readonly UserManager<WebAppUser> userManager;
         private readonly ImageService imageService;
@@ -66,7 +65,7 @@
         public EventBindingModel ViewEvent(Event dbEvent)
         {
             EventBindingModel model = new EventBindingModel();
-            dbEvent.Sport = sportService.GetSports().Where(s => s.Id == dbEvent.SportId).SingleOrDefault();
+            dbEvent.Sport = sportService.GetSports().SingleOrDefault(s => s.Id == dbEvent.SportId);
             dbEvent.Sport.Positions = positionService.GetPositions().Where(p => p.SportId == dbEvent.SportId).ToList();
             AddUsersToPositions(dbEvent);
             model.Id = dbEvent.Id;

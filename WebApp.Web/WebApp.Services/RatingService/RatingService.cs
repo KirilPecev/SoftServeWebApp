@@ -8,11 +8,11 @@
 
     public class RatingService : IRatingService
     {
-        private readonly IRatingRepo rating;
+        private readonly IRatingRepository rating;
 
-        public RatingService(IRatingRepo ratingRepo)
+        public RatingService(IRatingRepository rating)
         {
-            rating = ratingRepo;
+            this.rating = rating;
         }
 
         public IEnumerable<Rating> GetAllRatings()

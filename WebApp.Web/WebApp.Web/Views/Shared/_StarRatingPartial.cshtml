@@ -1,36 +1,36 @@
 ﻿@model StarModel
 @{
     IDictionary<string, string> rv1 = new Dictionary<string, string>();
-    rv1.Add("recieverId", Model.Player.Id);
+    rv1.Add("receiverId", Model.Player.Id);
     rv1.Add("rating", 1.ToString());
-    rv1.Add("eventID", Model.EventId.ToString());
+    rv1.Add("eventId", Model.EventId.ToString());
 
     IDictionary<string, string> rv2 = new Dictionary<string, string>();
-    rv2.Add("recieverId", Model.Player.Id);
+    rv2.Add("receiverId", Model.Player.Id);
     rv2.Add("rating", 2.ToString());
-    rv2.Add("eventID", Model.EventId.ToString());
+    rv2.Add("eventId", Model.EventId.ToString());
 
     IDictionary<string, string> rv3 = new Dictionary<string, string>();
-    rv3.Add("recieverId", Model.Player.Id);
+    rv3.Add("receiverId", Model.Player.Id);
     rv3.Add("rating", 3.ToString());
-    rv3.Add("eventID", Model.EventId.ToString());
+    rv3.Add("eventId", Model.EventId.ToString());
 
     IDictionary<string, string> rv4 = new Dictionary<string, string>();
-    rv4.Add("recieverId", Model.Player.Id);
+    rv4.Add("receiverId", Model.Player.Id);
     rv4.Add("rating", 4.ToString());
-    rv4.Add("eventID", Model.EventId.ToString());
+    rv4.Add("eventId", Model.EventId.ToString());
 
     IDictionary<string, string> rv5 = new Dictionary<string, string>();
-    rv5.Add("recieverId", Model.Player.Id);
+    rv5.Add("receiverId", Model.Player.Id);
     rv5.Add("rating", 5.ToString());
-    rv5.Add("eventID", Model.EventId.ToString());
+    rv5.Add("eventId", Model.EventId.ToString());
 }
 <div class="rating">
-    <a type="radio" id="star5" name="rating" asp-controller="Event" asp-all-route-data="@rv5" asp-action="AddRating" /><label for="star5"></label>
-    <a type="radio" id="star4" name="rating" asp-controller="Event" asp-all-route-data="@rv4" asp-action="AddRating" /><label for="star4"></label>
-    <a type="radio" id="star3" name="rating" asp-controller="Event" asp-all-route-data="@rv3" asp-action="AddRating" /><label for="star3"></label>
-    <a type="radio" id="star2" name="rating" asp-controller="Event" asp-all-route-data="@rv2" asp-action="AddRating" /><label for="star2"></label>
-    <a type="radio" id="star1" name="rating" asp-controller="Event" asp-all-route-data="@rv1" asp-action="AddRating" /><label for="star1"></label>
+    <a type="radio" id="star5" name="rating" asp-controller="Event" asp-route-ReceiverId="@rv5["receiverId"]" asp-route-Rating="@int.Parse(rv5["rating"])" asp-route-EventId="@int.Parse(rv5["eventId"])" asp-action="AddRating" /><label for="star5"></label>
+    <a type="radio" id="star4" name="rating" asp-controller="Event" asp-route-ReceiverId="@rv4["receiverId"]" asp-route-Rating="@int.Parse(rv4["rating"])" asp-route-EventId="@int.Parse(rv4["eventId"])" asp-action="AddRating" /><label for="star4"></label>
+    <a type="radio" id="star3" name="rating" asp-controller="Event" asp-route-ReceiverId="@rv3["receiverId"]" asp-route-Rating="@int.Parse(rv3["rating"])" asp-route-EventId="@int.Parse(rv3["eventId"])" asp-action="AddRating" /><label for="star3"></label>
+    <a type="radio" id="star2" name="rating" asp-controller="Event" asp-route-ReceiverId="@rv2["receiverId"]" asp-route-Rating="@int.Parse(rv2["rating"])" asp-route-EventId="@int.Parse(rv2["eventId"])" asp-action="AddRating" /><label for="star2"></label>
+    <a type="radio" id="star1" name="rating" asp-controller="Event" asp-route-ReceiverId="@rv1["receiverId"]" asp-route-Rating="@int.Parse(rv1["rating"])" asp-route-EventId="@int.Parse(rv1["eventId"])" asp-action="AddRating" /><label for="star1"></label>
 </div>
 
 

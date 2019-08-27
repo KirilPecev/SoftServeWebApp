@@ -4,7 +4,7 @@
     using Models;
     using System.Diagnostics;
 
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         public IActionResult Index()
         {
@@ -13,7 +13,7 @@
                 return Redirect("/Identity/Account/Login");
             }
 
-            return this.RedirectToAction("HomePageView","HomePage");
+            return this.RedirectToAction("HomePageView", "HomePage");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

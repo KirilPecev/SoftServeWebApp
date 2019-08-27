@@ -5,19 +5,19 @@
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
-    using Services.EventAttendance;
+    using Models;
+    using Services.EventAttendanceService;
     using Services.RatingService;
     using System;
-    using System.Collections.Generic;
     using System.Linq;
-    using Models;
 
-    public class EventController : Controller
+    public class EventController : BaseController
     {
         private readonly IEventMapper eventMapper;
         private readonly UserManager<WebAppUser> userManager;
         private readonly IEventAttendanceService attendanceService;
         private readonly IRatingService ratingService;
+
         public EventController(UserManager<WebAppUser> userManager, IEventMapper eventMapper, IEventAttendanceService attendanceService, IRatingService ratingService)
         {
             this.ratingService = ratingService;
@@ -37,20 +37,23 @@
         {
             int eventId = model.EventId;
             int positionId = model.PositionId;
-            string joinID = this.userManager.GetUserId(User);
-            if (!attendanceService.GetAllEventAttendeesForEvent(eventId).Any(a => a.UserId == joinID))
-                attendanceService.RegisterUserForEvent(joinID, eventId, positionId).Wait();
+            string joinId = this.userManager.GetUserId(User);
+
+            if (!attendanceService.GetAllEventAttendeesForEvent(eventId).Any(a => a.UserId == joinId))
+                attendanceService.RegisterUserForEvent(joinId, eventId, positionId).Wait();
 
             return RedirectToAction("DetermineEventView", "HomePage", new { Id = eventId });
         }
 
-        public IActionResult AddRating(IDictionary<string, string> rv)
+        public IActionResult AddRating(RatingModel model)
         {
             string giverId = userManager.GetUserId(User);
-            string recieverId = rv["recieverId"];
-            int score = int.Parse(rv["rating"]);
-            int eventId = int.Parse(rv["eventID"]);
-            ratingService.AddRating(eventId, giverId, recieverId, score, DateTime.Now);
+            string receiverId = model.ReceiverId;
+            int score = model.Rating;
+            int eventId = model.EventId;
+
+            ratingService.AddRating(eventId, giverId, receiverId, score, DateTime.Now);
+
             return RedirectToAction("DetermineEventView", "HomePage", new { Id = eventId });
         }
     }

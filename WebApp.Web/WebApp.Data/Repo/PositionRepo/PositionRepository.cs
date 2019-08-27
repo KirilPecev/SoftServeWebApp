@@ -4,9 +4,9 @@
     using GenericRepository;
     using System.Collections.Generic;
 
-    public class PositionRepo : Repository<Position>, IPositionRepo
+    public class PositionRepository : Repository<Position>, IPositionRepository
     {
-        public PositionRepo(WebAppDbContext dbContext) : base(dbContext)
+        public PositionRepository(WebAppDbContext dbContext) : base(dbContext)
         {
         }
 

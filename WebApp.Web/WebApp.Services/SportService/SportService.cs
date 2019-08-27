@@ -6,15 +6,15 @@
 
     public class SportService : ISportService
     {
-        private readonly ISportRepository sportRepository;
+        private readonly ISportRepository sport;
 
-        public SportService(ISportRepository repository)
+        public SportService(ISportRepository sport)
         {
-            this.sportRepository = repository;
+            this.sport = sport;
         }
         public IEnumerable<Sport> GetSports()
         {
-            return sportRepository.GetSports();
+            return sport.GetSports();
         }
     }
 }

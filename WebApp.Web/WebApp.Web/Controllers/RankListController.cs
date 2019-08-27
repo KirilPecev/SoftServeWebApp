@@ -4,7 +4,7 @@
     using Microsoft.AspNetCore.Mvc;
     using Services.ScoreService;
 
-    public class RankListController : Controller
+    public class RankListController : BaseController
     {
         private readonly IScoreService scoreService;
 

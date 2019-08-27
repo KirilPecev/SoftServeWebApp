@@ -1,4 +1,4 @@
-﻿namespace WebApp.Services.EventAttendance
+﻿namespace WebApp.Services.EventAttendanceService
 {
     using Data.Repo.EventAttendeesRepo;
     using Data.Repo.EventAttendeesToBeApprovedRepo;
@@ -14,16 +14,21 @@
     {
         private readonly IEmailSender sender;
         private readonly UserManager<WebAppUser> userManager;
-        private readonly IEventAttendeesRepo eventAttendeesRepo;
-        private readonly IEventAttendeesToBeApprovedRepo eventAttendeesToBeApprovedRepo;
+        private readonly IEventAttendeesRepository eventAttendees;
+        private readonly IEventAttendeesToBeApprovedRepository eventAttendeesToBeApproved;
 
-        public EventAttendanceService(IEmailSender sender, UserManager<WebAppUser> userManager, IEventAttendeesToBeApprovedRepo eventAttendeesToBeApprovedRepo, IEventAttendeesRepo eventAttendeesRepo, IUnitOfWork unitOfWork)
+        public EventAttendanceService(
+            IEmailSender sender,
+            UserManager<WebAppUser> userManager,
+            IEventAttendeesToBeApprovedRepository eventAttendeesToBeApproved,
+            IEventAttendeesRepository eventAttendees,
+            IUnitOfWork unitOfWork)
             : base(unitOfWork)
         {
             this.sender = sender;
             this.userManager = userManager;
-            this.eventAttendeesRepo = eventAttendeesRepo;
-            this.eventAttendeesToBeApprovedRepo = eventAttendeesToBeApprovedRepo;
+            this.eventAttendees = eventAttendees;
+            this.eventAttendeesToBeApproved = eventAttendeesToBeApproved;
         }
 
         public async Task<EventAttendeesToBeApproved> RegisterUserForEvent(string userId, int eventId, int positionId)
@@ -35,11 +40,11 @@
                 PositionId = positionId
             };
 
-            var all = eventAttendeesToBeApprovedRepo.GetAll().ToList();
+            var all = eventAttendeesToBeApproved.GetAll().ToList();
 
             if (!all.Exists(a => a.EventId == eventId && a.UserId == a.UserId && a.PositionId == positionId))
             {
-                await eventAttendeesToBeApprovedRepo.AddAsync(newEventAttendee);
+                await eventAttendeesToBeApproved.AddAsync(newEventAttendee);
                 await SaveChangesAsync();
             }
 
@@ -56,7 +61,7 @@
             };
 
             RemoveUserAttendeeToBeApproved(userId, eventId, positionId);
-            await eventAttendeesRepo.AddAsync(approvedUser);
+            await eventAttendees.AddAsync(approvedUser);
             await SaveChangesAsync();
 
             var email = this.userManager.Users.SingleOrDefault(u => u.Id == approvedUser.UserId).Email;
@@ -67,32 +72,32 @@
 
         public IEnumerable<EventAttendees> GetAllEventAttendeesForUser(string userId)
         {
-            return eventAttendeesRepo.GetAllByUserId(userId);
+            return eventAttendees.GetAllByUserId(userId);
         }
 
         public IEnumerable<EventAttendees> GetAllEventAttendeesForEvent(int eventId)
         {
-            return eventAttendeesRepo.GetAll().Where(a => a.EventId == eventId).ToList();
+            return eventAttendees.GetAll().Where(a => a.EventId == eventId).ToList();
         }
 
         public IEnumerable<EventAttendeesToBeApproved> GetAllEventAttendeesToBeApprovedForEvent(int eventId)
         {
-            return eventAttendeesToBeApprovedRepo.GetAll().Where(a => a.EventId == eventId).ToList();
+            return eventAttendeesToBeApproved.GetAll().Where(a => a.EventId == eventId).ToList();
         }
 
         public IEnumerable<EventAttendeesToBeApproved> GetAllEventAttendeesToBeApprovedForUser(string userId)
         {
-            return eventAttendeesToBeApprovedRepo.GetAllByUserId(userId);
+            return eventAttendeesToBeApproved.GetAllByUserId(userId);
         }
 
         public void RemoveUserAttendee(string userId, int eventId, int positionId)
         {
-            eventAttendeesRepo.RemoveUser(userId, eventId, positionId);
+            eventAttendees.RemoveUser(userId, eventId, positionId);
         }
 
         public void RemoveUserAttendeeToBeApproved(string userId, int eventId, int positionId)
         {
-            eventAttendeesToBeApprovedRepo.ClearUsers(userId, eventId);
+            eventAttendeesToBeApproved.ClearUsers(userId, eventId);
         }
     }
 }

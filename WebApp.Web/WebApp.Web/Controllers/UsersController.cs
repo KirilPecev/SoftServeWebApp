@@ -9,7 +9,7 @@
     using System.Collections.Generic;
     using System.Linq;
 
-    public class UsersController : Controller
+    public class UsersController : BaseController
     {
         private readonly UserManager<WebAppUser> userManager;
         private readonly IScoreService scoreService;
@@ -23,14 +23,20 @@
         [Authorize]
         public IActionResult Profile(string name)
         {
-            string id = this.userManager.Users.FirstOrDefault(u => u.UserName == name).Id;
+            UserBindingModel model = new UserBindingModel
+            {
+                Name = name,
+                Score = GetUserScores(name)
+            };
+
+            return View("Profile", model);
+        }
+
+        private List<UserScore> GetUserScores(string name)
+        {
+            string id = userManager.Users.FirstOrDefault(u => u.UserName == name).Id;
             List<Rating> rating = scoreService.GetAllData().Where(rid => rid.ReceiverId == id).ToList();
             List<UserScore> userScores = new List<UserScore>();
-
-            UserBindingModel model = new UserBindingModel();
-
-            model.Name = name;
-
             foreach (var item in rating)
             {
                 foreach (var score in item.Scores)
@@ -43,9 +49,7 @@
                 }
             }
 
-            model.Score = userScores;
-
-            return View("Profile", model);
+            return userScores;
         }
     }
 }

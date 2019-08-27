@@ -6,11 +6,11 @@
     using System.Collections.Generic;
     using System.Linq;
 
-    public class RatingRepo : Repository<Rating>, IRatingRepo
+    public class RatingRepository : Repository<Rating>, IRatingRepository
     {
         private readonly WebAppDbContext dbContext;
 
-        public RatingRepo(WebAppDbContext dbContext) : base(dbContext)
+        public RatingRepository(WebAppDbContext dbContext) : base(dbContext)
         {
             this.dbContext = dbContext;
         }

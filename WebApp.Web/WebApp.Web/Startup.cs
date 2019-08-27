@@ -25,7 +25,7 @@
     using Notifications;
     using Notifications.Entities;
     using Scheduler.Scheduler;
-    using Services.EventAttendance;
+    using Services.EventAttendanceService;
     using Services.EventService;
     using Services.PositionService;
     using Services.RatingService;
@@ -74,14 +74,14 @@
             services.AddSingleton<IHostedService, EventsTask>();
             services.AddSingleton<IHostedService, SendEmailsTask>();
 
-            services.AddSingleton<IRatingRepo, RatingRepo>();
+            services.AddSingleton<IRatingRepository, RatingRepository>();
             services.AddSingleton<IRatingService, RatingService>();
-            services.AddScoped<IRatingRepo, RatingRepo>();
+            services.AddScoped<IRatingRepository, RatingRepository>();
             services.AddScoped<IRatingService, RatingService>();
 
-            services.AddSingleton<IScoreRepo, ScoreRepo>();
+            services.AddSingleton<IScoreRepository, ScoreRepository>();
             services.AddSingleton<IScoreService, ScoreService>();
-            services.AddScoped<IScoreRepo, ScoreRepo>();
+            services.AddScoped<IScoreRepository, ScoreRepository>();
             services.AddScoped<IScoreService, ScoreService>();
 
             //TODO register services and repos
@@ -90,21 +90,21 @@
             services.AddScoped<IEventService, EventService>();
             services.AddScoped<IEventRepository, EventRepository>();
             services.AddSingleton<IEventAttendanceService, EventAttendanceService>();
-            services.AddSingleton<IEventAttendeesRepo, EventAttendeesRepo>();
-            services.AddSingleton<IEventAttendeesToBeApprovedRepo, EventAttendeesToBeApprovedRepo>();
+            services.AddSingleton<IEventAttendeesRepository, EventAttendeesRepository>();
+            services.AddSingleton<IEventAttendeesToBeApprovedRepository, EventAttendeesToBeApprovedRepository>();
             services.AddScoped<IEventAttendanceService, EventAttendanceService>();
-            services.AddScoped<IEventAttendeesRepo, EventAttendeesRepo>();
-            services.AddScoped<IEventAttendeesToBeApprovedRepo, EventAttendeesToBeApprovedRepo>();
+            services.AddScoped<IEventAttendeesRepository, EventAttendeesRepository>();
+            services.AddScoped<IEventAttendeesToBeApprovedRepository, EventAttendeesToBeApprovedRepository>();
 
 
             services.AddSingleton<ISportService, SportService>();
-            services.AddSingleton<ISportRepository, SportRepo>();
+            services.AddSingleton<ISportRepository, SportRepository>();
             services.AddScoped<ISportService, SportService>();
-            services.AddScoped<ISportRepository, SportRepo>();
+            services.AddScoped<ISportRepository, SportRepository>();
             services.AddSingleton<IPositionService, PositionService>();
-            services.AddSingleton<IPositionRepo, PositionRepo>();
+            services.AddSingleton<IPositionRepository, PositionRepository>();
             services.AddScoped<IPositionService, PositionService>();
-            services.AddScoped<IPositionRepo, PositionRepo>();
+            services.AddScoped<IPositionRepository, PositionRepository>();
             services.AddSingleton<IEventMapper, EventMapper>();
             services.AddScoped<IEventMapper, EventMapper>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
