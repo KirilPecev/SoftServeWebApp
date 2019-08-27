@@ -18,21 +18,21 @@
 
         public override Task ProcessInScope(IServiceProvider serviceProvider)
         {
-            var events = AllEvents(serviceProvider).Result;
+            var events = GetAllEvents(serviceProvider);
 
-            UpdateCache(serviceProvider, events).Wait();
+            UpdateCache(serviceProvider, events);
 
             return Task.CompletedTask;
         }
 
-        private async Task<IEnumerable<Event>> AllEvents(IServiceProvider serviceProvider)
+        private IEnumerable<Event> GetAllEvents(IServiceProvider serviceProvider)
         {
             var eventService = serviceProvider.GetService(typeof(IEventService)) as IEventService;
 
             return eventService.GetAllEvents().ToList();
         }
 
-        private async Task UpdateCache(IServiceProvider serviceProvider, IEnumerable<Event> events)
+        private void UpdateCache(IServiceProvider serviceProvider, IEnumerable<Event> events)
         {
             var cache = serviceProvider.GetService(typeof(IDistributedCache)) as IDistributedCache;
 

@@ -19,8 +19,6 @@
     {
         private readonly IEventService eventService;
         private readonly IEventMapper eventMapper;
-        private readonly IServiceProvider provider;
-        private readonly IServiceScopeFactory factory;
         private readonly IDistributedCache distributedCache;
         private readonly UserManager<WebAppUser> userManager;
 
@@ -40,7 +38,6 @@
 
         public IActionResult HomePageView()
         {
-
             return ReturnMainView();
         }
 
