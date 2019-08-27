@@ -34,7 +34,7 @@
             var events = db.Events
                 .Include(x => x.Users)
                 .ThenInclude(x => x.User)
-                .Where(e => e.Time == tomorrow)
+                .Where(e => e.Time == tomorrow && e.IsDeleted == false)
                 .ToList();
 
             return events;
