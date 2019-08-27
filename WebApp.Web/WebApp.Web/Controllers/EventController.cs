@@ -18,7 +18,11 @@
         private readonly IEventAttendanceService attendanceService;
         private readonly IRatingService ratingService;
 
-        public EventController(UserManager<WebAppUser> userManager, IEventMapper eventMapper, IEventAttendanceService attendanceService, IRatingService ratingService)
+        public EventController(
+            UserManager<WebAppUser> userManager,
+            IEventMapper eventMapper,
+            IEventAttendanceService attendanceService,
+            IRatingService ratingService)
         {
             this.ratingService = ratingService;
             this.userManager = userManager;

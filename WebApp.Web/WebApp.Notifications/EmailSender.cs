@@ -1,73 +1,72 @@
-using MailKit.Net.Smtp;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
-using MimeKit;
-using System;
-using System.Threading.Tasks;
-using WebApp.Notifications.Entities;
-
 namespace WebApp.Notifications
 {
-	public class EmailSender : IEmailSender
-	{
-		private readonly EmailSettings _emailSettings;
-		private readonly IHostingEnvironment _env;
+    using Entities;
+    using MailKit.Net.Smtp;
+    using Microsoft.Extensions.Hosting;
+    using Microsoft.Extensions.Options;
+    using MimeKit;
+    using System;
+    using System.Threading.Tasks;
 
-		public EmailSender(
-			IOptions<EmailSettings> emailSettings,
-			IHostingEnvironment env)
-		{
-			_emailSettings = emailSettings.Value;
-			_env = env;
-		}
+    public class EmailSender : IEmailSender
+    {
+        private readonly EmailSettings emailSettings;
+        private readonly IHostingEnvironment env;
 
-		public async Task SendEmailAsync(string email, string subject, string message)
-		{
-			try
-			{
-				var mimeMessage = new MimeMessage();
+        public EmailSender(
+            IOptions<EmailSettings> emailSettings,
+            IHostingEnvironment env)
+        {
+            this.emailSettings = emailSettings.Value;
+            this.env = env;
+        }
 
-				mimeMessage.From.Add(new MailboxAddress(_emailSettings.SenderName, _emailSettings.Sender));
+        public async Task SendEmailAsync(string email, string subject, string message)
+        {
+            try
+            {
+                var mimeMessage = new MimeMessage();
 
-				mimeMessage.To.Add(new MailboxAddress(email));
+                mimeMessage.From.Add(new MailboxAddress(emailSettings.SenderName, emailSettings.Sender));
 
-				mimeMessage.Subject = subject;
+                mimeMessage.To.Add(new MailboxAddress(email));
 
-				mimeMessage.Body = new TextPart("html")
-				{
-					Text = message
-				};
+                mimeMessage.Subject = subject;
 
-				using (var client = new SmtpClient())
-				{
-					// For demo-purposes, accept all SSL certificates (in case the server supports STARTTLS)
-					client.ServerCertificateValidationCallback = (s, c, h, e) => true;
+                mimeMessage.Body = new TextPart("html")
+                {
+                    Text = message
+                };
 
-					if (_env.IsDevelopment())
-					{
-						// The third parameter is useSSL (true if the client should make an SSL-wrapped
-						// connection to the server; otherwise, false).
-						await client.ConnectAsync(_emailSettings.MailServer, _emailSettings.MailPort, true);
-					}
-					else
-					{
-						await client.ConnectAsync(_emailSettings.MailServer);
-					}
+                using (var client = new SmtpClient())
+                {
+                    // For demo-purposes, accept all SSL certificates (in case the server supports STARTTLS)
+                    client.ServerCertificateValidationCallback = (s, c, h, e) => true;
 
-					// Note: only needed if the SMTP server requires authentication
-					await client.AuthenticateAsync(_emailSettings.Sender, _emailSettings.Password);
+                    if (env.IsDevelopment())
+                    {
+                        // The third parameter is useSSL (true if the client should make an SSL-wrapped
+                        // connection to the server; otherwise, false).
+                        await client.ConnectAsync(emailSettings.MailServer, emailSettings.MailPort, true);
+                    }
+                    else
+                    {
+                        await client.ConnectAsync(emailSettings.MailServer);
+                    }
 
-					await client.SendAsync(mimeMessage);
+                    // Note: only needed if the SMTP server requires authentication
+                    await client.AuthenticateAsync(emailSettings.Sender, emailSettings.Password);
 
-					await client.DisconnectAsync(true);
-				}
+                    await client.SendAsync(mimeMessage);
 
-			}
-			catch (Exception ex)
-			{
-				// TODO: handle exception
-				throw new InvalidOperationException(ex.Message);
-			}
-		}
-	}
+                    await client.DisconnectAsync(true);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+    }
 }

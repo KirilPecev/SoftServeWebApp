@@ -18,14 +18,14 @@
 
         public override Task ProcessInScope(IServiceProvider serviceProvider)
         {
-            var events = this.EventsForTomorrow(serviceProvider).Result;
+            var events = EventsForTomorrow(serviceProvider);
 
-            this.NotifyUsers(serviceProvider, events).Wait();
+            NotifyUsers(serviceProvider, events).Wait();
 
             return Task.CompletedTask;
         }
 
-        private async Task<IEnumerable<Event>> EventsForTomorrow(IServiceProvider serviceProvider)
+        private IEnumerable<Event> EventsForTomorrow(IServiceProvider serviceProvider)
         {
             var db = serviceProvider.GetService(typeof(WebAppDbContext)) as WebAppDbContext;
 
