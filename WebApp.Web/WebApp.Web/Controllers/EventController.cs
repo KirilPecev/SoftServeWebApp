@@ -44,7 +44,15 @@
 
             return RedirectToAction("DetermineEventView", "HomePage", new { Id = eventId });
         }
+        public IActionResult LeaveUser(ApproveOrIgnoreUserModel model)
+        {
+            int eventId = model.EventId;
+            int positionId = model.PositionId;
+            string userId = model.UserId;
 
+            attendanceService.RemoveUserAttendee(userId, eventId, positionId);
+            return RedirectToAction("DetermineEventView", "HomePage", new { Id = eventId });
+        }
         public IActionResult AddRating(RatingModel model)
         {
             string giverId = userManager.GetUserId(User);

@@ -37,13 +37,25 @@
                     }
                 </div>
                 <div class="col">
-                    @if (@position.Approved.Name == null)
+                    @if (position.ToBeApproved.Exists(u => u.Name == User.Identity.Name))
+                    {
+                        <button type="button" class="btn btn-danger mx-3 mb-2" disabled="disabled" style="background-color:orange; color:white;">Waiting</button>
+                    }
+                    else if (@position.Approved.Name == null)
                     {
                         <a class="btn btn-info btn mb-2 ml-4" role="button" asp-controller="Event" asp-all-route-data="@rv" asp-action="JoinUser">Join</a>
                     }
+                    else if (@position.Approved.Name == User.Identity.Name)
+                    {
+                        <a type="button" class="btn btn-info btn mb-2 ml-4" asp-controller="Event" asp-route-EventId="@position.EventId" asp-route-PositionId="@position.Id" asp-route-UserId="@position.Approved.Id" asp-action="LeaveUser" style="background-color: red; color:white">Leave</a>
+                    }
+                    else if (Model.AdminName == User.Identity.Name)
+                    {
+                        <a type="button" class="btn btn-info btn mb-2 ml-4" asp-controller="Event" asp-route-EventId="@position.EventId" asp-route-PositionId="@position.Id" asp-route-UserId="@position.Approved.Id" asp-action="LeaveUser" style="background-color: red; color:white">Kick out</a>
+                    }
                     else
                     {
-                        <a type="button" class="btn btn-info btn mb-2 ml-4" disabled="disabled">Ready</a>
+                        <a></a>
                     }
                 </div>
             </div>
@@ -76,13 +88,25 @@
                     }
                 </div>
                 <div class="col">
-                    @if (@position.Approved.Name == null)
+                    @if (position.ToBeApproved.Exists(u => u.Name == User.Identity.Name))
+                    {
+                        <button type="button" class="btn btn-danger mx-3 mb-2" disabled="disabled" style="background-color:orange; color:white;">Waiting</button>
+                    }
+                    else if (@position.Approved.Name == null)
                     {
                         <a class="btn btn-info btn mb-2 ml-4" role="button" asp-controller="Event" asp-all-route-data="@rv" asp-action="JoinUser">Join</a>
                     }
+                    else if (@position.Approved.Name == User.Identity.Name)
+                    {
+                        <a type="button" class="btn btn-info btn mb-2 ml-4" asp-controller="Event" asp-route-EventId="@position.EventId" asp-route-PositionId="@position.Id" asp-route-UserId="@position.Approved.Id" asp-action="LeaveUser" style="background-color: red; color:white">Leave</a>
+                    }
+                    else if (Model.AdminName == User.Identity.Name)
+                    {
+                        <a type="button" class="btn btn-info btn mb-2 ml-4" asp-controller="Event" asp-route-EventId="@position.EventId" asp-route-PositionId="@position.Id" asp-route-UserId="@position.Approved.Id" asp-action="LeaveUser" style="background-color: red; color:white">Kick out</a>
+                    }
                     else
                     {
-                        <a type="button" class="btn btn-info btn mb-2 ml-4" disabled="disabled">Ready</a>
+                        <a></a>
                     }
                 </div>
             </div>
