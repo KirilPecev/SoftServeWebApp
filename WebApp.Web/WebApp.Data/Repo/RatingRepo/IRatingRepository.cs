@@ -4,7 +4,7 @@
     using System;
     using System.Collections.Generic;
 
-    public interface IRatingRepo
+    public interface IRatingRepository
     {
         IEnumerable<Rating> GetAllRatings();
 

@@ -9,33 +9,49 @@
 
     public class ScoreService : IScoreService
     {
-        private readonly IScoreRepo scores;
+        private readonly IScoreRepository score;
         private readonly UserManager<WebAppUser> userManager;
 
-        public ScoreService(IScoreRepo scores, UserManager<WebAppUser> userManager)
+        public ScoreService(IScoreRepository score, UserManager<WebAppUser> userManager)
         {
-            this.scores = scores;
+            this.score = score;
             this.userManager = userManager;
         }
 
         public IEnumerable<Rating> GetAllData()
         {
-            return scores.GetAllData().ToList();
+            return score.GetAllData().ToList();
         }
 
         public Dictionary<string, int> SortedRankList()
         {
             Dictionary<string, int> rankList = new Dictionary<string, int>();
-            List<Rating> rating = GetAllData().ToList();
 
-            List<string> users = new List<string>();
+            var rating = GetUsersRating(out var users);
 
-            foreach (var item in rating)
+            GetRankList(users, rating, rankList);
+
+            var sortedRankList = GetSortedRankList(rankList);
+
+            return sortedRankList;
+        }
+
+        private static Dictionary<string, int> GetSortedRankList(Dictionary<string, int> rankList)
+        {
+            var orderedRanks = from entry in rankList orderby entry.Value descending select entry;
+
+            Dictionary<string, int> sortedRankList = new Dictionary<string, int>();
+
+            foreach (var item in orderedRanks)
             {
-                if (!users.Exists(u => u == item.ReceiverId))
-                    users.Add(item.ReceiverId);
+                sortedRankList.Add(item.Key, item.Value);
             }
 
+            return sortedRankList;
+        }
+
+        private void GetRankList(List<string> users, List<Rating> rating, Dictionary<string, int> rankList)
+        {
             foreach (var user in users)
             {
                 var userRatings = rating.Where(r => r.ReceiverId == user).ToList();
@@ -51,17 +67,21 @@
                 string userName = userManager.Users.FirstOrDefault(u => u.Id == user).UserName;
                 rankList.Add(userName, (int)Math.Round(average));
             }
+        }
 
-            var orderedRanks = from entry in rankList orderby entry.Value descending select entry;
+        private List<Rating> GetUsersRating(out List<string> users)
+        {
+            List<Rating> rating = GetAllData().ToList();
 
-            Dictionary<string, int> sortedRankList = new Dictionary<string, int>();
+            users = new List<string>();
 
-            foreach (var item in orderedRanks)
+            foreach (var item in rating)
             {
-                sortedRankList.Add(item.Key, item.Value);
+                if (!users.Exists(u => u == item.ReceiverId))
+                    users.Add(item.ReceiverId);
             }
 
-            return sortedRankList;
+            return rating;
         }
     }
 }

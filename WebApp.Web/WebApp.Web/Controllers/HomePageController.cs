@@ -10,12 +10,12 @@
     using Microsoft.Extensions.DependencyInjection;
     using Models.Event;
     using Newtonsoft.Json;
-    using Scheduler.Scheduler;
     using Services.EventService;
     using System;
     using System.Linq;
+    using System.Threading.Tasks;
 
-    public class HomePageController : Controller
+    public class HomePageController : BaseController
     {
         private readonly IEventService eventService;
         private readonly IEventMapper eventMapper;
@@ -24,10 +24,14 @@
         private readonly IDistributedCache distributedCache;
         private readonly UserManager<WebAppUser> userManager;
 
-        public HomePageController(IServiceProvider provider, IServiceScopeFactory factory, IDistributedCache distributedCache, UserManager<WebAppUser> userManager, IEventService eventService, IEventMapper eventMapper)
+        public HomePageController(
+            IServiceProvider provider,
+            IServiceScopeFactory factory,
+            IDistributedCache distributedCache,
+            UserManager<WebAppUser> userManager,
+            IEventService eventService,
+            IEventMapper eventMapper) : base(provider, factory)
         {
-            this.provider = provider;
-            this.factory = factory;
             this.distributedCache = distributedCache;
             this.userManager = userManager;
             this.eventService = eventService;
@@ -42,11 +46,11 @@
 
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        public IActionResult HomePageView(EventBindingModel model, IFormFile eventImage)
+        public async Task<IActionResult> HomePageView(EventBindingModel model, IFormFile eventImage)
         {
             this.eventService.CreateEvent(eventMapper.NewEvent(model, eventImage, userManager.GetUserId(User)));
-            var task = new EventsTask(factory);
-            task.ProcessInScope(provider);
+
+            await base.UpdateEventsInCache();
 
             return ReturnMainView();
         }
@@ -54,46 +58,44 @@
         [Authorize]
         public IActionResult DetermineEventView(int Id)
         {
-            Event dbEvent = eventService.GetEvent(Id);
+            Event currentEvent = eventService.GetEvent(Id);
 
-            if (dbEvent.AdminId == userManager.GetUserId(User))
-                return RedirectToAction("AdminViewEvent", "AdminEvent", dbEvent);
+            if (currentEvent.AdminId == userManager.GetUserId(User))
+                return RedirectToAction("AdminViewEvent", "AdminEvent", currentEvent);
             else
-                return RedirectToAction("ViewEvent", "Event", dbEvent);
+                return RedirectToAction("ViewEvent", "Event", currentEvent);
         }
 
         [Authorize]
-        private ViewResult ReturnMainView()
-        {
-            HomePageBinding model = new HomePageBinding();
-
-            var events = this.distributedCache.GetString("events");
-            var deserializedEvents = JsonConvert.DeserializeObject<Event[]>(events);
-
-            foreach (var dbEvent in deserializedEvents)
-            {
-                if (dbEvent.IsDeleted)
-                    continue;
-                model.Events.Add(eventMapper.ViewEvent(dbEvent));
-            }
-
-            return View(model);
-        }
-
-        public ViewResult SearchForEvent(string searchedEvent)
+        private IActionResult ReturnMainView()
         {
             HomePageBinding model = new HomePageBinding();
 
             var events = GetEvents();
 
-            if (searchedEvent != null)
+            foreach (var currentEvent in events)
+            {
+                if (!currentEvent.IsDeleted)
+                    model.Events.Add(eventMapper.ViewEvent(currentEvent));
+            }
+
+            return View(model);
+        }
+
+        public IActionResult SearchForEvent(string searchedEvent)
+        {
+            HomePageBinding model = new HomePageBinding();
+
+            var events = GetEvents();
+
+            if (!string.IsNullOrEmpty(searchedEvent))
             {
                 events = events.Where(e => e.Location.Contains(searchedEvent)).ToArray();
             }
 
-            foreach (var dbEvent in events)
+            foreach (var currentEvent in events)
             {
-                model.Events.Add(eventMapper.ViewEvent(dbEvent));
+                model.Events.Add(eventMapper.ViewEvent(currentEvent));
             }
 
             return View("HomePageView", model);

@@ -6,16 +6,16 @@
 
     public class PositionService : IPositionService
     {
-        private readonly IPositionRepo positionRepo;
+        private readonly IPositionRepository position;
 
-        public PositionService(IPositionRepo positionRepo)
+        public PositionService(IPositionRepository position)
         {
-            this.positionRepo = positionRepo;
+            this.position = position;
         }
 
         public IEnumerable<Position> GetPositions()
         {
-            return positionRepo.GetPositions();
+            return position.GetPositions();
         }
     }
 }

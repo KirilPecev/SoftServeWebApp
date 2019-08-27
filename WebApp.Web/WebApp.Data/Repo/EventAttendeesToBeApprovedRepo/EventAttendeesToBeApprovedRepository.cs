@@ -1,32 +1,32 @@
-﻿namespace WebApp.Data.Repo.EventAttendeesRepo
+﻿namespace WebApp.Data.Repo.EventAttendeesToBeApprovedRepo
 {
     using Domain;
     using GenericRepository;
     using System.Collections.Generic;
     using System.Linq;
 
-    public class EventAttendeesRepo : Repository<EventAttendees>, IEventAttendeesRepo
+    public class EventAttendeesToBeApprovedRepository : Repository<EventAttendeesToBeApproved>, IEventAttendeesToBeApprovedRepository
     {
         private readonly WebAppDbContext dbContext;
 
-        public EventAttendeesRepo(WebAppDbContext webAppDbContext)
-            : base(webAppDbContext)
+        public EventAttendeesToBeApprovedRepository(WebAppDbContext context)
+        : base(context)
         {
-            this.dbContext = webAppDbContext;
+            this.dbContext = context;
         }
 
-        public IEnumerable<EventAttendees> GetAllByUserId(string id)
+        public IEnumerable<EventAttendeesToBeApproved> GetAllByUserId(string id)
         {
-            var eventAttendee = dbSet
-                .Where(x => x.UserId == id)
-                .ToList();
+            var eventAttendeesToBeApproved = dbSet
+                 .Where(x => x.UserId == id)
+                 .ToList();
 
-            return eventAttendee;
+            return eventAttendeesToBeApproved;
         }
 
-        public IEnumerable<EventAttendees> GetAll()
+        public IEnumerable<EventAttendeesToBeApproved> GetAll()
         {
-            return dbSet;
+            return this.dbSet;
         }
 
         public void RemoveUser(string userId, int eventId, int positionId)

@@ -9,31 +9,31 @@ namespace WebApp.Web.Controllers
     using Microsoft.Extensions.DependencyInjection;
     using Models;
     using Models.Event;
-    using Services.EventAttendance;
+    using Services.EventAttendanceService;
     using Services.EventService;
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using WebApp.Scheduler.Scheduler;
 
-    public class AdminEventController : Controller
+    public class AdminEventController : BaseController
     {
         private readonly UserManager<WebAppUser> userManager;
         private readonly IEventService eventService;
         private readonly IEventMapper eventMapper;
         private readonly IEventAttendanceService attendanceService;
-        private readonly IServiceProvider provider;
-        private readonly IServiceScopeFactory factory;
 
-        public AdminEventController(IServiceProvider provider, IServiceScopeFactory factory,
-            UserManager<WebAppUser> userManager, IEventService eventService, IEventMapper eventMapper, IEventAttendanceService attendanceService)
+        public AdminEventController(
+            UserManager<WebAppUser> userManager,
+            IEventService eventService,
+            IEventMapper eventMapper,
+            IEventAttendanceService attendanceService,
+            IServiceProvider provider,
+            IServiceScopeFactory factory) : base(provider, factory)
         {
             this.userManager = userManager;
             this.eventService = eventService;
             this.eventMapper = eventMapper;
             this.attendanceService = attendanceService;
-            this.provider = provider;
-            this.factory = factory;
         }
 
         [HttpGet]
@@ -73,20 +73,18 @@ namespace WebApp.Web.Controllers
         {
             await eventService.DeleteEvent(id);
 
-            var task = new EventsTask(factory);
-            await task.ProcessInScope(provider);
+            await base.UpdateEventsInCache();
 
             return RedirectToAction(nameof(GetMyEvents));
         }
 
         [Authorize]
-        public IActionResult Edit(EventBindingModel model, IFormFile eventImage)
+        public async Task<IActionResult> Edit(EventBindingModel model, IFormFile eventImage)
         {
             var viewModel = eventMapper.ModifiedEvent(model, eventImage, userManager.GetUserId(User));
             this.eventService.EditEvent(viewModel);
 
-            var task = new EventsTask(factory);
-            task.ProcessInScope(provider);
+            await base.UpdateEventsInCache();
 
             return this.RedirectToAction("GetMyEvents");
         }

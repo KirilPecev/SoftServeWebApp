@@ -4,11 +4,9 @@
     using System;
     using System.Collections.Generic;
 
-    public interface IScoreRepo
+    public interface IScoreRepository
     {
         IEnumerable<Rating> GetAllData();
-
-        IEnumerable<int> GetScores(List<int> scores);
 
         IEnumerable<string> GetDates(List<DateTime> dates);
     }

@@ -3,7 +3,7 @@
     using Domain;
     using System.Collections.Generic;
 
-    public interface IPositionRepo
+    public interface IPositionRepository
     {
         IEnumerable<Position> GetPositions();
     }

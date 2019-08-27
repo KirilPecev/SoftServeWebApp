@@ -10,27 +10,27 @@
 
     public class EventService : BaseService, IEventService
     {
-        private readonly IEventRepository eventRepository;
+        private readonly IEventRepository eventR;
 
-        public EventService(IEventRepository eventRepository, IUnitOfWork unitOfWork)
+        public EventService(IEventRepository eventR, IUnitOfWork unitOfWork)
             : base(unitOfWork)
         {
-            this.eventRepository = eventRepository;
+            this.eventR = eventR;
         }
 
         public void CreateEvent(Event createEvent)
         {
-            this.eventRepository.CreateEvent(createEvent);
+            this.eventR.CreateEvent(createEvent);
         }
 
         public IEnumerable<Event> GetAllEvents()
         {
-            return this.eventRepository.GetAllEvents().Where(e => e.IsDeleted == false);
+            return this.eventR.GetAllEvents().Where(e => e.IsDeleted == false);
         }
 
         public Event GetEvent(int id)
         {
-            Event foundEvent = this.eventRepository.GetEvent(id);
+            Event foundEvent = this.eventR.GetEvent(id);
 
             if (foundEvent == null)
             {
@@ -42,7 +42,7 @@
 
         public IEnumerable<Event> GetAllEventsByUser(string id)
         {
-            return this.eventRepository.GetAllEvents()
+            return this.eventR.GetAllEvents()
                  .Where(x => x.AdminId == id && x.IsDeleted == false)
                  .ToList();
         }

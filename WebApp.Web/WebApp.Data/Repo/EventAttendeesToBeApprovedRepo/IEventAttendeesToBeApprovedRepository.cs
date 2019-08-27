@@ -4,7 +4,7 @@
     using GenericRepository;
     using System.Collections.Generic;
 
-    public interface IEventAttendeesToBeApprovedRepo : IRepository<EventAttendeesToBeApproved>
+    public interface IEventAttendeesToBeApprovedRepository : IRepository<EventAttendeesToBeApproved>
     {
         IEnumerable<EventAttendeesToBeApproved> GetAllByUserId(string id);
 

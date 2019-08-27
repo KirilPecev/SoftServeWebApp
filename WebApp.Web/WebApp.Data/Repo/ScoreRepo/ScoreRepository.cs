@@ -7,22 +7,15 @@
     using System.Collections.Generic;
     using System.Linq;
 
-    public class ScoreRepo : Repository<Rating>, IScoreRepo
+    public class ScoreRepository : Repository<Rating>, IScoreRepository
     {
-        public ScoreRepo(WebAppDbContext dbContext) : base(dbContext)
-        {
-        }
+        public ScoreRepository(WebAppDbContext dbContext) : base(dbContext) { }
 
         public IEnumerable<Rating> GetAllData()
         {
             return dbSet
                 .Include(x => x.Scores)
                 .ToList();
-        }
-
-        public IEnumerable<int> GetScores(List<int> scores)
-        {
-            return scores;
         }
 
         public IEnumerable<string> GetDates(List<DateTime> dates)

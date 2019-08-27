@@ -1,4 +1,4 @@
-﻿namespace WebApp.Services.EventAttendance
+﻿namespace WebApp.Services.EventAttendanceService
 {
     using Domain;
     using System.Collections.Generic;
@@ -6,7 +6,6 @@
 
     public interface IEventAttendanceService
     {
-
         Task<EventAttendeesToBeApproved> RegisterUserForEvent(string userId, int eventId, int positionId);
 
         Task<EventAttendees> ApproveUserForeEvent(string userId, int eventId, int positionId);
@@ -22,6 +21,5 @@
         void RemoveUserAttendee(string userId, int eventId, int positionId);
 
         void RemoveUserAttendeeToBeApproved(string userId, int eventId, int positionId);
-
     }
 }
